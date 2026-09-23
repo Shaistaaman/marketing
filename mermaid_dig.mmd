@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph Client["Browser"]
+        SPA["Marketing SPA<br/>(this folder)"]
+    end
+
+    subgraph Edge["CloudFront + WAF"]
+        CF["CloudFront<br/>SPA fallback 403/404 to index.html"]
+    end
+
+    subgraph Static["S3"]
+        S3SITE["Static site bucket<br/>dist/"]
+        S3MEDIA["Media bucket<br/>images + video"]
+    end
+
+    subgraph API["API Gateway (HTTP API)"]
+        APIGW["/v1/*"]
+    end
+
+    subgraph Auth["Amazon Cognito"]
+        COG["User Pool<br/>groups: admin/owner/agent/client"]
+    end
+
+    subgraph Compute["Lambda (SAM)"]
+        LREQ["requests-fn<br/>enquiries + bookings"]
+        LSEARCH["search-fn<br/>availability query"]
+        LADMIN["admin-fn<br/>CRUD + approvals"]
+        LICAL["ical-sync-worker<br/>SQS consumer"]
+        LFAN["ical-fanout<br/>schedule to SQS"]
+        LNOTIFY["notify-fn<br/>email + notifications"]
+    end
+
+    subgraph Data["Data"]
+        RDS[("RDS PostgreSQL<br/>via RDS Proxy")]
+    end
+
+    subgraph Async["Events + Messaging"]
+        EB["EventBridge Scheduler<br/>iCal refresh cron"]
+        SQS["SQS + DLQ"]
+        SNS["SNS<br/>bounce/complaint + fan-out"]
+        SES["SES<br/>transactional email"]
+    end
+
+    KROSS["Krossbooking API<br/>(external)"]
+    ICAL["iCal feeds<br/>(external)"]
+
+    SPA --> CF
+    CF --> S3SITE
+    CF --> S3MEDIA
+    CF --> APIGW
+    APIGW --> COG
+    APIGW --> LREQ
+    APIGW --> LSEARCH
+    APIGW --> LADMIN
+    LREQ --> RDS
+    LSEARCH --> RDS
+    LADMIN --> RDS
+    LREQ --> SNS
+    LNOTIFY --> SES
+    SNS --> LNOTIFY
+    SES --> SNS
+    EB --> LFAN
+    LFAN --> SQS
+    SQS --> LICAL
+    LICAL --> RDS
+    LICAL -.poll.-> ICAL
+    LICAL -.confirm.-> KROSS
+    LADMIN -.confirm.-> KROSS

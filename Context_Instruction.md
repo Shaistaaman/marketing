@@ -1,0 +1,238 @@
+# Context & Instructions — Skylife Serverless Backend
+
+**Audience:** a coding agent picking up this project to build the backend.
+**Goal:** stand up a serverless backend (AWS SAM) behind the existing marketing SPA — API Gateway + Lambda + Cognito + RDS PostgreSQL + EventBridge + SQS + SNS + SES, fronted by CloudFront.
+
+Read this whole file before writing code. It tells you what already exists, what does **not**, the traps specific to this codebase, and the order to build in.
+
+---
+
+## 0. Toolchain & versions (frontend, verified from `package.json` + lockfile)
+
+Match the backend to these so both halves share one Node/TS baseline.
+
+| Tool                     | Version in use                                             | Notes                                                                                                                                                                                                                                                     |
+| ------------------------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Node.js**              | **22 LTS** (`.nvmrc` = `22`; `engines.node` = `>=20.19.0`) | Run `nvm use` in `marketing/`. The dev machine happens to run Node 23, but **CI and the backend must use 22 LTS** — AWS build/Lambda runtimes standardise on LTS, and odd-numbered Node releases are not LTS. Target the **`nodejs22.x`** Lambda runtime. |
+| **npm**                  | 10.x                                                       | Ships with Node 22.                                                                                                                                                                                                                                       |
+| **React**                | **19.3.0**                                                 | `react` + `react-dom`.                                                                                                                                                                                                                                    |
+| **react-router-dom**     | **7.18.4**                                                 | Routes rank by specificity, not declaration order.                                                                                                                                                                                                        |
+| **Vite**                 | **8.3.0**                                                  | Build tool; outputs static `dist/`.                                                                                                                                                                                                                       |
+| **TypeScript**           | **6.0.3**                                                  | `strict` **and** `noUncheckedIndexedAccess` are on — array/record access is `T                                                                                                                                                                            | undefined`. Keep both on in the backend. |
+| **Tailwind CSS**         | **4.3.3**                                                  | Config-less (`@tailwindcss/vite`); theme in `src/index.css`.                                                                                                                                                                                              |
+| **motion**               | **13.4.0**                                                 | Imported as `motion/react`.                                                                                                                                                                                                                               |
+| **lucide-react**         | **1.47.0**                                                 | UI icons.                                                                                                                                                                                                                                                 |
+| **react-icons**          | **5.7.0**                                                  | Brand/social marks.                                                                                                                                                                                                                                       |
+| **@vitejs/plugin-react** | **6.1.1**                                                  |                                                                                                                                                                                                                                                           |
+| **ESLint**               | **10.11.0**                                                | Flat config; `react-refresh/only-export-components` is enforced (don't mix component + non-component exports in one file).                                                                                                                                |
+| **AWS SAM CLI**          | **1.141.0** (installed on this machine)                    | Use for the backend in `backend/`.                                                                                                                                                                                                                        |
+
+> Versions above are what is **currently resolved** in `node_modules`. If you upgrade, re-verify with `npm ls <pkg>` and update this table — do not guess.
+
+---
+
+## 1. Where you are
+
+```
+skylife/
+├── marketing/          ← THIS folder. React SPA (Vite). The frontend. Done.
+└── apps/marketing/     ← Original Next.js version. Reference only. Do not build on it.
+```
+
+You are working in `marketing/`. See `marketing/README.md` for the frontend in detail. This document is about everything the SPA talks to, which today is **nothing**.
+
+### Current state of the frontend — verified facts
+
+- **Zero network calls.** No `fetch`, no `axios`, no `import.meta.env`, no `process.env` anywhere in `src/`. Confirm with:
+  ```bash
+  grep -rn "fetch(\|axios\|import.meta.env\|process.env" src/    # returns nothing today
+  ```
+- **All content is typed mock data** under `src/data/` (`properties.ts`, `experiences.ts`, `packages.ts`, `imageMap.ts`), each with a `find*` lookup that falls back to a default record.
+- **Six form handlers are the only integration points.** They validate input and show a success state but submit nowhere. These are the exact files you will wire to the API:
+
+  | File                                             | Flow                  | Becomes                        |
+  | ------------------------------------------------ | --------------------- | ------------------------------ |
+  | `src/pages/collections/PropertyDetailPage.tsx`   | Property stay request | `POST /v1/booking-requests`    |
+  | `src/pages/experiences/ExperienceDetailPage.tsx` | Experience request    | `POST /v1/experience-requests` |
+  | `src/pages/packages/PackagesPage.tsx`            | Package dream-journey | `POST /v1/package-inquiries`   |
+  | `src/pages/owner/OwnerPage.tsx`                  | Owner application     | `POST /v1/owner-applications`  |
+  | `src/pages/owner/sections/OwnerBenefits.tsx`     | Owner valuation       | `POST /v1/valuation-requests`  |
+  | `src/pages/owner/sections/OwnerCTA1.tsx`         | Newsletter subscribe  | `POST /v1/subscriptions`       |
+
+- **Search + availability is UI-only.** `CollectionsSection.tsx` filters a static array client-side. Real availability search is a backend endpoint you will build.
+- **Media (video) already comes from S3.** `src/lib/constants.ts` → `S3_BASE` + `VIDEO.homepageHero`. Images are still bundled in `public/images` (~170 MB, uncompressed — a known cleanup item, see README).
+
+**Do not rip out the mock data.** Keep it as the fallback/seed while the API comes online. Introduce a data-access layer so pages can switch from mock to API behind one interface.
+
+---
+
+## 2. Business rules that drive the design
+
+These come from earlier product decisions and are non-negotiable constraints:
+
+1. **Request-to-book, not instant-book.** A guest submits a _request_; the admin team responds within ~2 hours and confirms manually. No payment moves at request time. This is why the frontend modals say "responds within 2 hours" and generate reference codes rather than confirming a booking.
+2. **Two property sources.** Some properties are internal (availability lives in our DB); some are managed via **Krossbooking** (availability comes from their API). A `source` discriminator column must exist on properties.
+3. **iCal availability.** Properties expose iCal feeds that must be refreshed on a schedule so search shows only genuinely-available listings. **Never fetch iCals inside a search request** — search reads the DB; a background job writes the DB.
+4. **Double-booking prevention** happens at the DB level (exclusion constraint) plus a row lock at the moment of admin approval — not in application code alone.
+5. **Roles:** `admin`, `owner`, `agent`, `client`. These map to Cognito groups. `admin` reviews/approves; `owner` sees their properties and financials; `agent` browses and books for clients; `client` searches and requests.
+
+---
+
+## 3. Target architecture
+
+![Skylife Serverless Target Architecture](kiro-artifact://29d88c0a-eb0c-42a0-a9af-25b9758ef5f5)
+
+### Component responsibilities
+
+| Component                  | Role                                                                                                                                                                                      |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CloudFront + WAF**       | Single entry. Serves the SPA and media from S3, proxies `/v1/*` to API Gateway. WAF for rate-limiting login/enquiry paths. **Must** map 403/404 → `/index.html` (200) for SPA deep links. |
+| **S3 (site)**              | `dist/` static build output.                                                                                                                                                              |
+| **S3 (media)**             | Images and video. Origin Access Control, not public. Presigned PUT for future admin uploads.                                                                                              |
+| **API Gateway (HTTP API)** | `/v1/*` routes. JWT authorizer backed by Cognito for protected routes; public routes for search + enquiry submission.                                                                     |
+| **Cognito User Pool**      | Auth. Groups `admin`/`owner`/`agent`/`client`. Pre-token-generation trigger injects role claims.                                                                                          |
+| **Lambda (SAM)**           | See function list below.                                                                                                                                                                  |
+| **RDS PostgreSQL**         | System of record. **Behind RDS Proxy** (mandatory with Lambda — connection pooling). `db.t4g.micro` to start.                                                                             |
+| **EventBridge Scheduler**  | Cron that triggers the iCal refresh fan-out (every 15–30 min).                                                                                                                            |
+| **SQS + DLQ**              | One message per feed to sync; decouples the schedule from the workers; DLQ for poison messages.                                                                                           |
+| **SNS**                    | SES bounce/complaint notifications; internal fan-out for new-request alerts.                                                                                                              |
+| **SES**                    | Transactional email (request confirmations, admin alerts). Domain-verified, DKIM, production access (out of sandbox).                                                                     |
+
+### Lambda functions
+
+| Function           | Trigger          | Does                                                                                                                                                                         |
+| ------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `search-fn`        | API GET          | Availability search — reads `property_availability` in the DB only. Fast, public.                                                                                            |
+| `requests-fn`      | API POST         | Handles the 6 enquiry/booking-request submissions; writes rows, emits SNS.                                                                                                   |
+| `admin-fn`         | API (JWT, admin) | Property/experience/package CRUD; **booking approval** (row lock + live re-check + confirm).                                                                                 |
+| `ical-fanout`      | EventBridge      | Enqueues one SQS message per active iCal feed (with jitter).                                                                                                                 |
+| `ical-sync-worker` | SQS              | Fetches + parses one feed (conditional request via stored ETag), upserts `property_availability`, records a `sync_runs` row. Also handles Krossbooking-sourced availability. |
+| `notify-fn`        | SNS / API        | Sends SES email; writes in-app notification rows.                                                                                                                            |
+
+---
+
+## 4. Data model (starting point)
+
+Design real migrations; this is the shape, not final DDL.
+
+- `users` — mirrors Cognito sub; role, profile.
+- `properties` — includes `source` (`internal` | `krossbooking`), `max_guests`, region, specs.
+- `property_images` — **child rows, not columns** (variable image counts; one row per photo, `position`, `status`).
+- `property_availability` — `(property_id, date, is_available, source, synced_at)`, PK `(property_id, date)`. Written idempotently via `UPSERT ON CONFLICT`, never delete-then-insert.
+- `ical_feeds` — feed URL per property, stored `etag`/`last_modified` for conditional requests.
+- `sync_runs` — one row per sync attempt (observability).
+- `booking_requests` — `status` (`pending`/`approved`/`rejected`/`expired`), dates, guests.
+- `bookings` — confirmed. Add the overlap guard:
+  ```sql
+  CREATE EXTENSION IF NOT EXISTS btree_gist;
+  ALTER TABLE bookings ADD CONSTRAINT no_overlap
+    EXCLUDE USING gist (
+      property_id WITH =,
+      daterange(check_in, check_out, '[)') WITH &&
+    );
+  ```
+- `enquiries` — experience/package/owner/valuation/newsletter submissions (or split per type).
+- `notifications` — in-app notification feed (poll from the portal; no WebSockets initially).
+
+**Availability search query** (the shape `search-fn` runs):
+
+```sql
+SELECT p.* FROM properties p
+WHERE p.max_guests >= :guests
+  AND NOT EXISTS (
+    SELECT 1 FROM property_availability a
+    WHERE a.property_id = p.id
+      AND a.date >= :check_in AND a.date < :check_out
+      AND a.is_available = false
+  );
+```
+
+---
+
+## 5. Booking approval — the one flow to get exactly right
+
+Search may be up to ~30 min stale (fine — a stale hit just becomes a request the admin declines). Correctness lives at **approval**, in `admin-fn`:
+
+1. Open a transaction.
+2. `SELECT ... FOR UPDATE` on the property's availability for the requested range.
+3. **Live re-check:** re-fetch that one property's iCal (or call Krossbooking's confirm endpoint). One property, one fetch — never all properties, never during search.
+4. Verify still free; insert the `bookings` row (the exclusion constraint is the backstop).
+5. Auto-reject any other overlapping `pending` requests, surfacing that to the admin.
+6. Commit; emit confirmation email via `notify-fn`.
+
+Wrap Krossbooking calls in timeout + retry-with-backoff + circuit breaker so their outage degrades to "call to confirm," not a broken flow.
+
+---
+
+## 6. SAM project layout to create
+
+Build alongside, not inside, the SPA:
+
+```
+skylife/
+├── marketing/          ← SPA (this folder)
+└── backend/            ← NEW: SAM app
+    ├── template.yaml   ← SAM: API, functions, Cognito, RDS Proxy, EventBridge, SQS, SNS, SES, IAM
+    ├── samconfig.toml  ← per-env (staging/prod) deploy config
+    ├── src/
+    │   ├── handlers/   ← search-fn, requests-fn, admin-fn, ical-fanout, ical-sync-worker, notify-fn
+    │   ├── lib/        ← db client (pooled, RDS Proxy), cognito verify, ses client, krossbooking client
+    │   └── db/         ← migrations + seed (seed from marketing/src/data as fixtures)
+    └── events/         ← sample event JSON for `sam local invoke`
+```
+
+### Conventions
+
+- **TypeScript + Node 22** — match the frontend baseline in §0. Target the `nodejs22.x` Lambda runtime, keep `strict` + `noUncheckedIndexedAccess` on, and bundle with `esbuild` via SAM `Metadata.BuildMethod: esbuild`.
+- **RDS Proxy is mandatory.** Lambda + Postgres exhausts connections without it. Keep pool size tiny per container.
+- **Secrets in SSM Parameter Store SecureString** (DB creds, Krossbooking key) until rotation is actually needed; then Secrets Manager.
+- **CloudWatch log retention set at creation** (14–30 days) on every function — the default is "never expire" and leaks cost.
+- **Least-privilege IAM per function.** `search-fn` reads; `ical-sync-worker` writes availability; only `notify-fn` calls SES; etc.
+- **Migrations run as a one-off gated step** in the pipeline, never on container start.
+- Region **eu-west-1** (traffic is Europe-weighted; cheapest full-featured EU region).
+
+---
+
+## 7. Wiring the SPA to the API
+
+1. Add a typed API client in `src/lib/api.ts`. Base URL from `import.meta.env.VITE_API_BASE_URL` (Vite exposes only `VITE_`-prefixed vars to the client). Add `.env.example`.
+2. Introduce a data-access seam: pages import from a service module, not from `src/data/*` directly. The service returns mock data when no API URL is set, real data otherwise. This keeps the site buildable/demoable without a backend and makes the cutover incremental.
+3. Wire the six form handlers (table in §1) to their `POST` endpoints. Keep the existing success states and reference codes; the server should return the reference id.
+4. Replace `CollectionsSection` client-side filtering with a call to `search-fn` once it exists.
+5. Store Cognito tokens in **httpOnly Secure SameSite cookies** for the portal; the marketing site is mostly public and needs auth only for owner/agent areas (which live in the separate portal app, not here).
+
+---
+
+## 8. Build order (each step deployable)
+
+1. **DB + migrations.** RDS + Proxy in SAM; schema + exclusion constraint; seed from mock data.
+2. **Public read path.** `search-fn` + `GET /v1/properties`, `/v1/experiences`, `/v1/packages`. Point the SPA's read layer at it behind the env flag.
+3. **Enquiry writes.** `requests-fn` + the 6 `POST` routes + SES confirmations + SNS admin alert. Wire the six modals.
+4. **Auth.** Cognito user pool, groups, JWT authorizer, pre-token trigger. Protect admin routes.
+5. **iCal sync.** EventBridge → `ical-fanout` → SQS → `ical-sync-worker` writing `property_availability`. DLQ + alarm.
+6. **Booking approval.** `admin-fn` approval transaction (§5) + Krossbooking client.
+7. **Observability + hardening.** WAF rules, CloudWatch alarms (5xx, DLQ depth, SES bounce rate, RDS storage), log retention, cost tags.
+
+---
+
+## 9. Guardrails / do-nots
+
+- **Do not** fetch iCals or call Krossbooking inside a search request.
+- **Do not** connect Lambda directly to RDS without RDS Proxy.
+- **Do not** delete-then-reinsert availability rows; upsert idempotently.
+- **Do not** move 20 MB images through Lambda; uploads use presigned S3 PUT.
+- **Do not** trust client-side role checks; re-verify the Cognito claim server-side on every protected route.
+- **Do not** commit secrets; use SSM/Secrets Manager, `.env` stays gitignored.
+- **Do not** skip the CloudFront 403/404 → `/index.html` mapping, or SPA deep links 404 in prod.
+- **Do not** build on `apps/marketing/` (the old Next.js app); it is reference only.
+
+---
+
+## 10. Verify before calling any step done
+
+- `sam validate` and `sam build` pass.
+- New endpoints return expected shapes (`sam local invoke` with `events/` fixtures, or deployed smoke tests).
+- Availability search returns fast and touches no external system.
+- The booking-approval transaction is covered by a concurrency test proving two overlapping approvals cannot both succeed.
+- The SPA still builds (`npm run build` in `marketing/`) and works with the API URL unset (mock fallback) and set (live).
+- CloudWatch log retention is finite on every new log group.
