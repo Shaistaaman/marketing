@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 import { VIDEO } from "../../../lib/constants";
 
@@ -53,6 +54,7 @@ function VideoCard({ item }: { item: VideoItem }) {
 }
 
 export default function WhereNextSection() {
+  const { t } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -91,12 +93,12 @@ export default function WhereNextSection() {
       <div className="mx-auto max-w-[1240px] text-center">
         {/* Title */}
         <h2 className="mb-3 font-serif text-3xl leading-tight font-normal tracking-tight text-neutral-900 italic sm:text-5xl md:text-6xl">
-          Where will you go next?
+          {t("collectionsPage.whereNext.heading")}
         </h2>
 
         {/* Subtitle */}
         <p className="mb-12 font-sans text-base font-medium tracking-wide text-neutral-900 sm:mb-16 sm:text-lg md:text-xl">
-          Discover, Live, Revel
+          {t("collectionsPage.whereNext.subheading")}
         </p>
 
         {/* Horizontal video carousel */}

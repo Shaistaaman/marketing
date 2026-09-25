@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 import { ROUTES } from "../../../lib/constants";
@@ -57,6 +58,7 @@ const EXPERIENCES: ExperienceItem[] = [
 ];
 
 export default function Experience() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -102,7 +104,7 @@ export default function Experience() {
         {/* Section Header */}
         <div className="mb-12 pb-8 text-center md:mb-16">
           <h2 className="font-serif text-3xl leading-tight font-normal text-neutral-900 italic sm:text-4xl md:text-[52px]">
-            Skylife Experiences
+            {t("landing.experience.sectionTitle")}
           </h2>
         </div>
 
@@ -112,25 +114,20 @@ export default function Experience() {
           <div className="flex h-full flex-col justify-between space-y-8 pr-0 lg:col-span-4 lg:pr-6">
             <div className="space-y-6">
               <span className="block font-sans text-[11px] font-semibold tracking-[0.2em] text-neutral-400 uppercase">
-                Individual Experiences
+                {t("landing.experience.eyebrow")}
               </span>
 
               <h3 className="font-serif text-2xl leading-[1.2] font-normal text-neutral-900 sm:text-3xl md:text-[40px]">
-                The moments <span className="italic">we weave</span> into every
-                journey
+                {t("landing.experience.headingPrefix")}{" "}
+                <span className="italic">
+                  {t("landing.experience.headingEmphasis")}
+                </span>{" "}
+                {t("landing.experience.headingSuffix")}
               </h3>
 
               <div className="space-y-4 font-sans text-sm leading-relaxed font-light text-neutral-600 sm:text-[15px]">
-                <p>
-                  Every great Italian stay is made up of smaller, perfect things
-                  — a market at dawn, a chef at your table, a boat with nowhere
-                  to be.
-                </p>
-                <p>
-                  These are the individual experiences we layer into your
-                  package to craft something that feels entirely, unmistakably
-                  yours.
-                </p>
+                <p>{t("landing.experience.intro1")}</p>
+                <p>{t("landing.experience.intro2")}</p>
               </div>
             </div>
 
@@ -139,7 +136,7 @@ export default function Experience() {
                 onClick={() => navigate(ROUTES.experienceCollection)}
                 className="inline-block cursor-pointer border border-neutral-900 px-8 py-4 font-sans text-xs font-medium tracking-[0.22em] text-neutral-900 uppercase transition-all duration-300 hover:bg-neutral-50"
               >
-                View Experiences
+                {t("landing.experience.viewExperiences")}
               </button>
             </div>
           </div>

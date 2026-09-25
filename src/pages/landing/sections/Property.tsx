@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 import { ROUTES } from "../../../lib/constants";
@@ -23,20 +24,22 @@ interface PropertyItem {
   images: string[];
 }
 
-const FILTER_REGIONS: { id: string; label: string }[] = [
-  { id: "ALL", label: "ALL" },
-  { id: "ROME", label: "ROME" },
-  { id: "AMALFI COAST", label: "AMALFI COAST" },
-  { id: "VENICE", label: "VENICE" },
-  { id: "ISCHIA", label: "ISCHIA" },
-  { id: "SABAUDIA", label: "SABAUDIA" },
-  { id: "ARGENTARIO", label: "ARGENTARIO" },
-  { id: "PUGLIA", label: "PUGLIA" },
-  { id: "PONTINE ISLAND", label: "PONTINE ISLAND" },
-  { id: "MILAN", label: "MILAN" },
-  { id: "SARDINIA", label: "SARDINIA" },
-  { id: "TUSCANY", label: "TUSCANY" },
-  { id: "LAKE COMO", label: "LAKE COMO" },
+// `id` stays a stable English string (used to filter PROPERTIES_DATA by
+// region). `labelKey` controls what's displayed to the user.
+const FILTER_REGIONS: { id: string; labelKey: string }[] = [
+  { id: "ALL", labelKey: "filters.regions.all" },
+  { id: "ROME", labelKey: "filters.regions.rome" },
+  { id: "AMALFI COAST", labelKey: "filters.regions.amalfiCoast" },
+  { id: "VENICE", labelKey: "filters.regions.venice" },
+  { id: "ISCHIA", labelKey: "filters.regions.ischia" },
+  { id: "SABAUDIA", labelKey: "filters.regions.sabaudia" },
+  { id: "ARGENTARIO", labelKey: "filters.regions.argentario" },
+  { id: "PUGLIA", labelKey: "filters.regions.puglia" },
+  { id: "PONTINE ISLAND", labelKey: "filters.regions.pontineIsland" },
+  { id: "MILAN", labelKey: "filters.regions.milan" },
+  { id: "SARDINIA", labelKey: "filters.regions.sardinia" },
+  { id: "TUSCANY", labelKey: "filters.regions.tuscany" },
+  { id: "LAKE COMO", labelKey: "filters.regions.lakeComo" },
 ];
 
 const PROPERTIES_DATA: PropertyItem[] = [
@@ -293,6 +296,7 @@ const PROPERTIES_DATA: PropertyItem[] = [
 ];
 
 function PropertyCard({ property }: { property: PropertyItem }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
@@ -353,21 +357,23 @@ function PropertyCard({ property }: { property: PropertyItem }) {
                   className="h-3 w-3 text-white/80 sm:h-[13px] sm:w-[13px]"
                   strokeWidth={1.5}
                 />
-                {property.beds} Beds
+                {t("collectionsPage.section.specSuffixBeds", {
+                  count: property.beds,
+                })}
               </span>
               <span className="flex shrink-0 items-center gap-1 sm:gap-1.5">
                 <ShowerHead
                   className="h-3 w-3 text-white/80 sm:h-[13px] sm:w-[13px]"
                   strokeWidth={1.5}
                 />
-                {property.baths} Baths
+                {property.baths} {t("common.specs.baths")}
               </span>
               <span className="flex shrink-0 items-center gap-1 sm:gap-1.5">
                 <Users
                   className="h-3 w-3 text-white/80 sm:h-[13px] sm:w-[13px]"
                   strokeWidth={1.5}
                 />
-                {property.guests} Guests
+                {property.guests} {t("common.specs.guests")}
               </span>
               <span className="flex shrink-0 items-center gap-1 sm:gap-1.5">
                 <Maximize2
@@ -384,7 +390,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
             <button
               onClick={handlePrevImage}
               className="cursor-pointer p-0.5 transition-colors hover:text-neutral-300 active:scale-90"
-              aria-label="Previous image"
+              aria-label={t("common.aria.previousImage")}
             >
               <ChevronLeft
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4"
@@ -397,7 +403,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
             <button
               onClick={handleNextImage}
               className="cursor-pointer p-0.5 transition-colors hover:text-neutral-300 active:scale-90"
-              aria-label="Next image"
+              aria-label={t("common.aria.nextImage")}
             >
               <ChevronRight
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4"
@@ -412,6 +418,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
 }
 
 export default function Property() {
+  const { t } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -486,10 +493,10 @@ export default function Property() {
       <div className="mx-auto max-w-[1240px] px-6 md:px-12">
         <div className="mb-12 text-center">
           <h2 className="mb-4 font-serif text-3xl leading-tight font-normal text-neutral-900 italic sm:text-4xl md:text-[52px]">
-            Skylife Collection
+            {t("landing.property.heading")}
           </h2>
           <p className="mx-auto max-w-[600px] font-sans text-sm font-light tracking-wide text-neutral-500 sm:text-base">
-            Exceptional Properties. Carefully Selected. Entirely Yours.
+            {t("landing.property.subheading")}
           </p>
         </div>
 
@@ -511,7 +518,7 @@ export default function Property() {
                         : "text-neutral-400 group-hover:text-neutral-900"
                     }`}
                   >
-                    {region.label}
+                    {t(region.labelKey)}
                   </span>
                   {isActive && (
                     <motion.div
@@ -563,7 +570,7 @@ export default function Property() {
               ))
             ) : (
               <div className="flex w-full flex-col items-center justify-center py-16 font-sans text-sm font-light text-neutral-400">
-                <p>No properties found in this location.</p>
+                <p>{t("landing.property.emptyState")}</p>
               </div>
             )}
           </AnimatePresence>

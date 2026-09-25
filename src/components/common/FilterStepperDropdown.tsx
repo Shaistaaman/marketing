@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 interface FilterStepperDropdownProps {
   /** Label when nothing is selected, e.g. "Bathrooms" */
@@ -35,6 +36,8 @@ export default function FilterStepperDropdown({
   onClose,
   panelWidth = "w-64",
 }: FilterStepperDropdownProps) {
+  const { t } = useTranslation();
+
   const step = (delta: number) => {
     const next = (value === null ? 0 : value) + delta;
     if (next < 1) return onChange(null);
@@ -78,7 +81,7 @@ export default function FilterStepperDropdown({
                   onClick={() => onChange(null)}
                   className="text-[11px] text-neutral-500 underline hover:text-neutral-900"
                 >
-                  Clear
+                  {t("common.actions.clear")}
                 </button>
               )}
             </div>
@@ -89,18 +92,18 @@ export default function FilterStepperDropdown({
                 onClick={() => step(-1)}
                 disabled={value === null || value <= 1}
                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-neutral-300 bg-white text-neutral-800 transition-colors hover:bg-neutral-100 disabled:opacity-40"
-                aria-label={`Decrease ${label}`}
+                aria-label={t("common.aria.decreaseLabel", { label })}
               >
                 <Minus className="h-3.5 w-3.5" />
               </button>
               <span className="text-sm font-semibold text-neutral-900">
-                {value ?? "Any"}
+                {value ?? t("common.actions.any")}
               </span>
               <button
                 onClick={() => step(1)}
                 disabled={value !== null && value >= max}
                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-neutral-300 bg-white text-neutral-800 transition-colors hover:bg-neutral-100 disabled:opacity-40"
-                aria-label={`Increase ${label}`}
+                aria-label={t("common.aria.increaseLabel", { label })}
               >
                 <Plus className="h-3.5 w-3.5" />
               </button>

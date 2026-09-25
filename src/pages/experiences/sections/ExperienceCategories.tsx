@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 
 interface CategoryItem {
@@ -80,6 +81,7 @@ interface ExperienceCategoriesProps {
 export default function ExperienceCategories({
   onCategoryClick,
 }: ExperienceCategoriesProps) {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -114,7 +116,7 @@ export default function ExperienceCategories({
         {/* TITLE */}
         <div className="mb-12 text-center sm:mb-16">
           <h2 className="font-serif text-3xl font-normal tracking-tight text-neutral-900 italic sm:text-5xl lg:text-6xl">
-            Where Every Stay Becomes A Story
+            {t("experiencesPage.categories.heading")}
           </h2>
         </div>
 
@@ -123,8 +125,7 @@ export default function ExperienceCategories({
           {/* LEFT: fixed text */}
           <div className="w-full flex-shrink-0 text-left lg:w-1/3">
             <p className="max-w-md font-sans text-lg leading-relaxed font-light text-neutral-800 sm:text-xl lg:text-2xl">
-              Not just experiences, but moments - created with care, shaped
-              around you, and remembered long after your stay.
+              {t("experiencesPage.categories.intro")}
             </p>
           </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { VIDEO } from "../../../lib/constants";
 import { IMG } from "../../../data/imageMap";
 
@@ -13,14 +14,15 @@ interface OwnerVideoProps {
 }
 
 export default function OwnerVideo({
-  title = "Unlock Your Property's Full Potential",
-  subtitle = "We Don't Just Manage Properties — We Re-Imagine Them",
-  description = "Through a blend of creativity, craftsmanship, and strategy, we elevate every home into a high-performing, high-appeal destination.",
-  buttonText = "APPLY NOW",
+  title,
+  subtitle,
+  description,
+  buttonText,
   videoUrl = VIDEO.homepageHero,
   posterImage = IMG.curatedInterior,
   onApplyNow,
 }: OwnerVideoProps) {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -34,10 +36,10 @@ export default function OwnerVideo({
         {/* HEADER */}
         <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-16">
           <h2 className="mb-6 font-serif text-3xl leading-[1.15] font-normal tracking-tight text-neutral-900 italic sm:text-5xl lg:text-6xl">
-            {title}
+            {title ?? t("ownerVideo.title")}
           </h2>
           <p className="font-sans text-lg font-normal tracking-tight text-neutral-900 sm:text-2xl">
-            {subtitle}
+            {subtitle ?? t("ownerVideo.subtitle")}
           </p>
         </div>
 
@@ -46,7 +48,7 @@ export default function OwnerVideo({
           {/* LEFT: description + CTA */}
           <div className="flex flex-col justify-between space-y-8 pr-0 lg:col-span-5 lg:pr-4">
             <p className="font-sans text-lg leading-relaxed font-light tracking-tight text-neutral-800 sm:text-xl">
-              {description}
+              {description ?? t("ownerVideo.description")}
             </p>
 
             <div>
@@ -55,7 +57,7 @@ export default function OwnerVideo({
                 onClick={onApplyNow}
                 className="w-full min-w-[240px] cursor-pointer rounded-none bg-black px-12 py-4.5 text-center font-sans text-sm font-medium tracking-[0.2em] text-white uppercase transition-all duration-300 hover:bg-neutral-800 sm:w-auto"
               >
-                {buttonText}
+                {buttonText ?? t("ownerVideo.applyNow")}
               </button>
             </div>
           </div>

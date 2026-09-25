@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 
 interface GalleryImage {
@@ -70,13 +71,15 @@ const GALLERY_IMAGES: GalleryImage[] = [
 const VISIBLE_RANGE = 3;
 
 export default function GalleryPkg() {
+  const { t } = useTranslation();
   // Start centred on image 5.
   const [currentIndex, setCurrentIndex] = useState(4);
 
   const total = GALLERY_IMAGES.length;
   const active = GALLERY_IMAGES[currentIndex];
 
-  const handlePrev = () => setCurrentIndex((prev) => (prev - 1 + total) % total);
+  const handlePrev = () =>
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
   const handleNext = () => setCurrentIndex((prev) => (prev + 1) % total);
 
   /** Circular relative offset from the centred card. */
@@ -138,7 +141,7 @@ export default function GalleryPkg() {
         {/* CAPTION */}
         <div className="mt-12 space-y-2 text-center sm:mt-16">
           <p className="font-serif text-2xl font-normal tracking-normal text-neutral-800 italic sm:text-3xl">
-            Unforgettable Journeys. Uniquely Yours
+            {t("packagesPage.gallery.caption")}
           </p>
           {active && (
             <p className="font-mono text-xs tracking-[0.25em] text-neutral-400 uppercase">

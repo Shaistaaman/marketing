@@ -3,7 +3,7 @@
  */
 
 // Media served from S3 (large assets are NOT bundled into the app).
-export const S3_BASE = "https://skylife-test.s3.us-east-1.amazonaws.com";
+export const S3_BASE = "https://skylife-content.s3.eu-south-1.amazonaws.com";
 
 export const VIDEO = {
   homepageHero: `${S3_BASE}/HomepageSL.mp4`,

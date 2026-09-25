@@ -1,5 +1,6 @@
 import { Calendar, ChevronRight, Moon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 import { ROUTES } from "../../../lib/constants";
@@ -64,6 +65,7 @@ const PACKAGES_DATA: PackageItem[] = [
 ];
 
 export default function Package() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -110,24 +112,23 @@ export default function Package() {
         <div className="mb-12 grid grid-cols-1 items-start gap-8 sm:mb-16 md:grid-cols-2 md:gap-16">
           <div className="space-y-4">
             <h2 className="font-serif text-3xl leading-[1.1] font-normal text-neutral-900 sm:text-4xl md:text-[51px]">
-              Start with a dream,
+              {t("landing.package.headingLine1")}
               <br />
-              <span className="italic">we'll do the rest</span>
+              <span className="italic">
+                {t("landing.package.headingLine2")}
+              </span>
             </h2>
           </div>
 
           <div className="space-y-6 md:pt-2">
             <p className="font-sans text-sm leading-relaxed font-light text-neutral-600 sm:text-base">
-              Every great Italian journey begins with an idea - a city, a
-              coastline, a feeling. Our curated packages are a starting point,
-              not a script.
+              {t("landing.package.intro1")}
             </p>
             <p className="font-sans text-sm leading-relaxed font-light text-neutral-600 sm:text-base">
-              Choose one that speaks to you, then let us shape it around your
-              pace, your tastes, and the Italy you've always imagined.
+              {t("landing.package.intro2")}
             </p>
             <p className="font-sans text-xs font-light tracking-wide text-neutral-500 italic sm:text-sm">
-              Each package is fully customizable.
+              {t("landing.package.intro3")}
             </p>
           </div>
         </div>
@@ -210,7 +211,7 @@ export default function Package() {
                     onClick={() => navigate(ROUTES.packageDetail(pkg.id))}
                     className="inline-flex cursor-pointer items-center gap-2 font-sans text-[10px] font-semibold tracking-[0.18em] text-neutral-900 uppercase transition-colors duration-300 hover:text-neutral-500 md:text-[11px]"
                   >
-                    More Details
+                    {t("landing.package.moreDetails")}
                     <ChevronRight
                       size={13}
                       className="transition-transform duration-300 group-hover:translate-x-1"
@@ -227,17 +228,14 @@ export default function Package() {
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
             <div className="space-y-6 lg:col-span-8">
               <h3 className="font-serif text-2xl leading-tight font-normal text-neutral-900 sm:text-3xl md:text-[38px]">
-                None of these quite right?
+                {t("landing.package.notQuiteRightHeading1")}
                 <br />
                 <span className="font-normal italic">
-                  That's exactly the point
+                  {t("landing.package.notQuiteRightHeading2")}
                 </span>
               </h3>
               <p className="max-w-[680px] font-sans text-sm leading-relaxed font-light text-neutral-600 sm:text-base">
-                These packages are an invitation, not a brochure. Tell us your
-                ideal length, the regions you're drawn to, and how you like to
-                travel - we'll build something completely around you. One call
-                is all it takes.
+                {t("landing.package.notQuiteRightBody")}
               </p>
             </div>
 
@@ -248,10 +246,10 @@ export default function Package() {
                 rel="noopener noreferrer"
                 className="block w-full cursor-pointer border border-neutral-900 px-8 py-4 text-center font-sans text-xs font-medium tracking-[0.2em] text-neutral-900 uppercase transition-all duration-300 hover:bg-neutral-900 hover:text-white active:scale-95 sm:w-auto sm:text-sm"
               >
-                Book a Free Call
+                {t("landing.package.bookFreeCall")}
               </a>
               <p className="text-center font-sans text-[10px] font-light tracking-wider text-neutral-400 uppercase lg:text-right sm:text-xs">
-                No commitment • 30 mins • Fully tailored
+                {t("landing.package.bookFreeCallCaption")}
               </p>
             </div>
           </div>

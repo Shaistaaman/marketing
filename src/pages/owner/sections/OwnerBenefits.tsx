@@ -13,40 +13,29 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const BG_PALAZZO = "/images/propty.jpg";
 const OWNER_AVATAR = "/images/team/avatarowner.png";
 const TERRACE_IMAGE = "/images/penthouse.jpg";
 
-const CITY_OPTIONS = [
-  "Rome",
-  "Florence",
-  "Venice",
-  "Milan",
-  "Tuscany",
-  "Lake Como",
-  "Amalfi Coast",
-  "Sardinia",
-  "Sicily",
-  "Other",
+const CITY_OPTION_KEYS = [
+  "rome",
+  "florence",
+  "venice",
+  "milan",
+  "tuscany",
+  "lakeComo",
+  "amalfiCoast",
+  "sardinia",
+  "sicily",
+  "other",
 ];
 
 const BULLETS = [
-  {
-    Icon: BarChart3,
-    label: "MARKET ANALYSIS",
-    body: "Occupancy rates and local demand metrics.",
-  },
-  {
-    Icon: TrendingUp,
-    label: "REVENUE PROJECTION",
-    body: "Annual earnings based on verified benchmark data.",
-  },
-  {
-    Icon: ShieldCheck,
-    label: "MANAGEMENT MODEL",
-    body: "Tailored strategy fitting your property and lifestyle.",
-  },
+  { Icon: BarChart3, bulletKey: "marketAnalysis" },
+  { Icon: TrendingUp, bulletKey: "revenueProjection" },
+  { Icon: ShieldCheck, bulletKey: "managementModel" },
 ];
 
 interface OwnerBenefitsProps {
@@ -56,10 +45,13 @@ interface OwnerBenefitsProps {
 export default function OwnerBenefits({
   onRequestValuation,
 }: OwnerBenefitsProps) {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ownerName, setOwnerName] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
-  const [propertyCity, setPropertyCity] = useState(CITY_OPTIONS[0] ?? "Rome");
+  const [propertyCityKey, setPropertyCityKey] = useState(
+    CITY_OPTION_KEYS[0] ?? "rome",
+  );
   const [submitted, setSubmitted] = useState(false);
   const [valuationId, setValuationId] = useState("");
 
@@ -104,35 +96,31 @@ export default function OwnerBenefits({
           <div className="flex flex-col justify-between space-y-8 lg:col-span-6">
             <div>
               <h2 className="mb-6 font-serif text-3xl leading-[1.12] font-normal tracking-tight text-white italic sm:text-5xl lg:text-6xl">
-                Curious what your Italian property could earn?
+                {t("ownerBenefits.heading")}
               </h2>
 
               <p className="mb-4 font-sans text-base leading-relaxed font-light text-neutral-200 sm:text-lg">
-                Before any commitment, we provide a detailed, honest picture of
-                what your Italian home could generate with the right management.
+                {t("ownerBenefits.body1")}
               </p>
 
               <p className="font-sans text-sm leading-relaxed font-light text-neutral-300 sm:text-base">
-                Our free, no-obligation valuation includes: Market analysis of
-                occupancy rates and local demand; Revenue projections based on
-                real benchmark data; and a tailored management recommendation
-                for your lifestyle.
+                {t("ownerBenefits.body2")}
               </p>
             </div>
 
             {/* Feature bullets */}
             <div className="space-y-5 pt-2">
-              {BULLETS.map(({ Icon, label, body }) => (
-                <div key={label} className="flex items-start gap-4">
+              {BULLETS.map(({ Icon, bulletKey }) => (
+                <div key={bulletKey} className="flex items-start gap-4">
                   <div className="mt-0.5 shrink-0 rounded-none border border-white/20 bg-white/10 p-2 text-white">
                     <Icon className="h-4 w-4 stroke-[1.5]" />
                   </div>
                   <div>
                     <span className="mb-0.5 block font-mono text-[10px] font-bold tracking-[0.2em] text-neutral-300 uppercase">
-                      {label}
+                      {t(`ownerBenefits.bullets.${bulletKey}.label`)}
                     </span>
                     <p className="text-sm font-light text-neutral-100">
-                      {body}
+                      {t(`ownerBenefits.bullets.${bulletKey}.body`)}
                     </p>
                   </div>
                 </div>
@@ -146,11 +134,11 @@ export default function OwnerBenefits({
                 onClick={triggerValuation}
                 className="w-full cursor-pointer rounded-none border border-white/90 bg-black/30 px-8 py-4 font-sans text-xs font-medium tracking-[0.2em] uppercase backdrop-blur-xs transition-all duration-300 select-none hover:bg-white hover:text-black sm:w-auto sm:text-sm"
               >
-                REQUEST YOUR FREE VALUATION
+                {t("ownerBenefits.requestValuation")}
               </button>
 
               <p className="font-mono text-[10px] tracking-wider text-neutral-400 uppercase">
-                DELIVERED WITHIN 48 HOURS. DISCRETE AND NO OBLIGATION
+                {t("ownerBenefits.deliveryCaption")}
               </p>
             </div>
           </div>
@@ -169,10 +157,10 @@ export default function OwnerBenefits({
                 />
                 <div>
                   <h4 className="font-sans text-sm leading-tight font-semibold text-neutral-900">
-                    Massimo
+                    {t("ownerBenefits.testimonial.name")}
                   </h4>
                   <p className="text-xs font-light text-neutral-500">
-                    Property Owner, Rome IT
+                    {t("ownerBenefits.testimonial.role")}
                   </p>
                 </div>
               </div>
@@ -181,10 +169,7 @@ export default function OwnerBenefits({
                 <div className="mt-0.5 shrink-0 rounded bg-black p-1 text-white">
                   <Quote className="h-3 w-3 fill-white" />
                 </div>
-                <p>
-                  I was initially hesitant to hand over management to another
-                  company, but Skylife's remarkable.
-                </p>
+                <p>{t("ownerBenefits.testimonial.quote")}</p>
               </div>
             </div>
 
@@ -192,7 +177,7 @@ export default function OwnerBenefits({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="border border-white/40 bg-black/40 p-4 text-white backdrop-blur-md">
                 <span className="mb-1 block font-mono text-[10px] font-medium tracking-[0.2em] text-neutral-300 uppercase">
-                  YEARLY OCCUPANCY
+                  {t("ownerBenefits.stats.yearlyOccupancy")}
                 </span>
                 <div className="flex items-baseline gap-2">
                   <span className="font-sans text-3xl font-light italic">
@@ -204,7 +189,7 @@ export default function OwnerBenefits({
 
               <div className="relative border border-white/40 bg-black/40 p-4 text-white backdrop-blur-md">
                 <span className="mb-1 block font-mono text-[10px] font-medium tracking-[0.2em] text-neutral-300 uppercase">
-                  AVERAGE DAILY RATE (ADR)
+                  {t("ownerBenefits.stats.averageDailyRate")}
                 </span>
                 <div className="mb-2 flex items-baseline gap-2">
                   <span className="font-sans text-3xl font-light italic">
@@ -224,12 +209,12 @@ export default function OwnerBenefits({
                 <div className="mb-1 flex items-center gap-1.5 text-emerald-400">
                   <Star className="h-7 w-7 fill-emerald-400" />
                   <span className="text-2xl font-bold tracking-wide text-white">
-                    Trustpilot
+                    {t("ownerBenefits.trustpilot.name")}
                   </span>
                 </div>
 
                 <div className="mb-2 font-sans text-2xl font-semibold text-white">
-                  Excellent
+                  {t("ownerBenefits.trustpilot.rating")}
                 </div>
 
                 <div className="mb-2 flex gap-1 text-amber-400">
@@ -242,7 +227,7 @@ export default function OwnerBenefits({
                 </div>
 
                 <p className="font-sans text-[11px] text-neutral-300">
-                  600+ Five-Star Reviews
+                  {t("ownerBenefits.trustpilot.reviewsCount")}
                 </p>
               </div>
 
@@ -304,7 +289,7 @@ export default function OwnerBenefits({
                 <button
                   onClick={handleClose}
                   className="absolute top-4 right-4 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-neutral-900"
-                  aria-label="Close"
+                  aria-label={t("common.aria.close")}
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -315,11 +300,13 @@ export default function OwnerBenefits({
                       <Check className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="mb-3 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Valuation Requested
+                      {t("ownerBenefits.modal.successTitle")}
                     </h3>
                     <p className="mx-auto mb-4 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
-                      Thank you, {ownerName.split(" ")[0]}. We'll prepare your{" "}
-                      {propertyCity} market analysis and send it within 48 hours.
+                      {t("ownerBenefits.modal.successBody", {
+                        firstName: ownerName.split(" ")[0],
+                        city: t(`ownerBenefits.cityOptions.${propertyCityKey}`),
+                      })}
                     </p>
                     <p className="mb-8 font-mono text-xs text-neutral-500">
                       Reference: {valuationId}
@@ -328,16 +315,16 @@ export default function OwnerBenefits({
                       onClick={handleClose}
                       className="cursor-pointer bg-neutral-900 px-8 py-3.5 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-black"
                     >
-                      Close
+                      {t("common.actions.close")}
                     </button>
                   </div>
                 ) : (
                   <>
                     <h3 className="mb-1 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Request Your Free Valuation
+                      {t("ownerBenefits.modal.title")}
                     </h3>
                     <p className="mb-6 text-xs font-light text-neutral-500">
-                      No obligation. Delivered within 48 hours.
+                      {t("ownerBenefits.modal.subtitle")}
                     </p>
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -346,7 +333,7 @@ export default function OwnerBenefits({
                           htmlFor="val-name"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Full Name *
+                          {t("requestModal.fullName")}
                         </label>
                         <input
                           id="val-name"
@@ -355,7 +342,7 @@ export default function OwnerBenefits({
                           value={ownerName}
                           onChange={(e) => setOwnerName(e.target.value)}
                           className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="e.g. Massimo Ricci"
+                          placeholder={t("requestModal.fullNamePlaceholder")}
                         />
                       </div>
 
@@ -364,7 +351,7 @@ export default function OwnerBenefits({
                           htmlFor="val-email"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Email *
+                          {t("requestModal.email")}
                         </label>
                         <input
                           id="val-email"
@@ -373,7 +360,7 @@ export default function OwnerBenefits({
                           value={ownerEmail}
                           onChange={(e) => setOwnerEmail(e.target.value)}
                           className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="you@example.com"
+                          placeholder={t("requestModal.emailPlaceholder")}
                         />
                       </div>
 
@@ -382,17 +369,17 @@ export default function OwnerBenefits({
                           htmlFor="val-city"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Where is the property?
+                          {t("ownerBenefits.modal.propertyLocationLabel")}
                         </label>
                         <select
                           id="val-city"
-                          value={propertyCity}
-                          onChange={(e) => setPropertyCity(e.target.value)}
+                          value={propertyCityKey}
+                          onChange={(e) => setPropertyCityKey(e.target.value)}
                           className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                         >
-                          {CITY_OPTIONS.map((city) => (
-                            <option key={city} value={city}>
-                              {city}
+                          {CITY_OPTION_KEYS.map((cityKey) => (
+                            <option key={cityKey} value={cityKey}>
+                              {t(`ownerBenefits.cityOptions.${cityKey}`)}
                             </option>
                           ))}
                         </select>
@@ -403,7 +390,7 @@ export default function OwnerBenefits({
                         className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
                       >
                         <Send className="h-4 w-4" />
-                        <span>Request Valuation</span>
+                        <span>{t("ownerBenefits.modal.submit")}</span>
                       </button>
                     </form>
                   </>

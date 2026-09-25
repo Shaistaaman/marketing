@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../lib/constants";
-import { TRANSLATIONS } from "../../lib/translations";
-import type { ActiveTab, Guests, Language, Translation } from "../../lib/types";
+import type { ActiveTab, Guests } from "../../lib/types";
 import PropertySearch from "../search/PropertySearch";
 
 /** Map each tab to the route it navigates to. */
@@ -14,35 +14,33 @@ const TAB_ROUTES: Record<ActiveTab, string> = {
 };
 
 type HeroBackground =
-  | { kind: "video"; src: string }
-  | { kind: "image"; src: string; alt?: string };
+  { kind: "video"; src: string } | { kind: "image"; src: string; alt?: string };
 
 interface PageHeroProps {
   background: HeroBackground;
   /** Which category tab starts active. */
   initialTab?: ActiveTab;
   /**
-   * Override the title/subtitle from TRANSLATIONS (e.g. the Collections page
+   * Override the title/subtitle translation keys (e.g. the Collections page
    * has its own headline but reuses all the other search copy).
    */
-  title?: string;
-  subtitle?: string;
-  language?: Language;
+  titleKey?: string;
+  subtitleKey?: string;
 }
 
 /**
  * The full-screen hero shared by the Landing and Collections pages:
  * media background, animated headline, STAY/EXPERIENCE/OWN tabs and the
- * capsule PropertySearch widget.
+ * capsule PropertySearch widget. All copy comes from i18next.
  */
 export default function PageHero({
   background,
   initialTab = "STAY",
-  title,
-  subtitle,
-  language = "en",
+  titleKey = "landing.hero.title",
+  subtitleKey = "landing.hero.subtitle",
 }: PageHeroProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [location, setLocation] = useState("");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -54,22 +52,15 @@ export default function PageHero({
   });
   const [activeTab, setActiveTab] = useState<ActiveTab>(initialTab);
 
-  const base = TRANSLATIONS[language];
-  const translation: Translation = {
-    ...base,
-    ...(title ? { title } : {}),
-    ...(subtitle ? { subtitle } : {}),
-  };
-
   const handleTabClick = (tab: ActiveTab) => {
     setActiveTab(tab);
     navigate(TAB_ROUTES[tab]);
   };
 
   const tabs: { id: ActiveTab; label: string }[] = [
-    { id: "STAY", label: translation.stay },
-    { id: "EXPERIENCE", label: translation.experience },
-    { id: "OWN", label: translation.own },
+    { id: "STAY", label: t("search.stay") },
+    { id: "EXPERIENCE", label: t("search.experience") },
+    { id: "OWN", label: t("search.own") },
   ];
 
   return (
@@ -107,7 +98,7 @@ export default function PageHero({
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-[clamp(1.5rem,5vw,4.5rem)] leading-[1.15] tracking-wide text-white italic"
           >
-            {translation.title}
+            {t(titleKey)}
           </motion.h1>
 
           <motion.p
@@ -117,7 +108,7 @@ export default function PageHero({
             transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="mx-auto mt-6 max-w-4xl text-sm leading-relaxed font-light tracking-wide text-white/90 sm:text-base md:text-lg"
           >
-            {translation.subtitle}
+            {t(subtitleKey)}
           </motion.p>
         </div>
 
@@ -167,8 +158,6 @@ export default function PageHero({
             setCheckOut={setCheckOut}
             guests={guests}
             setGuests={setGuests}
-            translation={translation}
-            language={language}
             onSearch={() => navigate(ROUTES.collections)}
           />
         </motion.div>

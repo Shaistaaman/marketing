@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useSyncHtmlLang } from "./i18n/useSyncHtmlLang";
 import RootLayout from "./layout/RootLayout";
 
 // The landing page is the common entry point, so it stays in the main bundle.
@@ -41,6 +42,8 @@ function RouteFallback() {
 }
 
 export default function App() {
+  useSyncHtmlLang();
+
   return (
     <BrowserRouter>
       <Suspense fallback={<RouteFallback />}>

@@ -1,11 +1,16 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import type { SupportedLanguage } from "../../i18n/config";
 import { isBetweenDays, isSameDay } from "../../lib/dateRangeUtils";
-import type { Language } from "../../lib/types";
+
+const LOCALE_MAP: Record<SupportedLanguage, string> = {
+  en: "en-US",
+  it: "it-IT",
+};
 
 interface CalendarMonthGridProps {
   year: number;
   month: number; // 0-indexed
-  language: Language;
   today: Date;
   checkIn: Date | null;
   checkOut: Date | null;
@@ -22,11 +27,11 @@ interface CalendarMonthGridProps {
 
 /**
  * Renders a single month's calendar grid with range selection styling.
+ * Reads the active language from i18next directly rather than a prop.
  */
 export default function CalendarMonthGrid({
   year,
   month,
-  language,
   today,
   checkIn,
   checkOut,
@@ -38,9 +43,12 @@ export default function CalendarMonthGrid({
   prevDisabled = false,
   nextDisabled = false,
 }: CalendarMonthGridProps) {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language as SupportedLanguage;
+
   const mDate = new Date(year, month, 1);
   const monthName = mDate.toLocaleDateString(
-    language === "en" ? "en-US" : "it-IT",
+    LOCALE_MAP[language] ?? LOCALE_MAP.en,
     { month: "long", year: "numeric" },
   );
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -51,6 +59,16 @@ export default function CalendarMonthGrid({
     today.getDate(),
   );
 
+  const weekdays = [
+    t("search.weekdays.su"),
+    t("search.weekdays.mo"),
+    t("search.weekdays.tu"),
+    t("search.weekdays.we"),
+    t("search.weekdays.th"),
+    t("search.weekdays.fr"),
+    t("search.weekdays.sa"),
+  ];
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4 px-1">
@@ -59,6 +77,7 @@ export default function CalendarMonthGrid({
             type="button"
             onClick={onPrev}
             disabled={prevDisabled}
+            aria-label={t("common.aria.previousMonth")}
             className="p-1.5 hover:bg-white/10 text-white/80 rounded-full transition-colors cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -76,6 +95,7 @@ export default function CalendarMonthGrid({
             type="button"
             onClick={onNext}
             disabled={nextDisabled}
+            aria-label={t("common.aria.nextMonth")}
             className="p-1.5 hover:bg-white/10 text-white/80 rounded-full transition-colors cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent"
           >
             <ChevronRight className="w-4 h-4" />
@@ -87,13 +107,9 @@ export default function CalendarMonthGrid({
 
       {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-white/40 uppercase tracking-wider mb-2">
-        <span>Su</span>
-        <span>Mo</span>
-        <span>Tu</span>
-        <span>We</span>
-        <span>Th</span>
-        <span>Fr</span>
-        <span>Sa</span>
+        {weekdays.map((day, idx) => (
+          <span key={idx}>{day}</span>
+        ))}
       </div>
 
       {/* Day cells */}

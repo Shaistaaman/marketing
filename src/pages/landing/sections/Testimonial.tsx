@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 
 interface TestimonialData {
@@ -37,18 +38,15 @@ const TESTIMONIALS: TestimonialData[] = [
 ];
 
 export default function Testimonial() {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handlePrev = () => {
-    setActiveIndex((prev) =>
-      prev === 0 ? TESTIMONIALS.length - 1 : prev - 1,
-    );
+    setActiveIndex((prev) => (prev === 0 ? TESTIMONIALS.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) =>
-      prev === TESTIMONIALS.length - 1 ? 0 : prev + 1,
-    );
+    setActiveIndex((prev) => (prev === TESTIMONIALS.length - 1 ? 0 : prev + 1));
   };
 
   const activeTestimonial = TESTIMONIALS[activeIndex];
@@ -62,20 +60,19 @@ export default function Testimonial() {
         {/* Editorial section title */}
         <div className="mb-6 flex flex-col items-center justify-center">
           <h2 className="font-serif text-3xl leading-tight font-normal tracking-wide text-neutral-900 italic sm:text-4xl md:text-[44px]">
-            WHAT OUR GUESTS
+            {t("landing.testimonial.headingLine1")}
           </h2>
           <span className="my-2 block font-serif text-3xl text-neutral-400 italic sm:text-4xl">
-            &amp;
+            {t("landing.testimonial.headingAmpersand")}
           </span>
           <h2 className="font-serif text-3xl leading-tight font-normal tracking-wide text-neutral-900 italic sm:text-4xl md:text-[44px]">
-            OWNERS SAY
+            {t("landing.testimonial.headingLine2")}
           </h2>
         </div>
 
         {/* Subtitle */}
         <p className="mb-12 font-sans text-base font-light tracking-wide text-neutral-800 sm:mb-16 sm:text-lg md:text-[19px]">
-          Real experiences - from the people who stay with us to the owners who
-          trust us with their homes.
+          {t("landing.testimonial.subtitle")}
         </p>
 
         {/* Animated quote */}
@@ -117,7 +114,9 @@ export default function Testimonial() {
                     ? "scale-105 ring-2 ring-neutral-900 ring-offset-2"
                     : "opacity-50 hover:opacity-100"
                 }`}
-                aria-label={`Show testimonial from ${testimonial.name}`}
+                aria-label={t("common.aria.viewDetailsOf", {
+                  label: testimonial.name,
+                })}
               >
                 <img
                   src={testimonial.image}

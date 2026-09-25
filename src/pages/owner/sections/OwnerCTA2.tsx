@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 const BG_NIGHT_WATERFRONT = "/images/bgowner.jpg";
 
@@ -7,6 +8,8 @@ interface OwnerCTA2Props {
 }
 
 export default function OwnerCTA2({ onJoinToday }: OwnerCTA2Props) {
+  const { t } = useTranslation();
+
   return (
     <section className="relative w-full overflow-hidden bg-neutral-950 py-24 font-sans text-white sm:py-32 lg:py-36">
       {/* Night waterfront background */}
@@ -28,7 +31,7 @@ export default function OwnerCTA2({ onJoinToday }: OwnerCTA2Props) {
           transition={{ duration: 0.8 }}
           className="mb-4 font-serif text-3xl leading-tight font-normal tracking-wide text-white sm:text-4xl md:text-5xl lg:text-[56px]"
         >
-          Become Part Of The Skylife Collection
+          {t("ownerCta2.heading")}
         </motion.h2>
 
         <motion.p
@@ -38,8 +41,7 @@ export default function OwnerCTA2({ onJoinToday }: OwnerCTA2Props) {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="mx-auto mb-8 max-w-[520px] font-sans text-sm leading-relaxed font-light tracking-wide text-white/90 sm:text-base"
         >
-          Skylife partners exclusively with homeowners who share our commitment
-          to elegance, quality, and experience.
+          {t("ownerCta2.body")}
         </motion.p>
 
         <motion.div
@@ -53,7 +55,7 @@ export default function OwnerCTA2({ onJoinToday }: OwnerCTA2Props) {
             onClick={onJoinToday}
             className="inline-block cursor-pointer rounded-none border border-white bg-black/40 px-10 py-4 text-center font-sans text-xs font-medium tracking-[0.25em] uppercase backdrop-blur-xs transition-all duration-300 hover:bg-white hover:text-black sm:px-14 sm:py-4.5 sm:text-sm"
           >
-            JOIN TODAY
+            {t("ownerCta2.joinToday")}
           </button>
         </motion.div>
       </div>

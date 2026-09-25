@@ -1,32 +1,26 @@
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import LanguageSelector from "../components/common/LanguageSelector";
+import type { SupportedLanguage } from "../i18n/config";
 import { ROUTES } from "../lib/constants";
-import type { Language } from "../lib/types";
 import NavLinks from "./NavLinks";
 
-const TRANSLATIONS: Record<Language, { lang: string; bookYourStay: string }> = {
-  en: {
-    lang: "Eng",
-    bookYourStay: "Book Your Stay",
-  },
-  it: {
-    lang: "Ita",
-    bookYourStay: "Prenota il Soggiorno",
-  },
-};
-
 export default function NavigationHeader() {
+  const { t, i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-  const [language, setLanguage] = useState<Language>("en");
 
-  const translation = TRANSLATIONS[language];
+  const activeLanguage = i18n.language as SupportedLanguage;
 
   const handleNavigate = () => {
     setIsSidebarOpen(false);
+  };
+
+  const changeLanguage = (lang: SupportedLanguage) => {
+    void i18n.changeLanguage(lang);
   };
 
   return (
@@ -76,11 +70,8 @@ export default function NavigationHeader() {
             <div className="hidden h-full items-center lg:flex">
               <LanguageSelector
                 theme="light"
-                language={language}
-                setLanguage={setLanguage}
                 isOpen={isLanguageOpen}
                 setIsOpen={setIsLanguageOpen}
-                label={translation.lang}
                 buttonId="lang-selector-btn-light"
               />
 
@@ -89,7 +80,7 @@ export default function NavigationHeader() {
                 onClick={() => setIsSidebarOpen(false)}
                 className="flex h-20 cursor-pointer items-center justify-center border-l border-neutral-200 px-5 font-sans text-xs font-semibold tracking-widest whitespace-nowrap text-neutral-900 uppercase transition-all duration-350 select-none hover:bg-neutral-900 hover:text-white sm:px-8 sm:text-sm"
               >
-                {translation.bookYourStay}
+                {t("common.actions.bookYourStay")}
               </button>
             </div>
 
@@ -98,7 +89,7 @@ export default function NavigationHeader() {
               <button
                 onClick={() => setIsSidebarOpen(false)}
                 className="flex h-20 cursor-pointer items-center justify-center px-6 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
-                aria-label="Close Menu"
+                aria-label={t("common.aria.closeMenu")}
               >
                 <X className="h-6 w-6 stroke-[1.5]" />
               </button>
@@ -115,28 +106,28 @@ export default function NavigationHeader() {
               {/* Language pills */}
               <div className="flex items-center justify-between">
                 <span className="font-sans text-xs font-medium tracking-widest text-neutral-400 uppercase">
-                  Language
+                  {t("languageMenu.language")}
                 </span>
                 <div className="flex overflow-hidden rounded-none border border-neutral-200 bg-white">
                   <button
-                    onClick={() => setLanguage("en")}
+                    onClick={() => changeLanguage("en")}
                     className={`px-4 py-1.5 font-sans text-xs font-semibold tracking-wider transition-all ${
-                      language === "en"
+                      activeLanguage === "en"
                         ? "bg-neutral-900 text-white"
                         : "text-neutral-600 hover:bg-neutral-50"
                     }`}
                   >
-                    ENGLISH
+                    {t("languageMenu.english")}
                   </button>
                   <button
-                    onClick={() => setLanguage("it")}
+                    onClick={() => changeLanguage("it")}
                     className={`px-4 py-1.5 font-sans text-xs font-semibold tracking-wider transition-all ${
-                      language === "it"
+                      activeLanguage === "it"
                         ? "bg-neutral-900 text-white"
                         : "text-neutral-600 hover:bg-neutral-50"
                     }`}
                   >
-                    ITALIANO
+                    {t("languageMenu.italian")}
                   </button>
                 </div>
               </div>
@@ -146,7 +137,7 @@ export default function NavigationHeader() {
                 onClick={() => setIsSidebarOpen(false)}
                 className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-none bg-neutral-900 py-4 font-sans text-xs font-semibold tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-black active:scale-[0.98] sm:text-sm"
               >
-                <span>{translation.bookYourStay}</span>
+                <span>{t("common.actions.bookYourStay")}</span>
               </button>
             </div>
           </div>
@@ -160,7 +151,7 @@ export default function NavigationHeader() {
               id="nav-menu-btn"
               onClick={() => setIsSidebarOpen(true)}
               className="z-10 flex h-20 cursor-pointer items-center justify-center border-r border-white/10 px-6 text-white transition-colors hover:bg-white/5 active:bg-white/10 sm:px-8"
-              aria-label="Open Menu"
+              aria-label={t("common.aria.openMenu")}
             >
               <Menu className="h-5 w-5 stroke-[1.25]" />
             </button>
@@ -183,11 +174,8 @@ export default function NavigationHeader() {
             <div className="z-10 hidden h-full items-center lg:flex">
               <LanguageSelector
                 theme="dark"
-                language={language}
-                setLanguage={setLanguage}
                 isOpen={isLanguageOpen}
                 setIsOpen={setIsLanguageOpen}
-                label={translation.lang}
                 buttonId="lang-selector-btn"
               />
 
@@ -195,7 +183,7 @@ export default function NavigationHeader() {
                 id="book-your-stay-btn"
                 className="flex h-20 cursor-pointer items-center justify-center border-l border-white/10 px-5 font-sans text-xs font-medium tracking-widest whitespace-nowrap text-white uppercase transition-all duration-300 select-none hover:bg-white hover:text-black sm:px-8 sm:text-sm"
               >
-                {translation.bookYourStay}
+                {t("common.actions.bookYourStay")}
               </button>
             </div>
           </div>

@@ -195,6 +195,8 @@ skylife/
 
 ## 7. Wiring the SPA to the API
 
+> Locale-aware content responses (§11.2) apply to every `GET` endpoint below that returns property/experience/package data — accept `?locale=` and join the relevant `*_translations` table.
+
 1. Add a typed API client in `src/lib/api.ts`. Base URL from `import.meta.env.VITE_API_BASE_URL` (Vite exposes only `VITE_`-prefixed vars to the client). Add `.env.example`.
 2. Introduce a data-access seam: pages import from a service module, not from `src/data/*` directly. The service returns mock data when no API URL is set, real data otherwise. This keeps the site buildable/demoable without a backend and makes the cutover incremental.
 3. Wire the six form handlers (table in §1) to their `POST` endpoints. Keep the existing success states and reference codes; the server should return the reference id.
@@ -228,7 +230,77 @@ skylife/
 
 ---
 
-## 10. Verify before calling any step done
+## 11. Internationalization — UI chrome vs. content, and how they differ
+
+The site supports English and Italian today, with more languages possible later. **This is implemented in two separate systems that must not be conflated.**
+
+### 11.1 UI chrome (buttons, nav, labels, form fields) — already implemented, frontend-only
+
+Static interface strings are handled entirely client-side via **`react-i18next`**:
+
+- Resource files: `src/i18n/locales/en.json`, `src/i18n/locales/it.json`. Flat/nested key structure, e.g. `nav.stay`, `search.checkIn`.
+- Single shared language state via the i18next instance — **do not** reintroduce a local `useState<Language>` in any component. The bug this replaced was exactly that: `NavigationHeader` and `ExperiencesPage` each held their own independent language state, so switching language in the header did nothing anywhere else.
+- Persisted to `localStorage`; default is English on first visit (no browser-detection auto-switch).
+- `<html lang>` is kept in sync with the active language.
+- Components read strings via `useTranslation()` → `t("key")`. Never hardcode new UI copy directly in JSX going forward — add a key to both locale files instead.
+- Italian strings were **AI-drafted and are pending native review** before this is treated as launch-ready. Check with the team before shipping the Italian UI to production; do not assume the `it.json` copy is final.
+
+This system has **no backend dependency**. It ships from the SPA alone. Do not build an API for UI chrome strings.
+
+### 11.2 Property / experience / package content — backend work, not yet built
+
+Content (property titles, descriptions, experience highlights, package details) currently lives in `src/data/*` as **English-only mock data**. Translating this requires the database, which does not exist yet. When you build it (§4), do **not** use per-language columns.
+
+**Rejected approach — columns per language:**
+
+```sql
+title_en VARCHAR, title_it VARCHAR, title_fr VARCHAR, ...
+```
+
+Adding a language means `ALTER TABLE` across every translatable table and field. With ~5–8 translatable fields per entity × 3 entity types, each new language is 15–25 new columns. Rejected — does not scale.
+
+**Chosen approach — translations table per entity (Pattern 3, the standard i18n pattern):**
+
+```sql
+-- Language-neutral facts stay on the base table
+properties (
+  id, source, max_guests, beds, baths, price_per_night, region, ...
+)
+
+-- Everything that varies by language lives here
+property_translations (
+  property_id  BIGINT REFERENCES properties(id),
+  locale       VARCHAR(5),       -- 'en', 'it', 'fr', ...
+  title        VARCHAR,
+  description  TEXT,
+  inside_details       TEXT,
+  terrace_details      TEXT,
+  neighborhood_details TEXT,
+  highlights   JSONB,            -- short string arrays: OK as JSONB inside a translations row
+  PRIMARY KEY (property_id, locale)
+);
+```
+
+Same shape for `experience_translations` and `package_translations`, keyed by their respective entity id + `locale`.
+
+**Why this pattern specifically:**
+
+- Adding a language is a data-seeding task (translate + `INSERT`), never a migration. This is the direct answer to "how does the schema grow with more languages" — it doesn't; only row count in the `*_translations` tables grows.
+- Locale is filterable and indexable as a real column (`WHERE locale = 'it'`), unlike JSONB-per-field (`title->>'it'`), and per-language full-text search (`tsvector`) works cleanly.
+- Matches how the API should respond: `GET /v1/properties?locale=it` joins `properties` to `property_translations WHERE locale = :locale`. **Fall back to `en` when the requested locale row doesn't exist yet** — never return a blank field because a translation hasn't been done.
+- The response shape the API returns is the same flat `{ title, description, ... }` object the frontend already expects from `src/data/*` — the frontend does not need to know a translations table exists.
+
+**JSONB is acceptable only for one thing:** short string arrays inside a translation row that are never searched individually (e.g. `highlights: string[]`). Do not use JSONB for the entity's core translatable fields (title, description) — those get real columns in the translations table for indexing and search.
+
+### 11.3 Do not confuse the two systems
+
+- UI chrome → `i18next` resource JSON, ships today, no backend.
+- Entity content → `*_translations` tables, ships when the backend/DB is built, keyed by `locale`.
+- Both use the same two-letter `locale` values (`en`, `it`) so the frontend's active i18next language can be passed straight through as the API's `?locale=` param with no translation layer of its own.
+
+---
+
+## 12. Verify before calling any step done
 
 - `sam validate` and `sam build` pass.
 - New endpoints return expected shapes (`sam local invoke` with `events/` fixtures, or deployed smoke tests).

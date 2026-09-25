@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface ElegantArrowProps {
   direction: "left" | "right";
   onClick?: () => void;
@@ -11,6 +13,8 @@ export default function ElegantArrow({
   disabled = false,
   className = "",
 }: ElegantArrowProps) {
+  const { t } = useTranslation();
+
   return (
     <button
       onClick={onClick}
@@ -20,7 +24,11 @@ export default function ElegantArrow({
           ? "text-neutral-300 cursor-not-allowed opacity-40"
           : "text-neutral-900 hover:scale-110 hover:opacity-80 active:scale-95 cursor-pointer"
       } ${className}`}
-      aria-label={direction === "left" ? "Previous slide" : "Next slide"}
+      aria-label={
+        direction === "left"
+          ? t("common.aria.previousSlide")
+          : t("common.aria.nextSlide")
+      }
     >
       <svg
         viewBox="0 0 64 24"

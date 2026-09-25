@@ -1,6 +1,7 @@
 import { ArrowLeft, Clock, Sun, Tag, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { findPackageData } from "../../data/packages";
 import { ROUTES } from "../../lib/constants";
@@ -11,6 +12,7 @@ import Testimonial from "../landing/sections/Testimonial";
 const INQUIRY_SECTION_ID = "package-inquiry-section";
 
 export default function PackageDetailPage() {
+  const { t } = useTranslation();
   const { packageId } = useParams<{ packageId: string }>();
   const navigate = useNavigate();
   const pkg = useMemo(() => findPackageData(packageId), [packageId]);
@@ -28,10 +30,14 @@ export default function PackageDetailPage() {
   const collage = pkg.galleryImages.slice(0, 6);
 
   const stats = [
-    { Icon: Clock, label: "Duration", value: pkg.duration },
-    { Icon: Tag, label: "Price", value: pkg.price },
-    { Icon: Users, label: "Guests", value: pkg.guests },
-    { Icon: Sun, label: "Season", value: pkg.season },
+    {
+      Icon: Clock,
+      label: t("packageDetail.stats.duration"),
+      value: pkg.duration,
+    },
+    { Icon: Tag, label: t("packageDetail.stats.price"), value: pkg.price },
+    { Icon: Users, label: t("packageDetail.stats.guests"), value: pkg.guests },
+    { Icon: Sun, label: t("packageDetail.stats.season"), value: pkg.season },
   ];
 
   return (
@@ -53,7 +59,7 @@ export default function PackageDetailPage() {
           className="absolute top-6 left-6 z-30 flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-2 font-mono text-xs tracking-wider text-white/90 uppercase backdrop-blur-md transition-all duration-300 hover:bg-black/80 hover:text-white sm:top-8 sm:left-8"
         >
           <ArrowLeft className="h-4 w-4" />
-          <span>Back to Packages</span>
+          <span>{t("packageDetail.backToPackages")}</span>
         </button>
 
         {/* Hero content */}
@@ -77,7 +83,7 @@ export default function PackageDetailPage() {
               onClick={handleStartDreaming}
               className="cursor-pointer border border-white/80 bg-black/40 px-8 py-3.5 text-center font-sans text-xs font-medium tracking-[0.25em] text-white uppercase backdrop-blur-xs transition-all duration-300 hover:bg-white hover:text-black sm:px-12 sm:py-4 sm:text-sm"
             >
-              LET'S START DREAMING
+              {t("packageDetail.startDreaming")}
             </button>
           </motion.div>
         </div>
@@ -111,7 +117,7 @@ export default function PackageDetailPage() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto mb-14 max-w-3xl text-center sm:mb-16">
             <h2 className="mb-6 font-serif text-4xl font-normal text-neutral-900 italic sm:text-5xl lg:text-6xl">
-              At A Glance
+              {t("packageDetail.atAGlance")}
             </h2>
             <p className="text-sm leading-relaxed font-light text-neutral-600 sm:text-base md:text-lg">
               {pkg.description}
@@ -122,7 +128,7 @@ export default function PackageDetailPage() {
             {/* Highlights */}
             <div className="flex flex-col justify-center border border-neutral-200/60 bg-[#f5f5f5] p-8 shadow-xs sm:p-10 md:p-12 lg:col-span-5">
               <span className="mb-8 block font-sans text-xs font-bold tracking-[0.2em] text-neutral-900 uppercase sm:text-sm">
-                HIGHLIGHTS
+                {t("packageDetail.highlights")}
               </span>
 
               <ul className="space-y-6">
@@ -162,7 +168,7 @@ export default function PackageDetailPage() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className="font-serif text-3xl font-normal text-neutral-900 italic sm:text-4xl md:text-5xl">
-              What You Get In This Package?
+              {t("packageDetail.whatYouGet")}
             </h2>
             <div className="mx-auto mt-5 h-[2px] w-20 bg-neutral-800" />
           </div>

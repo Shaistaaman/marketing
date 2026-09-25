@@ -1,44 +1,38 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 interface TeamMember {
   name: string;
-  role: string;
-  description: string;
+  memberKey: string;
   image: string;
 }
 
 const TEAM_MEMBERS: TeamMember[] = [
   {
     name: "PIETRO TOTI",
-    role: "COO & CO-FOUNDER",
-    description:
-      "Drives operations and strategy to elevate service, performance, and brand value.",
+    memberKey: "pietro",
     image: "/images/team/pietro.jpg",
   },
   {
     name: "TANCREDI DE SANCTIS",
-    role: "CEO & CO-FOUNDER",
-    description:
-      "Leads Skylife's growth through strategic property acquisitions and client success.",
+    memberKey: "tancredi",
     image: "/images/team/tancrdei.jpg",
   },
   {
     name: "MARTINA MONKASCH",
-    role: "TRAVEL DESIGNER & COORDINATOR",
-    description:
-      "Curates bespoke journeys and oversees premium guest experiences.",
+    memberKey: "martina",
     image: "/images/team/marti.jpg",
   },
   {
     name: "GIACOMO DE FRANCHIS",
-    role: "HEAD OF MARKETING",
-    description:
-      "Oversees Skylife's communication strategy, branding and social media channels.",
+    memberKey: "giacomo",
     image: "/images/team/Giacomo.jpg",
   },
 ];
 
 export default function DedicatedTeam() {
+  const { t } = useTranslation();
+
   return (
     <section
       id="dedicated-team-section"
@@ -54,7 +48,7 @@ export default function DedicatedTeam() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-4xl leading-tight tracking-wide text-neutral-900 italic sm:text-5xl md:text-[54px]"
           >
-            Meet the Team
+            {t("landing.team.heading")}
           </motion.h2>
         </div>
 
@@ -92,12 +86,12 @@ export default function DedicatedTeam() {
 
               {/* Role */}
               <h4 className="mb-4 max-w-[200px] font-sans text-xs leading-relaxed font-bold tracking-[0.08em] text-neutral-800 uppercase sm:text-[11px] md:text-xs">
-                {member.role}
+                {t(`landing.team.members.${member.memberKey}.role`)}
               </h4>
 
               {/* Description */}
               <p className="max-w-[240px] font-sans text-[13px] leading-relaxed font-light text-neutral-600">
-                {member.description}
+                {t(`landing.team.members.${member.memberKey}.description`)}
               </p>
             </motion.div>
           ))}

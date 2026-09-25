@@ -1,6 +1,7 @@
 import { Check, Heart, Send, Star, Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import CTAGetPro from "../../components/sections/CTAGetPro";
 import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
@@ -10,16 +11,19 @@ import {
 } from "../../data/experiences";
 import Testimonial from "../landing/sections/Testimonial";
 
-const GUEST_OPTIONS = [
-  "1 Guest",
-  "2 Guests",
-  "3 Guests",
-  "4 Guests",
-  "5 Guests",
-  "6+ Guests",
-];
+const GUEST_OPTION_KEYS = [
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "sixPlus",
+] as const;
+
+type GuestOptionKey = (typeof GUEST_OPTION_KEYS)[number];
 
 export default function ExperienceDetailPage() {
+  const { t } = useTranslation();
   const { experienceId } = useParams<{ experienceId: string }>();
   const experience = useMemo(
     () => findExperienceDetail(experienceId),
@@ -33,7 +37,7 @@ export default function ExperienceDetailPage() {
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [guests, setGuests] = useState(GUEST_OPTIONS[1] ?? "2 Guests");
+  const [guests, setGuests] = useState<GuestOptionKey>("two");
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -96,10 +100,12 @@ export default function ExperienceDetailPage() {
               className="group flex cursor-pointer items-center gap-2 text-xs font-normal tracking-tight text-neutral-900 transition-colors hover:text-neutral-600 sm:text-sm"
             >
               <Upload className="h-4 w-4 stroke-[1.75] transition-transform group-hover:-translate-y-0.5" />
-              <span className="underline underline-offset-4">Share</span>
+              <span className="underline underline-offset-4">
+                {t("experienceDetail.share")}
+              </span>
               {isShared && (
                 <span className="rounded bg-neutral-900 px-2 py-0.5 font-mono text-[10px] text-white">
-                  Copied!
+                  {t("experienceDetail.copied")}
                 </span>
               )}
             </button>
@@ -115,7 +121,9 @@ export default function ExperienceDetailPage() {
                   isSaved ? "fill-red-500 text-red-500" : ""
                 }`}
               />
-              <span className="underline underline-offset-4">Save</span>
+              <span className="underline underline-offset-4">
+                {t("experienceDetail.save")}
+              </span>
             </button>
           </div>
         </div>
@@ -128,8 +136,9 @@ export default function ExperienceDetailPage() {
             </h1>
 
             <p className="font-sans text-xs font-normal tracking-wide text-neutral-500 italic sm:text-sm">
-              Curated by Skylife - Part of the Exclusive {experience.location}{" "}
-              Collection
+              {t("experienceDetail.curatedBy", {
+                location: experience.location,
+              })}
             </p>
 
             {/* Rating */}
@@ -153,7 +162,7 @@ export default function ExperienceDetailPage() {
               onClick={() => setIsRequestModalOpen(true)}
               className="w-full cursor-pointer rounded-none bg-black px-10 py-4 font-sans text-xs font-semibold tracking-[0.2em] text-white uppercase transition-all duration-300 hover:bg-neutral-800 sm:w-auto"
             >
-              REQUEST NOW
+              {t("experienceDetail.requestNow")}
             </button>
           </div>
         </div>
@@ -168,7 +177,7 @@ export default function ExperienceDetailPage() {
 
             <section className="max-w-4xl pt-8">
               <h2 className="mb-8 font-serif text-4xl font-normal tracking-tight text-neutral-900 italic sm:text-5xl">
-                Key Points
+                {t("experienceDetail.keyPoints")}
               </h2>
 
               <div className="space-y-6 font-sans text-base leading-relaxed font-light text-neutral-800 sm:text-lg">
@@ -242,7 +251,7 @@ export default function ExperienceDetailPage() {
                   <button
                     onClick={handleCloseModal}
                     className="absolute top-4 right-4 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-neutral-900"
-                    aria-label="Close"
+                    aria-label={t("common.aria.close")}
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -253,30 +262,28 @@ export default function ExperienceDetailPage() {
                         <Check className="h-7 w-7 text-white" />
                       </div>
                       <h3 className="mb-3 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                        Request Received
+                        {t("experienceDetail.modal.successTitle")}
                       </h3>
                       <p className="mx-auto mb-4 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
-                        Thank you, {name.split(" ")[0]}. Our concierge will
-                        confirm availability for{" "}
-                        <span className="font-medium text-neutral-900">
-                          {experience.title}
-                        </span>{" "}
-                        shortly.
+                        {t("experienceDetail.modal.successBody", {
+                          firstName: name.split(" ")[0],
+                          experienceTitle: experience.title,
+                        })}
                       </p>
                       <p className="mb-8 font-mono text-xs text-neutral-500">
-                        Reference: {reqId}
+                        {t("requestModal.reference", { code: reqId })}
                       </p>
                       <button
                         onClick={handleCloseModal}
                         className="cursor-pointer bg-neutral-900 px-8 py-3.5 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-black"
                       >
-                        Close
+                        {t("requestModal.close")}
                       </button>
                     </div>
                   ) : (
                     <>
                       <h3 className="mb-1 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                        Request This Experience
+                        {t("experienceDetail.modal.title")}
                       </h3>
                       <p className="mb-6 text-xs font-light text-neutral-500">
                         {experience.title} · {experience.location}
@@ -289,7 +296,7 @@ export default function ExperienceDetailPage() {
                             htmlFor="exp-name"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Full Name *
+                            {t("requestModal.fullName")}
                           </label>
                           <input
                             id="exp-name"
@@ -298,7 +305,7 @@ export default function ExperienceDetailPage() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="e.g. Martina Vance"
+                            placeholder={t("requestModal.fullNamePlaceholder")}
                           />
                         </div>
 
@@ -307,7 +314,7 @@ export default function ExperienceDetailPage() {
                             htmlFor="exp-email"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Email *
+                            {t("requestModal.email")}
                           </label>
                           <input
                             id="exp-email"
@@ -316,7 +323,7 @@ export default function ExperienceDetailPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="you@example.com"
+                            placeholder={t("requestModal.emailPlaceholder")}
                           />
                         </div>
 
@@ -326,7 +333,7 @@ export default function ExperienceDetailPage() {
                               htmlFor="exp-date"
                               className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                             >
-                              Preferred Date
+                              {t("experienceDetail.modal.preferredDate")}
                             </label>
                             <input
                               id="exp-date"
@@ -342,17 +349,19 @@ export default function ExperienceDetailPage() {
                               htmlFor="exp-guests"
                               className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                             >
-                              Guests
+                              {t("experienceDetail.modal.guests")}
                             </label>
                             <select
                               id="exp-guests"
                               value={guests}
-                              onChange={(e) => setGuests(e.target.value)}
+                              onChange={(e) =>
+                                setGuests(e.target.value as GuestOptionKey)
+                              }
                               className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                             >
-                              {GUEST_OPTIONS.map((opt) => (
-                                <option key={opt} value={opt}>
-                                  {opt}
+                              {GUEST_OPTION_KEYS.map((key) => (
+                                <option key={key} value={key}>
+                                  {t(`experienceDetail.guestsOptions.${key}`)}
                                 </option>
                               ))}
                             </select>
@@ -364,7 +373,7 @@ export default function ExperienceDetailPage() {
                             htmlFor="exp-notes"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Notes
+                            {t("experienceDetail.modal.notes")}
                           </label>
                           <textarea
                             id="exp-notes"
@@ -372,7 +381,9 @@ export default function ExperienceDetailPage() {
                             onChange={(e) => setNotes(e.target.value)}
                             rows={3}
                             className="w-full resize-none border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="Dietary requirements, accessibility, occasion…"
+                            placeholder={t(
+                              "experienceDetail.modal.notesPlaceholder",
+                            )}
                           />
                         </div>
 
@@ -381,12 +392,11 @@ export default function ExperienceDetailPage() {
                           className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
                         >
                           <Send className="h-4 w-4" />
-                          <span>Send Request</span>
+                          <span>{t("requestModal.sendRequest")}</span>
                         </button>
 
                         <p className="text-center text-[11px] leading-relaxed font-light text-neutral-400 italic">
-                          No payment is taken now. Our team responds within 2
-                          hours during business hours.
+                          {t("requestModal.responseDisclaimer")}
                         </p>
                       </form>
                     </>

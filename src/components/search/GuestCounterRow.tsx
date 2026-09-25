@@ -1,4 +1,5 @@
 import { Minus, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface GuestCounterRowProps {
   label: string;
@@ -19,6 +20,8 @@ export default function GuestCounterRow({
   onDecrement,
   onIncrement,
 }: GuestCounterRowProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex items-center justify-between">
       <div className="text-left">
@@ -29,7 +32,7 @@ export default function GuestCounterRow({
         <button
           onClick={onDecrement}
           className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10"
-          aria-label={`Decrease ${label}`}
+          aria-label={t("common.aria.decreaseLabel", { label })}
         >
           <Minus className="w-3 h-3" />
         </button>
@@ -39,7 +42,7 @@ export default function GuestCounterRow({
         <button
           onClick={onIncrement}
           className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10"
-          aria-label={`Increase ${label}`}
+          aria-label={t("common.aria.increaseLabel", { label })}
         >
           <Plus className="w-3 h-3" />
         </button>

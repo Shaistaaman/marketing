@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ElegantArrow from "../../../components/common/ElegantArrow";
 
 interface DiscoverCard {
@@ -56,6 +57,7 @@ const DISCOVER_CARDS: DiscoverCard[] = [
 ];
 
 export default function SoMuch() {
+  const { t } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -84,7 +86,8 @@ export default function SoMuch() {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const cardWidth = container.clientWidth / (window.innerWidth < 768 ? 1.2 : 4);
+    const cardWidth =
+      container.clientWidth / (window.innerWidth < 768 ? 1.2 : 4);
     const scrollAmount = direction === "left" ? -cardWidth : cardWidth;
 
     container.scrollTo({
@@ -108,7 +111,7 @@ export default function SoMuch() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-6 text-center font-serif text-4xl leading-tight tracking-wide text-neutral-900 italic sm:text-5xl md:mb-10 md:text-[54px]"
           >
-            There's So Much to Discover
+            {t("landing.soMuch.heading")}
           </motion.h2>
 
           <div className="mt-2 flex w-full items-center justify-end gap-4">

@@ -5,6 +5,7 @@ import {
   ReceiptEuro,
 } from "lucide-react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 interface OwnerWorksProps {
   onStartJourney?: () => void;
@@ -13,35 +14,29 @@ interface OwnerWorksProps {
 const STEPS = [
   {
     number: "Step 1",
-    title: "Application",
-    description:
-      "Submit your property for private review by our management team.",
+    stepKey: "application",
     icon: FileText,
   },
   {
     number: "Step 2",
-    title: "Evaluation",
-    description:
-      "Receive a personalized proposal outlining design, positioning, and revenue potential.",
+    stepKey: "evaluation",
     icon: ChartNoAxesCombined,
   },
   {
     number: "Step 3",
-    title: "Onboarding",
-    description:
-      "We restyle, photograph, and prepare your home for launch within the Skylife Collection.",
+    stepKey: "onboarding",
     icon: Handshake,
   },
   {
     number: "Step 4",
-    title: "Results",
-    description:
-      "We elevate every home into a high-performing, high-appeal hospitality asset.",
+    stepKey: "results",
     icon: ReceiptEuro,
   },
 ];
 
 export default function OwnerWorks({ onStartJourney }: OwnerWorksProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="relative w-full overflow-hidden bg-black py-24 font-sans text-white sm:py-32">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8 lg:px-12">
@@ -54,7 +49,7 @@ export default function OwnerWorks({ onStartJourney }: OwnerWorksProps) {
             transition={{ duration: 0.8 }}
             className="font-serif text-3xl font-normal tracking-tight text-white italic sm:text-5xl lg:text-6xl"
           >
-            From Application To ROI In 4 Simple Steps
+            {t("ownerWorks.heading")}
           </motion.h2>
         </div>
 
@@ -82,11 +77,11 @@ export default function OwnerWorks({ onStartJourney }: OwnerWorksProps) {
                   </span>
 
                   <h3 className="mb-3 font-sans text-base font-semibold text-white sm:text-lg">
-                    {step.title}
+                    {t(`ownerWorks.steps.${step.stepKey}.title`)}
                   </h3>
 
                   <p className="max-w-[220px] font-sans text-xs leading-relaxed font-light text-neutral-300 sm:text-sm">
-                    {step.description}
+                    {t(`ownerWorks.steps.${step.stepKey}.description`)}
                   </p>
                 </motion.div>
               );
@@ -105,7 +100,7 @@ export default function OwnerWorks({ onStartJourney }: OwnerWorksProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="inline-block cursor-pointer rounded-none border border-white bg-transparent px-10 py-4 text-center font-sans text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 hover:bg-white hover:text-black sm:px-14 sm:py-5 sm:text-sm"
           >
-            START YOUR SKYLIFE JOURNEY
+            {t("ownerWorks.cta")}
           </motion.button>
         </div>
       </div>

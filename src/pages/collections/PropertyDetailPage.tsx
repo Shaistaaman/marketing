@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import CTAGetPro from "../../components/sections/CTAGetPro";
 import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
@@ -29,6 +30,7 @@ const MAX_MONTH_OFFSET = 10;
 const GALLERY_SIZE = 5;
 
 export default function PropertyDetailPage() {
+  const { t } = useTranslation();
   const { propertyId } = useParams<{ propertyId: string }>();
   const property = useMemo(() => findPropertyData(propertyId), [propertyId]);
 
@@ -151,7 +153,7 @@ export default function PropertyDetailPage() {
               onClick={() => setMonthOffset((prev) => Math.max(0, prev - 1))}
               disabled={monthOffset === 0}
               className="cursor-pointer rounded-full p-1.5 text-neutral-800 transition-colors hover:bg-neutral-200 disabled:opacity-20 disabled:hover:bg-transparent"
-              aria-label="Previous month"
+              aria-label={t("common.aria.previousMonth")}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -171,7 +173,7 @@ export default function PropertyDetailPage() {
               }
               disabled={monthOffset >= MAX_MONTH_OFFSET}
               className="cursor-pointer rounded-full p-1.5 text-neutral-800 transition-colors hover:bg-neutral-200 disabled:opacity-20 disabled:hover:bg-transparent"
-              aria-label="Next month"
+              aria-label={t("common.aria.nextMonth")}
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -258,8 +260,7 @@ export default function PropertyDetailPage() {
               {property.title}
             </h1>
             <p className="font-sans text-xs font-light text-neutral-500 italic sm:text-sm">
-              Curated by Skylife - Part of the Exclusive {property.region}{" "}
-              Collection
+              {t("propertyDetail.curatedBy", { region: property.region })}
             </p>
           </div>
           <div className="shrink-0 text-left md:text-right">
@@ -267,7 +268,7 @@ export default function PropertyDetailPage() {
               €{totalPrice}
             </span>
             <span className="ml-1 text-xs font-light text-neutral-500 sm:text-sm">
-              / night
+              {t("propertyDetail.perNight")}
             </span>
           </div>
         </div>
@@ -323,7 +324,7 @@ export default function PropertyDetailPage() {
                       className="absolute right-3 bottom-3 flex cursor-pointer items-center gap-2 rounded-xs border border-neutral-200/80 bg-white/95 px-3.5 py-1.5 font-sans text-xs font-medium text-neutral-900 shadow-sm backdrop-blur-md transition-all hover:bg-black hover:text-white sm:py-2"
                     >
                       <Grid className="h-3.5 w-3.5" />
-                      <span>See All Photos</span>
+                      <span>{t("propertyDetail.seeAllPhotos")}</span>
                     </button>
                   )}
                 </div>
@@ -339,10 +340,26 @@ export default function PropertyDetailPage() {
             {/* SPECS */}
             <div className="grid grid-cols-2 gap-6 border-y border-neutral-200/80 py-6 sm:grid-cols-4">
               {[
-                { Icon: Bed, value: property.beds, label: "Bedrooms" },
-                { Icon: ShowerHead, value: property.baths, label: "Bathrooms" },
-                { Icon: Users, value: property.guests, label: "Guests" },
-                { Icon: Maximize2, value: property.size, label: "Area Size" },
+                {
+                  Icon: Bed,
+                  value: property.beds,
+                  label: t("common.specs.bedrooms"),
+                },
+                {
+                  Icon: ShowerHead,
+                  value: property.baths,
+                  label: t("common.specs.bathrooms"),
+                },
+                {
+                  Icon: Users,
+                  value: property.guests,
+                  label: t("common.specs.guests"),
+                },
+                {
+                  Icon: Maximize2,
+                  value: property.size,
+                  label: t("common.specs.areaSize"),
+                },
               ].map(({ Icon, value, label }) => (
                 <div key={label} className="flex items-center gap-3">
                   <Icon className="h-6 w-6 stroke-[1.2] text-neutral-800" />
@@ -362,11 +379,10 @@ export default function PropertyDetailPage() {
             <div>
               <div className="mb-6">
                 <h2 className="mb-1 font-serif text-3xl font-normal text-neutral-900 italic sm:text-4xl">
-                  Availability
+                  {t("propertyDetail.sections.availability")}
                 </h2>
                 <p className="text-xs font-light text-neutral-500 italic">
-                  Curated by Skylife - Part of the Exclusive {property.region}{" "}
-                  Collection
+                  {t("propertyDetail.curatedBy", { region: property.region })}
                 </p>
               </div>
 
@@ -394,11 +410,10 @@ export default function PropertyDetailPage() {
             <div>
               <div className="mb-6">
                 <h2 className="mb-1 font-serif text-3xl font-normal text-neutral-900 italic sm:text-4xl">
-                  What Makes It Special?
+                  {t("propertyDetail.sections.whatMakesItSpecial")}
                 </h2>
                 <p className="text-xs font-light text-neutral-500 italic">
-                  Curated by Skylife - Part of the Exclusive {property.region}{" "}
-                  Collection
+                  {t("propertyDetail.curatedBy", { region: property.region })}
                 </p>
               </div>
 
@@ -409,15 +424,15 @@ export default function PropertyDetailPage() {
               <div className="grid grid-cols-1 gap-8 pt-4 sm:grid-cols-3">
                 {[
                   {
-                    title: "Inside the Penthouse",
+                    title: t("propertyDetail.sections.insideThePenthouse"),
                     body: property.insideDetails,
                   },
                   {
-                    title: "Your Private Terrace",
+                    title: t("propertyDetail.sections.yourPrivateTerrace"),
                     body: property.terraceDetails,
                   },
                   {
-                    title: "The Neighborhood",
+                    title: t("propertyDetail.sections.theNeighborhood"),
                     body: property.neighborhoodDetails,
                   },
                 ].map(({ title, body }) => (
@@ -436,7 +451,7 @@ export default function PropertyDetailPage() {
             {/* MAP */}
             <div>
               <h2 className="mb-6 font-serif text-3xl font-normal text-neutral-900 italic sm:text-4xl">
-                Map Location
+                {t("propertyDetail.sections.mapLocation")}
               </h2>
               <div className="group relative h-[360px] w-full overflow-hidden border border-neutral-200 bg-neutral-100">
                 <div className="absolute inset-0 flex items-center justify-center bg-[#e8ecef]">
@@ -486,7 +501,7 @@ export default function PropertyDetailPage() {
           <div className="lg:col-span-5 lg:sticky lg:top-30">
             <div className="space-y-6 border border-neutral-200 bg-white p-8 shadow-xl sm:p-10">
               <h3 className="border-b border-neutral-200 pb-4 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                Price Breakdown
+                {t("propertyDetail.sections.priceBreakdown")}
               </h3>
 
               {/* Date summary */}
@@ -497,12 +512,17 @@ export default function PropertyDetailPage() {
                     {startDate && endDate
                       ? `${formatDate(startDate)} – ${formatDate(endDate)}`
                       : startDate
-                        ? `From ${formatDate(startDate)}`
-                        : "Select dates in availability calendar"}
+                        ? t("propertyDetail.availabilityCalendar.fromDate", {
+                            date: formatDate(startDate),
+                          })
+                        : t(
+                            "propertyDetail.availabilityCalendar.selectDatesHint",
+                          )}
                   </span>
                   <span className="font-light text-neutral-500">
-                    {numberOfNights} {numberOfNights === 1 ? "night" : "nights"}{" "}
-                    stay
+                    {t("propertyDetail.availabilityCalendar.nightsStay", {
+                      count: numberOfNights,
+                    })}
                   </span>
                 </div>
               </div>
@@ -510,34 +530,35 @@ export default function PropertyDetailPage() {
               <div className="space-y-3.5 text-sm font-light text-neutral-600">
                 <div className="flex items-center justify-between">
                   <span>
-                    Nightly Rate ({numberOfNights}{" "}
-                    {numberOfNights === 1 ? "night" : "nights"})
+                    {t("propertyDetail.priceBreakdown.nightlyRate", {
+                      count: numberOfNights,
+                    })}
                   </span>
                   <span className="font-medium text-neutral-900">
                     €{totalNightly}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Cleaning Fee</span>
+                  <span>{t("propertyDetail.priceBreakdown.cleaningFee")}</span>
                   <span className="font-medium text-neutral-900">
                     €{cleaningFee}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Service Fee</span>
+                  <span>{t("propertyDetail.priceBreakdown.serviceFee")}</span>
                   <span className="font-medium text-neutral-900">
                     €{serviceFee}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Taxes</span>
+                  <span>{t("propertyDetail.priceBreakdown.taxes")}</span>
                   <span className="font-medium text-neutral-900">€{taxes}</span>
                 </div>
               </div>
 
               <div className="flex items-baseline justify-between border-t border-neutral-200 pt-4">
                 <span className="text-lg font-bold text-neutral-900">
-                  Total
+                  {t("propertyDetail.priceBreakdown.total")}
                 </span>
                 <span className="text-3xl font-bold text-neutral-900">
                   €{totalPrice}
@@ -545,7 +566,7 @@ export default function PropertyDetailPage() {
               </div>
 
               <p className="text-[11px] font-light text-neutral-500 italic">
-                Best rate guaranteed - Personal concierge included
+                {t("propertyDetail.priceBreakdown.bestRateGuaranteed")}
               </p>
 
               <button
@@ -553,7 +574,7 @@ export default function PropertyDetailPage() {
                 className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
               >
                 <ShieldCheck className="h-4 w-4 text-amber-300" />
-                <span>REQUEST YOUR STAY</span>
+                <span>{t("propertyDetail.requestYourStay")}</span>
               </button>
 
               <p className="text-center text-[11px] leading-relaxed font-light text-neutral-400 italic">
@@ -575,13 +596,16 @@ export default function PropertyDetailPage() {
             >
               <div className="flex items-center justify-between border-b border-neutral-800 pb-4 text-white">
                 <span className="font-serif text-xl italic">
-                  {property.title} — Photo Gallery ({activeImageIndex + 1} /{" "}
-                  {propertyImages.length})
+                  {t("propertyDetail.lightbox.galleryTitle", {
+                    title: property.title,
+                    current: activeImageIndex + 1,
+                    total: propertyImages.length,
+                  })}
                 </span>
                 <button
                   onClick={() => setIsLightboxOpen(false)}
                   className="cursor-pointer p-2 text-neutral-400 transition-colors hover:text-white"
-                  aria-label="Close gallery"
+                  aria-label={t("common.aria.close")}
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -590,7 +614,7 @@ export default function PropertyDetailPage() {
               <div className="relative my-6 flex flex-1 items-center justify-center">
                 <img
                   src={propertyImages[activeImageIndex]}
-                  alt="Property gallery enlarged"
+                  alt={t("propertyDetail.lightbox.propertyGalleryEnlarged")}
                   className="max-h-[75vh] max-w-full object-contain shadow-2xl"
                 />
 
@@ -603,7 +627,7 @@ export default function PropertyDetailPage() {
                         )
                       }
                       className="absolute left-4 cursor-pointer rounded-full border border-neutral-700 bg-black/60 p-3 text-white transition-colors hover:bg-black"
-                      aria-label="Previous photo"
+                      aria-label={t("common.aria.previousPhoto")}
                     >
                       <ChevronLeft className="h-6 w-6" />
                     </button>
@@ -614,7 +638,7 @@ export default function PropertyDetailPage() {
                         )
                       }
                       className="absolute right-4 cursor-pointer rounded-full border border-neutral-700 bg-black/60 p-3 text-white transition-colors hover:bg-black"
-                      aria-label="Next photo"
+                      aria-label={t("common.aria.nextPhoto")}
                     >
                       <ChevronRight className="h-6 w-6" />
                     </button>
@@ -636,7 +660,9 @@ export default function PropertyDetailPage() {
                   >
                     <img
                       src={img}
-                      alt={`Thumbnail ${idx + 1}`}
+                      alt={t("propertyDetail.lightbox.thumbnail", {
+                        index: idx + 1,
+                      })}
                       className="h-full w-full object-cover"
                     />
                   </button>
@@ -668,7 +694,7 @@ export default function PropertyDetailPage() {
                   <button
                     onClick={closeRequestModal}
                     className="absolute top-4 right-4 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-neutral-900"
-                    aria-label="Close"
+                    aria-label={t("common.aria.close")}
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -680,28 +706,26 @@ export default function PropertyDetailPage() {
                         <Check className="h-7 w-7 text-white" />
                       </div>
                       <h3 className="mb-3 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                        Request Received
+                        {t("propertyDetail.modal.successTitle")}
                       </h3>
                       <p className="mx-auto mb-8 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
-                        Thank you, {guestName.split(" ")[0]}. A Skylife
-                        concierge will confirm availability for{" "}
-                        <span className="font-medium text-neutral-900">
-                          {property.title}
-                        </span>{" "}
-                        and be in touch shortly.
+                        {t("propertyDetail.modal.successBody", {
+                          firstName: guestName.split(" ")[0],
+                          propertyTitle: property.title,
+                        })}
                       </p>
                       <button
                         onClick={closeRequestModal}
                         className="cursor-pointer bg-neutral-900 px-8 py-3.5 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-black"
                       >
-                        Close
+                        {t("requestModal.close")}
                       </button>
                     </div>
                   ) : (
                     /* Form state */
                     <>
                       <h3 className="mb-1 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                        Request Your Stay
+                        {t("propertyDetail.modal.title")}
                       </h3>
                       <p className="mb-6 text-xs font-light text-neutral-500">
                         {property.title} · {property.location}
@@ -714,12 +738,13 @@ export default function PropertyDetailPage() {
                           <span className="block font-semibold text-neutral-900">
                             {startDate && endDate
                               ? `${formatDate(startDate)} – ${formatDate(endDate)}`
-                              : "Dates to be confirmed"}
+                              : t("propertyDetail.modal.datesTBC")}
                           </span>
                           <span className="font-light text-neutral-500">
-                            {numberOfNights}{" "}
-                            {numberOfNights === 1 ? "night" : "nights"} · €
-                            {totalPrice} total
+                            {t("propertyDetail.modal.nightsTotal", {
+                              count: numberOfNights,
+                              total: totalPrice,
+                            })}
                           </span>
                         </div>
                       </div>
@@ -730,7 +755,7 @@ export default function PropertyDetailPage() {
                             htmlFor="guest-name"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Full Name *
+                            {t("requestModal.fullName")}
                           </label>
                           <input
                             id="guest-name"
@@ -739,7 +764,7 @@ export default function PropertyDetailPage() {
                             value={guestName}
                             onChange={(e) => setGuestName(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="e.g. Martina Vance"
+                            placeholder={t("requestModal.fullNamePlaceholder")}
                           />
                         </div>
 
@@ -748,7 +773,7 @@ export default function PropertyDetailPage() {
                             htmlFor="guest-email"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Email *
+                            {t("requestModal.email")}
                           </label>
                           <input
                             id="guest-email"
@@ -757,7 +782,7 @@ export default function PropertyDetailPage() {
                             value={guestEmail}
                             onChange={(e) => setGuestEmail(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="you@example.com"
+                            placeholder={t("requestModal.emailPlaceholder")}
                           />
                         </div>
 
@@ -766,7 +791,7 @@ export default function PropertyDetailPage() {
                             htmlFor="guest-phone"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Phone
+                            {t("requestModal.phone")}
                           </label>
                           <input
                             id="guest-phone"
@@ -774,7 +799,7 @@ export default function PropertyDetailPage() {
                             value={guestPhone}
                             onChange={(e) => setGuestPhone(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="+39 ..."
+                            placeholder={t("requestModal.phonePlaceholder")}
                           />
                         </div>
 
@@ -783,7 +808,7 @@ export default function PropertyDetailPage() {
                             htmlFor="guest-requests"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Special Requests
+                            {t("propertyDetail.modal.specialRequests")}
                           </label>
                           <textarea
                             id="guest-requests"
@@ -791,7 +816,9 @@ export default function PropertyDetailPage() {
                             onChange={(e) => setSpecialRequests(e.target.value)}
                             rows={3}
                             className="w-full resize-none border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="Airport transfer, chef, experiences…"
+                            placeholder={t(
+                              "propertyDetail.modal.specialRequestsPlaceholder",
+                            )}
                           />
                         </div>
 
@@ -800,12 +827,11 @@ export default function PropertyDetailPage() {
                           className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
                         >
                           <Send className="h-4 w-4" />
-                          <span>Send Request</span>
+                          <span>{t("requestModal.sendRequest")}</span>
                         </button>
 
                         <p className="text-center text-[11px] leading-relaxed font-light text-neutral-400 italic">
-                          No payment is taken now. Our team responds within 2
-                          hours during business hours.
+                          {t("requestModal.responseDisclaimer")}
                         </p>
                       </form>
                     </>
@@ -817,9 +843,9 @@ export default function PropertyDetailPage() {
         </AnimatePresence>
       </main>
 
-      <ExperienceVideoSection />
-      <Testimonial />
       <CTAGetPro />
+      {/* <ExperienceVideoSection /> */}
+      <Testimonial />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface CTAGetProProps {
   onAddProperty?: () => void;
 }
@@ -7,6 +9,7 @@ interface CTAGetProProps {
  * "ADD PROPERTY" call to action.
  */
 export default function CTAGetPro({ onAddProperty }: CTAGetProProps) {
+  const { t } = useTranslation();
   return (
     <section
       id="cta-get-pro-section"
@@ -29,11 +32,7 @@ export default function CTAGetPro({ onAddProperty }: CTAGetProProps) {
         {/* Editorial paragraph */}
         <div className="max-w-[680px] flex-1 text-center lg:text-left">
           <p className="font-sans text-sm leading-relaxed font-light tracking-normal text-neutral-300 sm:text-base">
-            We transform extraordinary properties into living experiences,
-            combining flawless operations with artful presentation and
-            personalized hospitality. From restyling and brand storytelling to
-            five-star guest care, Skylife ensures your home stands among Italy's
-            most distinguished stays.
+            {t("collectionsPage.ctaGetPro")}
           </p>
         </div>
 
@@ -44,7 +43,7 @@ export default function CTAGetPro({ onAddProperty }: CTAGetProProps) {
             onClick={onAddProperty}
             className="cursor-pointer rounded-none border border-white bg-transparent px-8 py-3.5 font-sans text-xs font-medium tracking-[0.2em] whitespace-nowrap uppercase transition-colors duration-300 select-none hover:bg-white hover:text-black"
           >
-            ADD PROPERTY
+            {t("collectionsPage.addProperty")}
           </button>
         </div>
       </div>

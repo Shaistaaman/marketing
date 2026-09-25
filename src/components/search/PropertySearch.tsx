@@ -1,69 +1,23 @@
 import { Calendar, MapPin, Search, UserPlus, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { SupportedLanguage } from "../../i18n/config";
 import { getFormattedDate } from "../../lib/formatDate";
-import type { Guests, Language, Translation } from "../../lib/types";
+import type { Guests } from "../../lib/types";
 import CalendarMonthGrid from "./CalendarMonthGrid";
 import FieldDivider from "./FieldDivider";
 import GuestCounterRow from "./GuestCounterRow";
 import SearchCapsuleField from "./SearchCapsuleField";
 
-interface Destination {
-  id: string;
-  name: string;
-  region: string;
-  description: string;
-  suggestedNights: number;
-}
-
-const DESTINATIONS: Destination[] = [
-  {
-    id: "como",
-    name: "Lake Como",
-    region: "Lombardy",
-    description: "Breathtaking historic villas and peaceful alpine waters.",
-    suggestedNights: 5,
-  },
-  {
-    id: "amalfi",
-    name: "Amalfi Coast",
-    region: "Campania",
-    description: "Dramatic cliffs, colorful vertical towns, and ocean vistas.",
-    suggestedNights: 7,
-  },
-  {
-    id: "tuscany",
-    name: "Tuscany",
-    region: "Florence & Siena",
-    description:
-      "Rolling hills, world-class private vineyards, and historic castles.",
-    suggestedNights: 6,
-  },
-  {
-    id: "venice",
-    name: "Venice",
-    region: "Veneto",
-    description:
-      "Historic private palazzos, secret canals, and majestic waterways.",
-    suggestedNights: 4,
-  },
-  {
-    id: "rome",
-    name: "Rome",
-    region: "Lazio",
-    description:
-      "Ancient heritage, exquisite private penthouses, and vibrant culture.",
-    suggestedNights: 4,
-  },
-  {
-    id: "sicily",
-    name: "Sicily",
-    region: "Taormina & Noto",
-    description:
-      "Sun-drenched seaside estates, baroque architecture, and Mount Etna.",
-    suggestedNights: 7,
-  },
-];
+const DESTINATION_KEYS = [
+  "como",
+  "amalfi",
+  "tuscany",
+  "venice",
+  "rome",
+  "sicily",
+] as const;
 
 interface PropertySearchProps {
   location: string;
@@ -74,11 +28,14 @@ interface PropertySearchProps {
   setCheckOut: (date: Date | null) => void;
   guests: Guests;
   setGuests: React.Dispatch<React.SetStateAction<Guests>>;
-  translation: Translation;
-  language: Language;
   onSearch?: () => void;
 }
 
+/**
+ * The capsule search widget shared by the Landing, Collections, Owner and
+ * Experiences hero sections. Reads the active language and all copy from
+ * i18next directly — do not pass `translation`/`language` props back in.
+ */
 export default function PropertySearch({
   location,
   setLocation,
@@ -88,10 +45,11 @@ export default function PropertySearch({
   setCheckOut,
   guests,
   setGuests,
-  translation,
-  language,
   onSearch,
 }: PropertySearchProps) {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language as SupportedLanguage;
+
   // Single "dates" popup covers both check-in and check-out selection,
   // shown as a two-month range calendar.
   const [activePopup, setActivePopup] = useState<
@@ -156,14 +114,21 @@ export default function PropertySearch({
     1,
   );
 
+  const destinations = DESTINATION_KEYS.map((key) => ({
+    id: key,
+    name: t(`search.destinations.${key}.name`),
+    region: t(`search.destinations.${key}.region`),
+    description: t(`search.destinations.${key}.description`),
+  }));
+
   return (
     <div className="w-full relative">
       {/* Main Capsule Frame */}
       <div className="w-full bg-neutral-950/90 border border-white/25 rounded-[2rem] md:rounded-full p-4 md:p-2 md:pl-8 md:pr-2 flex flex-col md:flex-row md:items-center justify-between relative shadow-2xl gap-2 md:gap-0">
         <SearchCapsuleField
           icon={<MapPin className="w-4 h-4 stroke-[1.5]" />}
-          label={translation.location}
-          value={location || translation.whereGoing}
+          label={t("search.location")}
+          value={location || t("search.whereGoing")}
           onClick={() =>
             setActivePopup(activePopup === "location" ? null : "location")
           }
@@ -174,8 +139,8 @@ export default function PropertySearch({
 
         <SearchCapsuleField
           icon={<Calendar className="w-4 h-4 stroke-[1.5]" />}
-          label={translation.checkIn}
-          value={getFormattedDate(checkIn, language, translation.addDate)}
+          label={t("search.checkIn")}
+          value={getFormattedDate(checkIn, language, t("search.addDate"))}
           onClick={() =>
             setActivePopup(activePopup === "dates" ? null : "dates")
           }
@@ -185,8 +150,8 @@ export default function PropertySearch({
 
         <SearchCapsuleField
           icon={<Calendar className="w-4 h-4 stroke-[1.5]" />}
-          label={translation.checkOut}
-          value={getFormattedDate(checkOut, language, translation.addDate)}
+          label={t("search.checkOut")}
+          value={getFormattedDate(checkOut, language, t("search.addDate"))}
           onClick={() =>
             setActivePopup(activePopup === "dates" ? null : "dates")
           }
@@ -196,12 +161,19 @@ export default function PropertySearch({
 
         <SearchCapsuleField
           icon={<UserPlus className="w-4 h-4 stroke-[1.5]" />}
-          label={translation.guests}
+          label={t("search.guests")}
           value={
             getTotalGuestCount() > 0
-              ? `${guests.adults} Ad, ${guests.children} Ch` +
-                (guests.infants > 0 ? `, ${guests.infants} Inf` : "")
-              : translation.addGuests
+              ? t("search.guestsSummary", {
+                  adults: guests.adults,
+                  children: guests.children,
+                }) +
+                (guests.infants > 0
+                  ? t("search.guestsSummaryInfants", {
+                      infants: guests.infants,
+                    })
+                  : "")
+              : t("search.addGuests")
           }
           onClick={() =>
             setActivePopup(activePopup === "guests" ? null : "guests")
@@ -213,11 +185,11 @@ export default function PropertySearch({
           id="search-action-btn"
           onClick={onSearch}
           className="h-12 w-full md:w-12 rounded-full bg-black border border-white/30 text-white hover:bg-white hover:text-black flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 self-center md:mx-2 mt-2 md:mt-0 group shrink-0 shadow-lg active:scale-95"
-          aria-label={translation.search}
+          aria-label={t("common.actions.search")}
         >
           <Search className="w-4 h-4 transition-transform group-hover:scale-110" />
           <span className="md:hidden font-sans font-medium text-xs tracking-widest uppercase">
-            Search Properties
+            {t("search.searchProperties")}
           </span>
         </button>
       </div>
@@ -243,18 +215,19 @@ export default function PropertySearch({
           >
             <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
               <span className="text-xs uppercase tracking-widest text-white/40 font-medium">
-                Italian Luxury Destinations
+                {t("search.italianLuxuryDestinations")}
               </span>
               <button
                 onClick={() => setActivePopup(null)}
                 className="text-white/40 hover:text-white"
+                aria-label={t("common.aria.close")}
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
-              {DESTINATIONS.map((dest) => (
+              {destinations.map((dest) => (
                 <div
                   key={dest.id}
                   onClick={() => {
@@ -290,7 +263,7 @@ export default function PropertySearch({
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="Or type custom destination..."
+                placeholder={t("search.customDestinationPlaceholder")}
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:border-white/40 font-sans"
               />
             </div>
@@ -308,11 +281,12 @@ export default function PropertySearch({
           >
             <div className="flex items-center justify-between mb-5 pb-3 border-b border-white/10">
               <span className="text-xs uppercase tracking-widest text-white/50 font-medium">
-                {translation.selectDates}
+                {t("search.selectDates")}
               </span>
               <button
                 onClick={() => setActivePopup(null)}
                 className="text-white/40 hover:text-white p-1 rounded-full hover:bg-white/10 cursor-pointer"
+                aria-label={t("common.aria.close")}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -323,7 +297,6 @@ export default function PropertySearch({
               <CalendarMonthGrid
                 year={leftMonthDate.getFullYear()}
                 month={leftMonthDate.getMonth()}
-                language={language}
                 today={today}
                 checkIn={checkIn}
                 checkOut={checkOut}
@@ -335,7 +308,6 @@ export default function PropertySearch({
               <CalendarMonthGrid
                 year={rightMonthDate.getFullYear()}
                 month={rightMonthDate.getMonth()}
-                language={language}
                 today={today}
                 checkIn={checkIn}
                 checkOut={checkOut}
@@ -351,16 +323,16 @@ export default function PropertySearch({
               <div className="text-white/70 font-light text-center sm:text-left">
                 {checkIn && checkOut ? (
                   <span>
-                    Selected:{" "}
+                    {t("search.selected")}:{" "}
                     <strong className="text-white font-semibold">
                       {getFormattedDate(checkIn, language, "")} –{" "}
                       {getFormattedDate(checkOut, language, "")}
                     </strong>
                   </span>
                 ) : checkIn ? (
-                  <span>Select check-out date</span>
+                  <span>{t("search.selectCheckOutDate")}</span>
                 ) : (
-                  <span>Select check-in &amp; check-out dates</span>
+                  <span>{t("search.selectCheckInCheckOutDates")}</span>
                 )}
               </div>
 
@@ -374,7 +346,7 @@ export default function PropertySearch({
                     }}
                     className="text-white/60 hover:text-white underline text-xs font-medium cursor-pointer"
                   >
-                    Clear dates
+                    {t("search.clearDates")}
                   </button>
                 )}
                 <button
@@ -382,7 +354,7 @@ export default function PropertySearch({
                   onClick={() => setActivePopup(null)}
                   className="bg-white text-black px-5 py-2 rounded-full text-xs font-semibold hover:bg-neutral-200 transition-colors cursor-pointer"
                 >
-                  Done
+                  {t("common.actions.done")}
                 </button>
               </div>
             </div>
@@ -400,11 +372,12 @@ export default function PropertySearch({
           >
             <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
               <span className="text-xs uppercase tracking-widest text-white/40 font-medium">
-                Select Guests
+                {t("search.selectGuests")}
               </span>
               <button
                 onClick={() => setActivePopup(null)}
                 className="text-white/40 hover:text-white"
+                aria-label={t("common.aria.close")}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -412,8 +385,8 @@ export default function PropertySearch({
 
             <div className="space-y-5">
               <GuestCounterRow
-                label="Adults"
-                sublabel="Age 13 or above"
+                label={t("search.adults")}
+                sublabel={t("search.adultsSubtitle")}
                 value={guests.adults}
                 onDecrement={() =>
                   setGuests((prev) => ({
@@ -426,8 +399,8 @@ export default function PropertySearch({
                 }
               />
               <GuestCounterRow
-                label="Children"
-                sublabel="Ages 2 – 12"
+                label={t("search.children")}
+                sublabel={t("search.childrenSubtitle")}
                 value={guests.children}
                 onDecrement={() =>
                   setGuests((prev) => ({
@@ -443,8 +416,8 @@ export default function PropertySearch({
                 }
               />
               <GuestCounterRow
-                label="Infants"
-                sublabel="Under 2"
+                label={t("search.infants")}
+                sublabel={t("search.infantsSubtitle")}
                 value={guests.infants}
                 onDecrement={() =>
                   setGuests((prev) => ({
@@ -462,7 +435,7 @@ export default function PropertySearch({
               onClick={() => setActivePopup(null)}
               className="w-full mt-6 bg-white hover:bg-neutral-200 text-black py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
             >
-              Apply Selection
+              {t("search.applySelection")}
             </button>
           </motion.div>
         )}

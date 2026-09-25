@@ -1,11 +1,10 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PanelData {
   id: string;
-  shortTitle: string;
-  title: string;
-  description: string;
+  panelKey: string;
   /** Colour of the vertical strip */
   stripColor: string;
   /** Rich background colour for the expanded detail card */
@@ -15,43 +14,32 @@ interface PanelData {
 const PANELS: PanelData[] = [
   {
     id: "curated",
-    shortTitle: "Carefully Curated",
-    title: "Carefully Curated & Managed Homes",
-    description:
-      "We handpick every home - from preparation to ongoing quality control, we ensure every property meets the standards of the Skylife Collection - so your stay feels effortless from the moment you arrive.",
+    panelKey: "curated",
     stripColor: "bg-[#2d383a]/80 hover:bg-[#2d383a]",
     activeColor: "bg-[#112124]",
   },
   {
     id: "arrival",
-    shortTitle: "Easy Arrival",
-    title: "Easy Arrival & Living",
-    description:
-      "Everything is arranged before you land. Private transfers, smooth check-in, and a home fully prepared for your stay — no friction, no waiting, no uncertainty.",
+    panelKey: "arrival",
     stripColor: "bg-[#2a3244]/80 hover:bg-[#2a3244]",
     activeColor: "bg-[#0e1b37]",
   },
   {
     id: "designed",
-    shortTitle: "Experience Designed",
-    title: "An Experience Designed Around You",
-    description:
-      "Away from the generic flows, we don't offer just any activity - we design your time in Italy around what matters to you. From private guides to boat days and hidden local gems, every moment is intentional.",
+    panelKey: "designed",
     stripColor: "bg-[#4c2c27]/80 hover:bg-[#4c2c27]",
     activeColor: "bg-[#3b1d19]",
   },
   {
     id: "connected",
-    shortTitle: "Always Connected",
-    title: "Always Connected, Always Supported",
-    description:
-      "From the moment you book until the end of your stay, we are personally available, responsive, and ready to assist — whether it's a reservation, a change of plan, or something unexpected.",
+    panelKey: "connected",
     stripColor: "bg-[#8c6c2e]/80 hover:bg-[#8c6c2e]",
     activeColor: "bg-[#8c6c2e]",
   },
 ];
 
 export default function GuestsPO() {
+  const { t } = useTranslation();
   const [activeId, setActiveId] = useState<string | null>(null);
 
   // Auto-advance through the panels every 5s.
@@ -97,7 +85,7 @@ export default function GuestsPO() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-3xl leading-tight font-normal tracking-wide italic sm:text-4xl md:text-[42px] lg:text-[48px]"
           >
-            Easy For Guests
+            {t("landing.guestsAndOwners.headingLine1")}
           </motion.h2>
           <motion.span
             initial={{ opacity: 0, y: 15 }}
@@ -106,7 +94,7 @@ export default function GuestsPO() {
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="my-2 block font-serif text-3xl text-white/60 italic sm:text-4xl md:text-[42px] lg:text-[48px]"
           >
-            &amp;
+            {t("landing.guestsAndOwners.headingAmpersand")}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -115,7 +103,7 @@ export default function GuestsPO() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-3xl leading-tight font-normal tracking-wide italic sm:text-4xl md:text-[42px] lg:text-[48px]"
           >
-            Property Owners
+            {t("landing.guestsAndOwners.headingLine2")}
           </motion.h2>
         </div>
 
@@ -139,7 +127,9 @@ export default function GuestsPO() {
                     transition={{ delay: 0.15, duration: 0.5 }}
                     className="mb-6 font-serif text-2xl leading-snug font-normal tracking-wide sm:text-3xl"
                   >
-                    {activePanel.title}
+                    {t(
+                      `landing.guestsAndOwners.panels.${activePanel.panelKey}.title`,
+                    )}
                   </motion.h3>
 
                   <motion.p
@@ -148,7 +138,9 @@ export default function GuestsPO() {
                     transition={{ delay: 0.25, duration: 0.5 }}
                     className="font-sans text-sm leading-relaxed font-light tracking-wide text-white/90 sm:text-base"
                   >
-                    {activePanel.description}
+                    {t(
+                      `landing.guestsAndOwners.panels.${activePanel.panelKey}.description`,
+                    )}
                   </motion.p>
                 </motion.div>
               )}
@@ -188,7 +180,11 @@ export default function GuestsPO() {
                   className={`group relative flex flex-1 cursor-pointer flex-col items-center justify-end overflow-hidden px-2 py-8 transition-all duration-500 focus:outline-none md:px-3 ${panel.stripColor} ${
                     isActive ? "ring-1 ring-white/30 shadow-lg" : ""
                   }`}
-                  aria-label={`View details of ${panel.shortTitle}`}
+                  aria-label={t("common.aria.viewDetailsOf", {
+                    label: t(
+                      `landing.guestsAndOwners.panels.${panel.panelKey}.shortTitle`,
+                    ),
+                  })}
                 >
                   {/* Vertical text */}
                   <div className="relative flex h-full items-center justify-center">
@@ -199,7 +195,9 @@ export default function GuestsPO() {
                         transform: "rotate(180deg)",
                       }}
                     >
-                      {panel.shortTitle}
+                      {t(
+                        `landing.guestsAndOwners.panels.${panel.panelKey}.shortTitle`,
+                      )}
                     </span>
                   </div>
 

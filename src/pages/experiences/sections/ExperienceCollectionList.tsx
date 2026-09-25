@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CategoryFilterTabs from "../../../components/common/CategoryFilterTabs";
 import Pagination from "../../../components/common/Pagination";
@@ -12,6 +13,7 @@ import { ROUTES } from "../../../lib/constants";
 const ITEMS_PER_PAGE = 6;
 
 export default function ExperienceCollectionList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [selectedDestination, setSelectedDestination] = useState("ALL");
@@ -78,7 +80,7 @@ export default function ExperienceCollectionList() {
           className="mb-10 text-center sm:mb-14"
         >
           <h2 className="font-serif text-4xl font-normal tracking-tight text-neutral-900 italic sm:text-6xl lg:text-7xl">
-            Explore Experiences
+            {t("experiencesPage.collection.listHeading")}
           </h2>
         </div>
 
@@ -92,7 +94,7 @@ export default function ExperienceCollectionList() {
                 setSelectedDestination(e.target.value);
                 setCurrentPage(1);
               }}
-              aria-label="Filter by destination"
+              aria-label={t("common.aria.filterByDestination")}
               className="w-full cursor-pointer appearance-none rounded-none border border-neutral-300 bg-white px-3.5 py-3 pr-9 font-sans text-xs font-medium tracking-[0.18em] text-neutral-900 uppercase focus:border-neutral-900 focus:outline-none"
             >
               {DESTINATIONS.map((dest) => (
@@ -144,7 +146,7 @@ export default function ExperienceCollectionList() {
                             handlePrevImage(exp.id, exp.images.length, e)
                           }
                           className="absolute top-1/2 left-3 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/90 text-neutral-900 opacity-80 shadow-sm transition-all group-hover:opacity-100 hover:bg-white"
-                          aria-label="Previous image"
+                          aria-label={t("common.aria.previousImage")}
                         >
                           <ChevronLeft className="h-4 w-4" />
                         </button>
@@ -154,7 +156,7 @@ export default function ExperienceCollectionList() {
                             handleNextImage(exp.id, exp.images.length, e)
                           }
                           className="absolute top-1/2 right-3 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/90 text-neutral-900 opacity-80 shadow-sm transition-all group-hover:opacity-100 hover:bg-white"
-                          aria-label="Next image"
+                          aria-label={t("common.aria.nextImage")}
                         >
                           <ChevronRight className="h-4 w-4" />
                         </button>
@@ -166,7 +168,7 @@ export default function ExperienceCollectionList() {
                       type="button"
                       onClick={(e) => toggleFavorite(exp.id, e)}
                       className="absolute top-3 right-3 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/95 text-neutral-800 shadow-sm transition-transform hover:scale-105"
-                      aria-label="Save to wishlist"
+                      aria-label={t("common.aria.saveToWishlist")}
                       aria-pressed={isFav}
                     >
                       <Heart
@@ -194,8 +196,7 @@ export default function ExperienceCollectionList() {
           </div>
         ) : (
           <div className="mx-auto mb-16 max-w-xl rounded-lg border border-dashed border-neutral-200 py-20 text-center font-sans text-sm text-neutral-500">
-            No experiences found matching your selected criteria. Try selecting
-            "ALL".
+            {t("experiencesPage.collection.emptyState")}
           </div>
         )}
 

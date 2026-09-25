@@ -1,6 +1,7 @@
 import { Check, Send, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import PORules from "../landing/sections/PORules";
 import Testimonial from "../landing/sections/Testimonial";
 import OwnerBenefits from "./sections/OwnerBenefits";
@@ -12,38 +13,39 @@ import WhyPartner from "./sections/WhyPartner";
 
 const PROPERTY_HERO_BG = "/images/penthouse.jpg";
 
-const LOCATION_OPTIONS = [
-  "Rome",
-  "Florence",
-  "Venice",
-  "Milan",
-  "Tuscany",
-  "Lake Como",
-  "Amalfi Coast",
-  "Sardinia",
-  "Sicily",
-  "Other",
+const LOCATION_OPTION_KEYS = [
+  "rome",
+  "florence",
+  "venice",
+  "milan",
+  "tuscany",
+  "lakeComo",
+  "amalfiCoast",
+  "sardinia",
+  "sicily",
+  "other",
 ];
 
-const BEDROOM_OPTIONS = [
-  "1-2 Bedrooms",
-  "3-4 Bedrooms",
-  "5-6 Bedrooms",
-  "7+ Bedrooms",
+const BEDROOM_OPTION_KEYS = [
+  "oneToTwo",
+  "threeToFour",
+  "fiveToSix",
+  "sevenPlus",
 ];
 
 export default function OwnerPage() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Join-the-collection form
   const [ownerName, setOwnerName] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
-  const [propertyLocation, setPropertyLocation] = useState(
-    LOCATION_OPTIONS[0] ?? "Rome",
+  const [propertyLocationKey, setPropertyLocationKey] = useState(
+    LOCATION_OPTION_KEYS[0] ?? "rome",
   );
-  const [bedrooms, setBedrooms] = useState(
-    BEDROOM_OPTIONS[1] ?? "3-4 Bedrooms",
+  const [bedroomsKey, setBedroomsKey] = useState(
+    BEDROOM_OPTION_KEYS[1] ?? "threeToFour",
   );
   const [notes, setNotes] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -88,7 +90,7 @@ export default function OwnerPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-5 font-serif text-[clamp(1.5rem,5vw,4.5rem)] leading-none font-normal tracking-tight text-white italic drop-shadow-md"
           >
-            Elevate Your Property
+            {t("ownerPage.hero.heading")}
           </motion.h1>
 
           <motion.p
@@ -97,7 +99,7 @@ export default function OwnerPage() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-12 mb-12 font-sans text-base font-normal tracking-[0.2em] text-white/90 sm:text-lg"
           >
-            Not just management, but real value creation.
+            {t("ownerPage.hero.subtitle")}
           </motion.p>
 
           <motion.div
@@ -110,7 +112,7 @@ export default function OwnerPage() {
               onClick={openModal}
               className="cursor-pointer rounded-none border border-white/90 bg-black/20 px-8 py-4 font-sans text-xs font-medium tracking-[0.2em] text-white uppercase shadow-2xl backdrop-blur-xs transition-all duration-300 select-none hover:bg-white hover:text-black sm:px-10 sm:py-5 sm:text-sm"
             >
-              JOIN THE SKYLIFE COLLECTION
+              {t("ownerPage.hero.cta")}
             </button>
           </motion.div>
         </div>
@@ -126,11 +128,7 @@ export default function OwnerPage() {
             transition={{ duration: 0.6 }}
             className="w-full font-sans text-xl font-light tracking-wide text-neutral-700 sm:text-2xl"
           >
-            We transform exceptional properties into fully realized living
-            experiences, combining seamless operations with thoughtful
-            presentation and personalized hospitality. From restyling and brand
-            storytelling to five-star guest care, Skylife ensures your home
-            stands among Italy's most distinguished stays.
+            {t("ownerPage.intro")}
           </motion.p>
         </div>
       </section>
@@ -166,7 +164,7 @@ export default function OwnerPage() {
                 <button
                   onClick={handleClose}
                   className="absolute top-4 right-4 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-neutral-900"
-                  aria-label="Close"
+                  aria-label={t("common.aria.close")}
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -177,12 +175,15 @@ export default function OwnerPage() {
                       <Check className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="mb-3 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Application Received
+                      {t("ownerPage.modal.successTitle")}
                     </h3>
                     <p className="mx-auto mb-4 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
-                      Thank you, {ownerName.split(" ")[0]}. Our management team
-                      will review your {propertyLocation} property and be in
-                      touch to discuss next steps.
+                      {t("ownerPage.modal.successBody", {
+                        firstName: ownerName.split(" ")[0],
+                        location: t(
+                          `ownerPage.locationOptions.${propertyLocationKey}`,
+                        ),
+                      })}
                     </p>
                     <p className="mb-8 font-mono text-xs text-neutral-500">
                       Reference: {submissionId}
@@ -191,17 +192,16 @@ export default function OwnerPage() {
                       onClick={handleClose}
                       className="cursor-pointer bg-neutral-900 px-8 py-3.5 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-black"
                     >
-                      Close
+                      {t("common.actions.close")}
                     </button>
                   </div>
                 ) : (
                   <>
                     <h3 className="mb-1 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Join the Skylife Collection
+                      {t("ownerPage.modal.title")}
                     </h3>
                     <p className="mb-6 text-xs font-light text-neutral-500">
-                      Tell us about your property and we'll arrange a private
-                      review.
+                      {t("ownerPage.modal.subtitle")}
                     </p>
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -210,7 +210,7 @@ export default function OwnerPage() {
                           htmlFor="own-name"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Full Name *
+                          {t("requestModal.fullName")}
                         </label>
                         <input
                           id="own-name"
@@ -219,7 +219,7 @@ export default function OwnerPage() {
                           value={ownerName}
                           onChange={(e) => setOwnerName(e.target.value)}
                           className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="e.g. Massimo Ricci"
+                          placeholder={t("requestModal.fullNamePlaceholder")}
                         />
                       </div>
 
@@ -229,7 +229,7 @@ export default function OwnerPage() {
                             htmlFor="own-email"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Email *
+                            {t("requestModal.email")}
                           </label>
                           <input
                             id="own-email"
@@ -238,7 +238,7 @@ export default function OwnerPage() {
                             value={ownerEmail}
                             onChange={(e) => setOwnerEmail(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="you@example.com"
+                            placeholder={t("requestModal.emailPlaceholder")}
                           />
                         </div>
 
@@ -247,7 +247,7 @@ export default function OwnerPage() {
                             htmlFor="own-phone"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Phone
+                            {t("requestModal.phone")}
                           </label>
                           <input
                             id="own-phone"
@@ -255,7 +255,7 @@ export default function OwnerPage() {
                             value={ownerPhone}
                             onChange={(e) => setOwnerPhone(e.target.value)}
                             className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                            placeholder="+39 ..."
+                            placeholder={t("requestModal.phonePlaceholder")}
                           />
                         </div>
                       </div>
@@ -266,19 +266,19 @@ export default function OwnerPage() {
                             htmlFor="own-location"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Property Location
+                            {t("ownerPage.modal.propertyLocation")}
                           </label>
                           <select
                             id="own-location"
-                            value={propertyLocation}
+                            value={propertyLocationKey}
                             onChange={(e) =>
-                              setPropertyLocation(e.target.value)
+                              setPropertyLocationKey(e.target.value)
                             }
                             className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                           >
-                            {LOCATION_OPTIONS.map((opt) => (
-                              <option key={opt} value={opt}>
-                                {opt}
+                            {LOCATION_OPTION_KEYS.map((optKey) => (
+                              <option key={optKey} value={optKey}>
+                                {t(`ownerPage.locationOptions.${optKey}`)}
                               </option>
                             ))}
                           </select>
@@ -289,17 +289,17 @@ export default function OwnerPage() {
                             htmlFor="own-bedrooms"
                             className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                           >
-                            Size
+                            {t("ownerPage.modal.size")}
                           </label>
                           <select
                             id="own-bedrooms"
-                            value={bedrooms}
-                            onChange={(e) => setBedrooms(e.target.value)}
+                            value={bedroomsKey}
+                            onChange={(e) => setBedroomsKey(e.target.value)}
                             className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                           >
-                            {BEDROOM_OPTIONS.map((opt) => (
-                              <option key={opt} value={opt}>
-                                {opt}
+                            {BEDROOM_OPTION_KEYS.map((optKey) => (
+                              <option key={optKey} value={optKey}>
+                                {t(`ownerPage.bedroomOptions.${optKey}`)}
                               </option>
                             ))}
                           </select>
@@ -311,7 +311,7 @@ export default function OwnerPage() {
                           htmlFor="own-notes"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Tell us about the property
+                          {t("ownerPage.modal.aboutProperty")}
                         </label>
                         <textarea
                           id="own-notes"
@@ -319,7 +319,9 @@ export default function OwnerPage() {
                           onChange={(e) => setNotes(e.target.value)}
                           rows={3}
                           className="w-full resize-none border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="Current rental status, management preference, timeline…"
+                          placeholder={t(
+                            "ownerPage.modal.aboutPropertyPlaceholder",
+                          )}
                         />
                       </div>
 
@@ -328,12 +330,11 @@ export default function OwnerPage() {
                         className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
                       >
                         <Send className="h-4 w-4" />
-                        <span>Submit Application</span>
+                        <span>{t("ownerPage.modal.submit")}</span>
                       </button>
 
                       <p className="text-center text-[11px] leading-relaxed font-light text-neutral-400 italic">
-                        Private review. No obligation. We respond within 2 hours
-                        during business hours.
+                        {t("ownerPage.modal.disclaimer")}
                       </p>
                     </form>
                   </>

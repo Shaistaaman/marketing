@@ -1,9 +1,11 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import HowItWorks from "../collections/sections/HowItWorks";
 import WhereNextSection from "../collections/sections/WhereNextSection";
 import ExperienceCollectionList from "./sections/ExperienceCollectionList";
 
 export default function ExperienceCollectionPage() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 selection:bg-neutral-900 selection:text-white">
       {/* HERO */}
@@ -28,7 +30,7 @@ export default function ExperienceCollectionPage() {
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             className="mb-6 font-serif text-4xl leading-[1.08] font-normal tracking-tight text-white italic drop-shadow-lg sm:text-6xl md:text-7xl lg:text-[82px]"
           >
-            Craft Your Skylife Experience
+            {t("experiencesPage.collection.heading")}
           </motion.h1>
 
           <motion.p
@@ -41,9 +43,7 @@ export default function ExperienceCollectionPage() {
             }}
             className="mx-auto max-w-3xl font-sans text-base leading-relaxed font-light tracking-wide text-neutral-100 drop-shadow-md sm:text-xl md:text-2xl"
           >
-            Discover Italy through Skylife – More than just property managers,
-            we are storytellers of Italian excellence, deeply rooted in the
-            culture of the 'Bel Paese.'
+            {t("experiencesPage.collection.body")}
           </motion.p>
         </div>
 

@@ -1,6 +1,7 @@
 import { Check, Send, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
 import AllExperiences from "../experiences/sections/AllExperiences";
 import Package from "../landing/sections/Package";
@@ -10,32 +11,36 @@ import GalleryPkg from "./sections/GalleryPkg";
 const HERO_IMAGE = "/images/packagebanner.jpg";
 
 const DESTINATION_OPTIONS = [
-  "Rome & Amalfi Coast",
-  "Florence, Venice & Rome",
-  "Sardinia & Sicily",
-  "Amalfi Coast & Capri",
-  "Lake Como & Milan",
-  "Tuscany & Val d'Orcia",
-  "Not sure yet — surprise me",
-];
+  "romeAmalfi",
+  "florenceVeniceRome",
+  "sardiniaSicily",
+  "amalfiCapri",
+  "comoMilan",
+  "tuscanyOrcia",
+  "notSure",
+] as const;
+
+type DestinationOptionKey = (typeof DESTINATION_OPTIONS)[number];
 
 const VIBE_OPTIONS = [
-  "Luxury & Culture",
-  "Coastal & Relaxation",
-  "Food & Wine",
-  "Family Adventure",
-  "Romantic Escape",
-  "Active & Outdoors",
-];
+  "luxuryCulture",
+  "coastalRelaxation",
+  "foodWine",
+  "familyAdventure",
+  "romanticEscape",
+  "activeOutdoors",
+] as const;
+
+type VibeOptionKey = (typeof VIBE_OPTIONS)[number];
 
 export default function PackagesPage() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Dream journey form
-  const [dreamDestination, setDreamDestination] = useState(
-    DESTINATION_OPTIONS[0] ?? "",
-  );
-  const [dreamVibe, setDreamVibe] = useState(VIBE_OPTIONS[0] ?? "");
+  const [dreamDestination, setDreamDestination] =
+    useState<DestinationOptionKey>(DESTINATION_OPTIONS[0]);
+  const [dreamVibe, setDreamVibe] = useState<VibeOptionKey>(VIBE_OPTIONS[0]);
   const [dreamNotes, setDreamNotes] = useState("");
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -78,7 +83,7 @@ export default function PackagesPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-5 font-serif text-[clamp(1.5rem,5vw,4.5rem)] leading-none font-normal tracking-tight text-white italic drop-shadow-md"
           >
-            Skylife – Dream Your Next Adventure
+            {t("packagesPage.hero.heading")}
           </motion.h1>
 
           <motion.p
@@ -87,8 +92,7 @@ export default function PackagesPage() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-12 mb-12 max-w-3xl font-sans text-base leading-relaxed font-normal tracking-[0.08em] text-white/90 sm:text-lg"
           >
-            Don't know where to start? Start from your dreams, and share your
-            vision with us - we will take care of the rest.
+            {t("packagesPage.hero.body")}
           </motion.p>
 
           <motion.div
@@ -101,7 +105,7 @@ export default function PackagesPage() {
               onClick={() => setIsModalOpen(true)}
               className="cursor-pointer rounded-none border border-white/90 bg-black/20 px-8 py-4 font-sans text-xs font-medium tracking-[0.2em] text-white uppercase shadow-2xl backdrop-blur-xs transition-all duration-300 select-none hover:bg-white hover:text-black sm:px-10 sm:py-5 sm:text-sm"
             >
-              START THE SKYLIFE JOURNEY
+              {t("packagesPage.hero.cta")}
             </button>
           </motion.div>
         </div>
@@ -135,7 +139,7 @@ export default function PackagesPage() {
                 <button
                   onClick={handleCloseModal}
                   className="absolute top-4 right-4 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-neutral-900"
-                  aria-label="Close"
+                  aria-label={t("common.aria.close")}
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -146,34 +150,33 @@ export default function PackagesPage() {
                       <Check className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="mb-3 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Your Journey Begins
+                      {t("packagesPage.modal.successTitle")}
                     </h3>
                     <p className="mx-auto mb-4 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
-                      Thank you, {userName.split(" ")[0]}. Our travel designers
-                      are already sketching ideas for{" "}
-                      <span className="font-medium text-neutral-900">
-                        {dreamDestination}
-                      </span>
-                      .
+                      {t("packagesPage.modal.successBody", {
+                        firstName: userName.split(" ")[0],
+                        destination: t(
+                          `packagesPage.destinationOptions.${dreamDestination}`,
+                        ),
+                      })}
                     </p>
                     <p className="mb-8 font-mono text-xs text-neutral-500">
-                      Reference: {inquiryCode}
+                      {t("requestModal.reference", { code: inquiryCode })}
                     </p>
                     <button
                       onClick={handleCloseModal}
                       className="cursor-pointer bg-neutral-900 px-8 py-3.5 text-xs font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-black"
                     >
-                      Close
+                      {t("common.actions.close")}
                     </button>
                   </div>
                 ) : (
                   <>
                     <h3 className="mb-1 font-serif text-2xl font-normal text-neutral-900 italic sm:text-3xl">
-                      Start the Skylife Journey
+                      {t("packagesPage.modal.title")}
                     </h3>
                     <p className="mb-6 text-xs font-light text-neutral-500">
-                      Tell us the shape of the trip and we'll build it around
-                      you.
+                      {t("packagesPage.modal.subtitle")}
                     </p>
 
                     <form onSubmit={handleDreamSubmit} className="space-y-4">
@@ -182,7 +185,7 @@ export default function PackagesPage() {
                           htmlFor="pkg-name"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Full Name *
+                          {t("requestModal.fullName")}
                         </label>
                         <input
                           id="pkg-name"
@@ -191,7 +194,7 @@ export default function PackagesPage() {
                           value={userName}
                           onChange={(e) => setUserName(e.target.value)}
                           className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="e.g. Martina Vance"
+                          placeholder={t("requestModal.fullNamePlaceholder")}
                         />
                       </div>
 
@@ -200,7 +203,7 @@ export default function PackagesPage() {
                           htmlFor="pkg-email"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Email *
+                          {t("requestModal.email")}
                         </label>
                         <input
                           id="pkg-email"
@@ -209,7 +212,7 @@ export default function PackagesPage() {
                           value={userEmail}
                           onChange={(e) => setUserEmail(e.target.value)}
                           className="w-full border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="you@example.com"
+                          placeholder={t("requestModal.emailPlaceholder")}
                         />
                       </div>
 
@@ -218,17 +221,21 @@ export default function PackagesPage() {
                           htmlFor="pkg-destination"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Where are you dreaming of?
+                          {t("packagesPage.modal.destinationLabel")}
                         </label>
                         <select
                           id="pkg-destination"
                           value={dreamDestination}
-                          onChange={(e) => setDreamDestination(e.target.value)}
+                          onChange={(e) =>
+                            setDreamDestination(
+                              e.target.value as DestinationOptionKey,
+                            )
+                          }
                           className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                         >
                           {DESTINATION_OPTIONS.map((opt) => (
                             <option key={opt} value={opt}>
-                              {opt}
+                              {t(`packagesPage.destinationOptions.${opt}`)}
                             </option>
                           ))}
                         </select>
@@ -239,17 +246,19 @@ export default function PackagesPage() {
                           htmlFor="pkg-vibe"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          What's the vibe?
+                          {t("packagesPage.modal.vibeLabel")}
                         </label>
                         <select
                           id="pkg-vibe"
                           value={dreamVibe}
-                          onChange={(e) => setDreamVibe(e.target.value)}
+                          onChange={(e) =>
+                            setDreamVibe(e.target.value as VibeOptionKey)
+                          }
                           className="w-full cursor-pointer appearance-none border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-neutral-900 focus:outline-none"
                         >
                           {VIBE_OPTIONS.map((opt) => (
                             <option key={opt} value={opt}>
-                              {opt}
+                              {t(`packagesPage.vibeOptions.${opt}`)}
                             </option>
                           ))}
                         </select>
@@ -260,7 +269,7 @@ export default function PackagesPage() {
                           htmlFor="pkg-notes"
                           className="mb-1.5 block text-[11px] font-semibold tracking-wider text-neutral-700 uppercase"
                         >
-                          Tell us more
+                          {t("packagesPage.modal.notesLabel")}
                         </label>
                         <textarea
                           id="pkg-notes"
@@ -268,7 +277,7 @@ export default function PackagesPage() {
                           onChange={(e) => setDreamNotes(e.target.value)}
                           rows={3}
                           className="w-full resize-none border border-neutral-300 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder-neutral-400 focus:border-neutral-900 focus:outline-none"
-                          placeholder="Travel dates, party size, occasion, must-dos…"
+                          placeholder={t("packagesPage.modal.notesPlaceholder")}
                         />
                       </div>
 
@@ -277,12 +286,11 @@ export default function PackagesPage() {
                         className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-900 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-white uppercase shadow-md transition-all hover:bg-black"
                       >
                         <Send className="h-4 w-4" />
-                        <span>Send My Vision</span>
+                        <span>{t("packagesPage.modal.submit")}</span>
                       </button>
 
                       <p className="text-center text-[11px] leading-relaxed font-light text-neutral-400 italic">
-                        No commitment. Our team responds within 2 hours during
-                        business hours.
+                        {t("packagesPage.modal.disclaimer")}
                       </p>
                     </form>
                   </>

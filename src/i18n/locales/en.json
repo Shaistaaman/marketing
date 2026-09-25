@@ -1,0 +1,815 @@
+{
+  "common": {
+    "language": {
+      "english": "English",
+      "italian": "Italiano",
+      "selectLanguage": "Select Language"
+    },
+    "actions": {
+      "close": "Close",
+      "clear": "Clear",
+      "done": "Done",
+      "search": "Search",
+      "reset": "Reset",
+      "resetFilters": "Reset Filters",
+      "bookYourStay": "Book Your Stay",
+      "backToHome": "Back to Home",
+      "any": "Any"
+    },
+    "aria": {
+      "openMenu": "Open Menu",
+      "closeMenu": "Close Menu",
+      "close": "Close",
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "previousPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "previousPage": "Previous Page",
+      "nextPage": "Next Page",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "saveToWishlist": "Save to wishlist",
+      "decreaseLabel": "Decrease {{label}}",
+      "increaseLabel": "Increase {{label}}",
+      "filterByDestination": "Filter by destination",
+      "subscribeWithEmail": "Subscribe with email",
+      "viewDetailsOf": "View details of {{label}}"
+    },
+    "specs": {
+      "beds": "Beds",
+      "baths": "Baths",
+      "bathrooms": "Bathrooms",
+      "bedrooms": "Bedrooms",
+      "guests": "Guests",
+      "areaSize": "Area Size"
+    }
+  },
+
+  "nav": {
+    "collection": "The Collection",
+    "experiences": "Skylife Experiences",
+    "propertyOwners": "Property Owners",
+    "packages": "Packages"
+  },
+
+  "footer": {
+    "contact": "Contact",
+    "companyName": "SKYLIFE MANAGEMENT",
+    "companyAddressLine1": "Company number 15459982 - 607 Sloane Avenue,",
+    "companyAddressLine2": "SW3 3EL, London, United Kingdom.",
+    "pietro": "Pietro",
+    "tancredi": "Tancredi",
+    "instagramHandle": "Insta: @skylifemanagement",
+    "quickLinks": "Quick Links",
+    "about": "About",
+    "links": {
+      "exploreProperties": "Explore Properties",
+      "partnerWithUs": "Partner With Us",
+      "experiences": "Experiences",
+      "packages": "Packages",
+      "company": "Company",
+      "blog": "Blog",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "copyright": "©{{year}} Skylife Management. All rights reserved."
+  },
+
+  "languageMenu": {
+    "language": "Language",
+    "english": "ENGLISH",
+    "italian": "ITALIANO"
+  },
+
+  "search": {
+    "selectDates": "Select Dates",
+    "stay": "STAY",
+    "experience": "EXPERIENCE",
+    "own": "OWN",
+    "location": "Location",
+    "whereGoing": "Where are you going?",
+    "checkIn": "Check in",
+    "checkOut": "Check out",
+    "addDate": "Add date",
+    "guests": "Guests",
+    "addGuests": "Add guests",
+    "guestsSummary": "{{adults}} Ad, {{children}} Ch",
+    "guestsSummaryInfants": ", {{infants}} Inf",
+    "searchProperties": "Search Properties",
+    "italianLuxuryDestinations": "Italian Luxury Destinations",
+    "customDestinationPlaceholder": "Or type custom destination...",
+    "selectGuests": "Select Guests",
+    "adults": "Adults",
+    "adultsSubtitle": "Age 13 or above",
+    "children": "Children",
+    "childrenSubtitle": "Ages 2 – 12",
+    "infants": "Infants",
+    "infantsSubtitle": "Under 2",
+    "selectCheckOutDate": "Select check-out date",
+    "selectCheckInCheckOutDates": "Select check-in & check-out dates",
+    "selected": "Selected",
+    "clearDates": "Clear dates",
+    "applySelection": "Apply Selection",
+    "weekdays": {
+      "su": "Su",
+      "mo": "Mo",
+      "tu": "Tu",
+      "we": "We",
+      "th": "Th",
+      "fr": "Fr",
+      "sa": "Sa"
+    },
+    "weekdaysShort": {
+      "su": "S",
+      "mo": "M",
+      "tu": "T",
+      "we": "W",
+      "th": "T",
+      "fr": "F",
+      "sa": "S"
+    },
+    "destinations": {
+      "como": {
+        "name": "Lake Como",
+        "region": "Lombardy",
+        "description": "Breathtaking historic villas and peaceful alpine waters."
+      },
+      "amalfi": {
+        "name": "Amalfi Coast",
+        "region": "Campania",
+        "description": "Dramatic cliffs, colorful vertical towns, and ocean vistas."
+      },
+      "tuscany": {
+        "name": "Tuscany",
+        "region": "Florence & Siena",
+        "description": "Rolling hills, world-class private vineyards, and historic castles."
+      },
+      "venice": {
+        "name": "Venice",
+        "region": "Veneto",
+        "description": "Historic private palazzos, secret canals, and majestic waterways."
+      },
+      "rome": {
+        "name": "Rome",
+        "region": "Lazio",
+        "description": "Ancient heritage, exquisite private penthouses, and vibrant culture."
+      },
+      "sicily": {
+        "name": "Sicily",
+        "region": "Taormina & Noto",
+        "description": "Sun-drenched seaside estates, baroque architecture, and Mount Etna."
+      }
+    }
+  },
+
+  "filters": {
+    "categories": {
+      "all": "All",
+      "historyAndCulture": "History & Culture",
+      "culinaryAdventures": "Culinary Adventures",
+      "outdoorTours": "Outdoor Tours",
+      "closedToThePublic": "Closed to the Public",
+      "family": "Family",
+      "atHome": "At Home",
+      "oneDayCityEscape": "One Day City Escape"
+    },
+    "regions": {
+      "all": "ALL",
+      "rome": "ROME",
+      "amalfiCoast": "AMALFI COAST",
+      "venice": "VENICE",
+      "ischia": "ISCHIA",
+      "sabaudia": "SABAUDIA",
+      "argentario": "ARGENTARIO",
+      "puglia": "PUGLIA",
+      "pontineIsland": "PONTINE ISLAND",
+      "milan": "MILAN",
+      "sardinia": "SARDINIA",
+      "tuscany": "TUSCANY",
+      "lakeComo": "LAKE COMO"
+    },
+    "beds": "Beds",
+    "bedsMax": "Beds (Max {{max}})",
+    "bathrooms": "Bathrooms",
+    "bathroomsMax": "Bathrooms (Max {{max}})",
+    "guestsMax": "Guests (Max {{max}})",
+    "location": "Location",
+    "resetFiltersTitle": "Reset Filters"
+  },
+
+  "pagination": {
+    "previous": "Previous Page",
+    "next": "Next Page"
+  },
+
+  "requestModal": {
+    "fullName": "Full Name *",
+    "fullNamePlaceholder": "e.g. Martina Vance",
+    "email": "Email *",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+39 ...",
+    "sendRequest": "Send Request",
+    "responseDisclaimer": "No payment is taken now. Our team responds within 2 hours during business hours.",
+    "close": "Close",
+    "reference": "Reference: {{code}}"
+  },
+
+  "landing": {
+    "hero": {
+      "title": "Skylife – Your Italian Connection",
+      "subtitle": "Exceptional homes, curated experiences, and full-service property management — all in one place."
+    },
+    "property": {
+      "heading": "Skylife Collection",
+      "subheading": "Exceptional Properties. Carefully Selected. Entirely Yours.",
+      "emptyState": "No properties found in this location."
+    },
+    "package": {
+      "headingLine1": "Start with a dream,",
+      "headingLine2": "we'll do the rest",
+      "intro1": "Every great Italian journey begins with an idea - a city, a coastline, a feeling. Our curated packages are a starting point, not a script.",
+      "intro2": "Choose one that speaks to you, then let us shape it around your pace, your tastes, and the Italy you've always imagined.",
+      "intro3": "Each package is fully customizable.",
+      "moreDetails": "More Details",
+      "notQuiteRightHeading1": "None of these quite right?",
+      "notQuiteRightHeading2": "That's exactly the point",
+      "notQuiteRightBody": "These packages are an invitation, not a brochure. Tell us your ideal length, the regions you're drawn to, and how you like to travel - we'll build something completely around you. One call is all it takes.",
+      "bookFreeCall": "Book a Free Call",
+      "bookFreeCallCaption": "No commitment • 30 mins • Fully tailored"
+    },
+    "experience": {
+      "eyebrow": "Individual Experiences",
+      "headingPrefix": "The moments",
+      "headingEmphasis": "we weave",
+      "headingSuffix": "into every journey",
+      "intro1": "Every great Italian stay is made up of smaller, perfect things — a market at dawn, a chef at your table, a boat with nowhere to be.",
+      "intro2": "These are the individual experiences we layer into your package to craft something that feels entirely, unmistakably yours.",
+      "viewExperiences": "View Experiences",
+      "sectionTitle": "Skylife Experiences"
+    },
+    "guestsAndOwners": {
+      "headingLine1": "Easy For Guests",
+      "headingAmpersand": "&",
+      "headingLine2": "Property Owners",
+      "panels": {
+        "curated": {
+          "shortTitle": "Carefully Curated",
+          "title": "Carefully Curated & Managed Homes",
+          "description": "We handpick every home - from preparation to ongoing quality control, we ensure every property meets the standards of the Skylife Collection - so your stay feels effortless from the moment you arrive."
+        },
+        "arrival": {
+          "shortTitle": "Easy Arrival",
+          "title": "Easy Arrival & Living",
+          "description": "Everything is arranged before you land. Private transfers, smooth check-in, and a home fully prepared for your stay — no friction, no waiting, no uncertainty."
+        },
+        "designed": {
+          "shortTitle": "Experience Designed",
+          "title": "An Experience Designed Around You",
+          "description": "Away from the generic flows, we don't offer just any activity - we design your time in Italy around what matters to you. From private guides to boat days and hidden local gems, every moment is intentional."
+        },
+        "connected": {
+          "shortTitle": "Always Connected",
+          "title": "Always Connected, Always Supported",
+          "description": "From the moment you book until the end of your stay, we are personally available, responsive, and ready to assist — whether it's a reservation, a change of plan, or something unexpected."
+        }
+      }
+    },
+    "poRules": {
+      "headingPrefix": "Own a",
+      "headingEmphasis1": "beautiful home",
+      "headingMiddle": "in Italy?",
+      "headingEmphasis2": "Let's make it",
+      "headingSuffix": "work for you",
+      "intro": "Whether it is a historic villa in Tuscany or a modern loft in Milan, Skylife manages Italian homes for owners who want more from their property, with exactly as much involvement as suits you.",
+      "idealForLabel": "Ideal For",
+      "options": {
+        "full": {
+          "badge": "Option 01",
+          "title": "Full Management",
+          "tagline": "We handle everything — from first click to final goodbye.",
+          "intro": "Designed for owners who want complete peace of mind. Skylife manages both the digital operation and the physical running of your property, so you can simply enjoy owning a home in Italy.",
+          "listHeading": "Everything in Digital, Plus",
+          "items": {
+            "cleaning": {
+              "label": "Cleaning & laundry",
+              "detail": "coordinated to our standard before every guest arrival"
+            },
+            "checkInOut": {
+              "label": "Check-in & check-out",
+              "detail": "professional, warm and handled on your behalf"
+            },
+            "qualityChecks": {
+              "label": "Quality checks",
+              "detail": "every arrival inspected before guests set foot in the door"
+            },
+            "maintenance": {
+              "label": "Maintenance & on-site support",
+              "detail": "issues handled quickly, before guests notice"
+            },
+            "presentation": {
+              "label": "Property care & presentation",
+              "detail": "restyling, improvements and standards managed for you"
+            }
+          },
+          "idealFor": "\"I want my property looked after completely. I trust Skylife to take care of it as I would.\""
+        },
+        "digital": {
+          "badge": "Option 02",
+          "title": "Digital Management",
+          "tagline": "You have the on-site operations under control. We coordinate operations and take care of everything digital.",
+          "intro": "Designed for owners who already have a trusted local team — cleaners, check-in staff, maintenance contacts — but want a professional to run the commercial and guest-facing side of the property.",
+          "listHeading": "What We Take Care Of",
+          "items": {
+            "listings": {
+              "label": "Listings & channels",
+              "detail": "creation, optimisation and publication across all major booking platforms"
+            },
+            "pricing": {
+              "label": "Pricing & revenue",
+              "detail": "dynamic pricing strategy to maximise income year-round"
+            },
+            "communication": {
+              "label": "Guest communication",
+              "detail": "enquiries, bookings, reviews and the full guest journey"
+            },
+            "concierge": {
+              "label": "Concierge coordination",
+              "detail": "experiences, arrivals and special requests, handled seamlessly"
+            },
+            "team": {
+              "label": "Team coordination",
+              "detail": "we align with your local contacts so nothing falls through the cracks"
+            }
+          },
+          "idealFor": "\"I have someone I trust at the property. I just need the online side done properly.\""
+        }
+      },
+      "thinkingOfBuying": "Thinking of Buying?",
+      "dontSellHeading1": "We don't sell properties",
+      "dontSellHeading2": "but we know the people who do.",
+      "dontSellBody": "If you're exploring the idea of owning a home in Italy, we're happy to share what we know and connect you with trusted partners who can help you find the right opportunity.",
+      "quote": "\"We'd love to hear about your property — and what you'd like it to become.\"",
+      "letsChat": "Let's Have a Chat"
+    },
+    "provenSuccess": {
+      "heading": "Proven Recipe for Success",
+      "factors": {
+        "revenue": {
+          "title": "Revenue Optimization",
+          "description": "We maximize your property's performance through dynamic pricing, global distribution, and high-value guest targeting."
+        },
+        "endToEnd": {
+          "title": "End-to-End Management",
+          "description": "From guest communication to day-to-day coordination, we handle every operational detail."
+        },
+        "exposure": {
+          "title": "International Exposure",
+          "description": "Your property is positioned across our curated network of global platforms, partners, and private clients."
+        },
+        "quality": {
+          "title": "Quality & Control",
+          "description": "We closely oversee each property, ensuring consistent standards, regular checks, and full alignment with the Skylife Collection."
+        },
+        "reporting": {
+          "title": "Transparent Reporting",
+          "description": "Clear financial tracking, structured reporting, and full visibility on performance at all times."
+        },
+        "support": {
+          "title": "Dedicated Support",
+          "description": "A single, responsive team managing your property and available whenever needed."
+        }
+      }
+    },
+    "instagram": {
+      "heading": "Follow Us on Instagram"
+    },
+    "testimonial": {
+      "headingLine1": "WHAT OUR GUESTS",
+      "headingAmpersand": "&",
+      "headingLine2": "OWNERS SAY",
+      "subtitle": "Real experiences - from the people who stay with us to the owners who trust us with their homes."
+    },
+    "cta": {
+      "eyebrow": "Partner With Us",
+      "heading": "Own a Property in Italy",
+      "body": "Discover if your home qualifies to join the Skylife Collection.",
+      "findOutMore": "Find Out More"
+    },
+    "soMuch": {
+      "heading": "There's So Much to Discover"
+    },
+    "team": {
+      "heading": "Meet the Team",
+      "members": {
+        "pietro": {
+          "role": "COO & CO-FOUNDER",
+          "description": "Drives operations and strategy to elevate service, performance, and brand value."
+        },
+        "tancredi": {
+          "role": "CEO & CO-FOUNDER",
+          "description": "Leads Skylife's growth through strategic property acquisitions and client success."
+        },
+        "martina": {
+          "role": "TRAVEL DESIGNER & COORDINATOR",
+          "description": "Curates bespoke journeys and oversees premium guest experiences."
+        },
+        "giacomo": {
+          "role": "HEAD OF MARKETING",
+          "description": "Oversees Skylife's communication strategy, branding and social media channels."
+        }
+      }
+    }
+  },
+
+  "collectionsPage": {
+    "heroTitle": "The Skylife Collection",
+    "heroSubtitle": "Privately managed. Personally selected. Designed for experience.",
+    "section": {
+      "heading": "Explore Properties",
+      "locationPlaceholder": "Location",
+      "specSuffixBeds": "{{count}} Beds",
+      "specSuffixBathrooms": "{{count}} Bathrooms",
+      "emptyState": "No properties matching your selected criteria."
+    },
+    "howItWorks": {
+      "heading": "Enter The Skylife World",
+      "subheading": "Don't Know Where To Begin? Start Your Skylife Journey Here",
+      "stepLabel": "Step {{number}}",
+      "steps": {
+        "share": {
+          "title": "Share Your Vision",
+          "description": "Complete the Skylife form and tell us what inspires you — your travel style, dreams, and the moments you wish to live in Italy."
+        },
+        "discover": {
+          "title": "Discover Your Tailored Itinerary",
+          "description": "Our team crafts your personalized Skylife Travel Plan: a curated itinerary designed exclusively around your preferences, blending experiences, stays, and hidden gems."
+        },
+        "begin": {
+          "title": "Begin Your Skylife Journey",
+          "description": "Refine every detail until it feels perfect. We handle all arrangements — from bookings to logistics — so you can simply arrive and enjoy your unforgettable Italian escape."
+        }
+      },
+      "cta": "Start Your Skylife Journey"
+    },
+    "whereNext": {
+      "heading": "Where will you go next?",
+      "subheading": "Discover, Live, Revel"
+    },
+    "ctaGetPro": "We transform extraordinary properties into living experiences, combining flawless operations with artful presentation and personalized hospitality. From restyling and brand storytelling to five-star guest care, Skylife ensures your home stands among Italy's most distinguished stays.",
+    "addProperty": "ADD PROPERTY"
+  },
+
+  "propertyDetail": {
+    "curatedBy": "Curated by Skylife - Part of the Exclusive {{region}} Collection",
+    "perNight": "/ night",
+    "sections": {
+      "availability": "Availability",
+      "whatMakesItSpecial": "What Makes It Special?",
+      "insideThePenthouse": "Inside the Penthouse",
+      "yourPrivateTerrace": "Your Private Terrace",
+      "theNeighborhood": "The Neighborhood",
+      "mapLocation": "Map Location",
+      "priceBreakdown": "Price Breakdown"
+    },
+    "availabilityCalendar": {
+      "selectDatesHint": "Select dates in availability calendar",
+      "fromDate": "From {{date}}",
+      "nightsStay_one": "{{count}} night stay",
+      "nightsStay_other": "{{count}} nights stay"
+    },
+    "priceBreakdown": {
+      "nightlyRate_one": "Nightly Rate ({{count}} night)",
+      "nightlyRate_other": "Nightly Rate ({{count}} nights)",
+      "cleaningFee": "Cleaning Fee",
+      "serviceFee": "Service Fee",
+      "taxes": "Taxes",
+      "total": "Total",
+      "bestRateGuaranteed": "Best rate guaranteed - Personal concierge included"
+    },
+    "requestYourStay": "REQUEST YOUR STAY",
+    "seeAllPhotos": "See All Photos",
+    "lightbox": {
+      "galleryTitle": "{{title}} — Photo Gallery ({{current}} / {{total}})",
+      "propertyGalleryEnlarged": "Property gallery enlarged",
+      "thumbnail": "Thumbnail {{index}}"
+    },
+    "modal": {
+      "title": "Request Your Stay",
+      "datesTBC": "Dates to be confirmed",
+      "nightsTotal_one": "{{count}} night · €{{total}} total",
+      "nightsTotal_other": "{{count}} nights · €{{total}} total",
+      "specialRequests": "Special Requests",
+      "specialRequestsPlaceholder": "Airport transfer, chef, experiences…",
+      "successTitle": "Request Received",
+      "successBody": "Thank you, {{firstName}}. A Skylife concierge will confirm availability for {{propertyTitle}} and be in touch shortly."
+    }
+  },
+
+  "experiencesPage": {
+    "hero": {
+      "title": "Your Skylife Experience",
+      "subtitle1": "You've Seen Italy. Now Feel It.",
+      "subtitle2": "Skip the queues, the tourist menus, the predictable. We open doors that don't appear on any map.",
+      "experiencesButton": "Skylife Experiences",
+      "packagesButton": "Skylife Tailored Travel Plans"
+    },
+    "italyMostPeopleMiss": {
+      "eyebrow": "The Italy Most People Miss",
+      "heading": "We know the people, the places, and the moments worth staying for.",
+      "body": "Private guides who bring history to life. Family-run vineyards far from the crowds. Tables locals keep to themselves. Experiences shaped around the people, places and stories that make each destination unforgettable.",
+      "reviewsLine": "600+ five-star reviews, and counting. Not because we try harder. Because we know Italy differently."
+    },
+    "categories": {
+      "heading": "Where Every Stay Becomes A Story",
+      "intro": "Not just experiences, but moments - created with care, shaped around you, and remembered long after your stay."
+    },
+    "cta": {
+      "body1": "You know the kind of trip you want. You just need someone who knows how to make it happen.",
+      "body2": "We sit down with you, learn how you travel, and build the whole thing from scratch — every restaurant, every guide, every transfer, every surprise. Nothing generic, nothing off-the-shelf.",
+      "body3": "The best trips we've ever planned started with a single conversation.",
+      "bookACall": "Book a call"
+    },
+    "allExperiences": {
+      "heading": "Skylife Exclusive Experiences",
+      "subheading": "Experiences! Live in Adventure.",
+      "emptyState": "No experiences found for this filter. Try selecting \"ALL\".",
+      "allExperiencesButton": "ALL EXPERIENCES"
+    },
+    "ctaImage": {
+      "eyebrow": "SKY IS THE LIMIT",
+      "heading": "Craft Your Experience",
+      "subtitleLine1": "Customize Your Perfect Journey",
+      "subtitleLine2": "With Skylife Experiences",
+      "craftJourney": "CRAFT MY SKYLIFE JOURNEY",
+      "skylifeIdeas": "SKYLIFE IDEAS"
+    },
+    "collection": {
+      "heading": "Craft Your Skylife Experience",
+      "body": "Discover Italy through Skylife – More than just property managers, we are storytellers of Italian excellence, deeply rooted in the culture of the 'Bel Paese.'",
+      "listHeading": "Explore Experiences",
+      "emptyState": "No experiences found matching your selected criteria. Try selecting \"ALL\"."
+    }
+  },
+
+  "experienceDetail": {
+    "curatedBy": "Curated by Skylife - Part of the Exclusive {{location}} Collection",
+    "share": "Share",
+    "copied": "Copied!",
+    "save": "Save",
+    "requestNow": "REQUEST NOW",
+    "keyPoints": "Key Points",
+    "guestsOptions": {
+      "one": "1 Guest",
+      "two": "2 Guests",
+      "three": "3 Guests",
+      "four": "4 Guests",
+      "five": "5 Guests",
+      "sixPlus": "6+ Guests"
+    },
+    "modal": {
+      "title": "Request This Experience",
+      "preferredDate": "Preferred Date",
+      "guests": "Guests",
+      "notes": "Notes",
+      "notesPlaceholder": "Dietary requirements, accessibility, occasion…",
+      "successTitle": "Request Received",
+      "successBody": "Thank you, {{firstName}}. Our concierge will confirm availability for {{experienceTitle}} shortly."
+    }
+  },
+
+  "packagesPage": {
+    "hero": {
+      "heading": "Skylife – Dream Your Next Adventure",
+      "body": "Don't know where to start? Start from your dreams, and share your vision with us - we will take care of the rest.",
+      "cta": "START THE SKYLIFE JOURNEY"
+    },
+    "gallery": {
+      "caption": "Unforgettable Journeys. Uniquely Yours"
+    },
+    "destinationOptions": {
+      "romeAmalfi": "Rome & Amalfi Coast",
+      "florenceVeniceRome": "Florence, Venice & Rome",
+      "sardiniaSicily": "Sardinia & Sicily",
+      "amalfiCapri": "Amalfi Coast & Capri",
+      "comoMilan": "Lake Como & Milan",
+      "tuscanyOrcia": "Tuscany & Val d'Orcia",
+      "notSure": "Not sure yet — surprise me"
+    },
+    "vibeOptions": {
+      "luxuryCulture": "Luxury & Culture",
+      "coastalRelaxation": "Coastal & Relaxation",
+      "foodWine": "Food & Wine",
+      "familyAdventure": "Family Adventure",
+      "romanticEscape": "Romantic Escape",
+      "activeOutdoors": "Active & Outdoors"
+    },
+    "modal": {
+      "title": "Start the Skylife Journey",
+      "subtitle": "Tell us the shape of the trip and we'll build it around you.",
+      "destinationLabel": "Where are you dreaming of?",
+      "vibeLabel": "What's the vibe?",
+      "notesLabel": "Tell us more",
+      "notesPlaceholder": "Travel dates, party size, occasion, must-dos…",
+      "submit": "Send My Vision",
+      "disclaimer": "No commitment. Our team responds within 2 hours during business hours.",
+      "successTitle": "Your Journey Begins",
+      "successBody": "Thank you, {{firstName}}. Our travel designers are already sketching ideas for {{destination}}."
+    }
+  },
+
+  "packageDetail": {
+    "backToPackages": "Back to Packages",
+    "startDreaming": "LET'S START DREAMING",
+    "stats": {
+      "duration": "Duration",
+      "price": "Price",
+      "guests": "Guests",
+      "season": "Season"
+    },
+    "atAGlance": "At A Glance",
+    "highlights": "HIGHLIGHTS",
+    "whatYouGet": "What You Get In This Package?"
+  },
+
+  "ownerPage": {
+    "hero": {
+      "heading": "Elevate Your Property",
+      "subtitle": "Not just management, but real value creation.",
+      "cta": "JOIN THE SKYLIFE COLLECTION"
+    },
+    "intro": "We transform exceptional properties into fully realized living experiences, combining seamless operations with thoughtful presentation and personalized hospitality. From restyling and brand storytelling to five-star guest care, Skylife ensures your home stands among Italy's most distinguished stays.",
+    "locationOptions": {
+      "rome": "Rome",
+      "florence": "Florence",
+      "venice": "Venice",
+      "milan": "Milan",
+      "tuscany": "Tuscany",
+      "lakeComo": "Lake Como",
+      "amalfiCoast": "Amalfi Coast",
+      "sardinia": "Sardinia",
+      "sicily": "Sicily",
+      "other": "Other"
+    },
+    "bedroomOptions": {
+      "oneToTwo": "1-2 Bedrooms",
+      "threeToFour": "3-4 Bedrooms",
+      "fiveToSix": "5-6 Bedrooms",
+      "sevenPlus": "7+ Bedrooms"
+    },
+    "modal": {
+      "title": "Join the Skylife Collection",
+      "subtitle": "Tell us about your property and we'll arrange a private review.",
+      "propertyLocation": "Property Location",
+      "size": "Size",
+      "aboutProperty": "Tell us about the property",
+      "aboutPropertyPlaceholder": "Current rental status, management preference, timeline…",
+      "submit": "Submit Application",
+      "disclaimer": "Private review. No obligation. We respond within 2 hours during business hours.",
+      "successTitle": "Application Received",
+      "successBody": "Thank you, {{firstName}}. Our management team will review your {{location}} property and be in touch to discuss next steps."
+    }
+  },
+
+  "ownerBenefits": {
+    "heading": "Curious what your Italian property could earn?",
+    "body1": "Before any commitment, we provide a detailed, honest picture of what your Italian home could generate with the right management.",
+    "body2": "Our free, no-obligation valuation includes: Market analysis of occupancy rates and local demand; Revenue projections based on real benchmark data; and a tailored management recommendation for your lifestyle.",
+    "bullets": {
+      "marketAnalysis": {
+        "label": "MARKET ANALYSIS",
+        "body": "Occupancy rates and local demand metrics."
+      },
+      "revenueProjection": {
+        "label": "REVENUE PROJECTION",
+        "body": "Annual earnings based on verified benchmark data."
+      },
+      "managementModel": {
+        "label": "MANAGEMENT MODEL",
+        "body": "Tailored strategy fitting your property and lifestyle."
+      }
+    },
+    "requestValuation": "REQUEST YOUR FREE VALUATION",
+    "deliveryCaption": "DELIVERED WITHIN 48 HOURS. DISCRETE AND NO OBLIGATION",
+    "testimonial": {
+      "name": "Massimo",
+      "role": "Property Owner, Rome IT",
+      "quote": "I was initially hesitant to hand over management to another company, but Skylife's remarkable."
+    },
+    "stats": {
+      "yearlyOccupancy": "YEARLY OCCUPANCY",
+      "averageDailyRate": "AVERAGE DAILY RATE (ADR)"
+    },
+    "trustpilot": {
+      "name": "Trustpilot",
+      "rating": "Excellent",
+      "reviewsCount": "600+ Five-Star Reviews"
+    },
+    "cityOptions": {
+      "rome": "Rome",
+      "florence": "Florence",
+      "venice": "Venice",
+      "milan": "Milan",
+      "tuscany": "Tuscany",
+      "lakeComo": "Lake Como",
+      "amalfiCoast": "Amalfi Coast",
+      "sardinia": "Sardinia",
+      "sicily": "Sicily",
+      "other": "Other"
+    },
+    "modal": {
+      "title": "Request Your Free Valuation",
+      "subtitle": "No obligation. Delivered within 48 hours.",
+      "propertyLocationLabel": "Where is the property?",
+      "submit": "Request Valuation",
+      "successTitle": "Valuation Requested",
+      "successBody": "Thank you, {{firstName}}. We'll prepare your {{city}} market analysis and send it within 48 hours."
+    }
+  },
+
+  "ownerVideo": {
+    "title": "Unlock Your Property's Full Potential",
+    "subtitle": "We Don't Just Manage Properties — We Re-Imagine Them",
+    "description": "Through a blend of creativity, craftsmanship, and strategy, we elevate every home into a high-performing, high-appeal destination.",
+    "applyNow": "APPLY NOW"
+  },
+
+  "whyPartner": {
+    "heading": "Why Partner With Skylife?",
+    "pillars": {
+      "interiorRestyling": {
+        "title": "Interior Restyling",
+        "description": "Increase the value of the property by working with Skylife interior designers."
+      },
+      "fullManagement": {
+        "title": "Full 360° Management",
+        "description": "From cleaning and check-ins to maintenance and guest relations."
+      },
+      "verifiedGuests": {
+        "title": "Verified Guests & 5-Star Standards / Maximized ROI",
+        "description": "Only high-quality clients, ensuring peace of mind and consistent excellence — proven track record."
+      }
+    }
+  },
+
+  "ownerCta1": {
+    "heading": "Want to see more success stories?",
+    "body": "Subscribe to receive case studies and see how other property owners elevated their income — and their brand — with Skylife.",
+    "emailAddressLabel": "Email address",
+    "emailPlaceholder": "Enter your email address",
+    "successMessage": "Thank you! We've sent our latest property case studies to your inbox."
+  },
+
+  "ownerCta2": {
+    "heading": "Become Part Of The Skylife Collection",
+    "body": "Skylife partners exclusively with homeowners who share our commitment to elegance, quality, and experience.",
+    "joinToday": "JOIN TODAY"
+  },
+
+  "ownerWorks": {
+    "heading": "From Application To ROI In 4 Simple Steps",
+    "steps": {
+      "application": {
+        "title": "Application",
+        "description": "Submit your property for private review by our management team."
+      },
+      "evaluation": {
+        "title": "Evaluation",
+        "description": "Receive a personalized proposal outlining design, positioning, and revenue potential."
+      },
+      "onboarding": {
+        "title": "Onboarding",
+        "description": "We restyle, photograph, and prepare your home for launch within the Skylife Collection."
+      },
+      "results": {
+        "title": "Results",
+        "description": "We elevate every home into a high-performing, high-appeal hospitality asset."
+      }
+    },
+    "cta": "START YOUR SKYLIFE JOURNEY"
+  },
+
+  "getPro": {
+    "body": "We transform extraordinary properties into living experiences, combining flawless operations with artful presentation and personalized hospitality. From restyling and brand storytelling to five-star guest care, Skylife ensures your home stands among Italy's most distinguished stays.",
+    "addProperty": "ADD PROPERTY"
+  },
+
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist or has moved."
+  },
+
+  "placeholder": {
+    "comingSoon": "Coming soon",
+    "detailId": "Detail id:",
+    "notice": "This page will be ported from the Next.js marketing app."
+  }
+}

@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
 import PropertySearch from "../../components/search/PropertySearch";
 import { ROUTES, VIDEO } from "../../lib/constants";
-import { TRANSLATIONS } from "../../lib/translations";
-import type { Guests, Language } from "../../lib/types";
+import type { Guests } from "../../lib/types";
 import HowItWorks from "../collections/sections/HowItWorks";
 import Package from "../landing/sections/Package";
 import Testimonial from "../landing/sections/Testimonial";
@@ -14,27 +14,9 @@ import CTAImage from "./sections/CTAImage";
 import ExperienceCategories from "./sections/ExperienceCategories";
 import ExperienceCTA from "./sections/ExperienceCTA";
 
-/** Copy specific to this page (the shared TRANSLATIONS has no subtitle1/2). */
-const PAGE_COPY: Record<
-  Language,
-  { title: string; subtitle1: string; subtitle2: string }
-> = {
-  en: {
-    title: "Your Skylife Experience",
-    subtitle1: "You've Seen Italy. Now Feel It.",
-    subtitle2:
-      "Skip the queues, the tourist menus, the predictable. We open doors that don't appear on any map.",
-  },
-  it: {
-    title: "La Tua Esperienza Skylife",
-    subtitle1: "Hai Visto l'Italia. Ora Sentila.",
-    subtitle2:
-      "Salta le code, i menu turistici, il prevedibile. Apriamo porte che non compaiono su nessuna mappa.",
-  },
-};
-
 export default function ExperiencesPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [location, setLocation] = useState("");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -44,15 +26,11 @@ export default function ExperiencesPage() {
     children: 0,
     infants: 0,
   });
-  const [language] = useState<Language>("en");
 
   // Which of the two hero modes is highlighted.
   const [activeTab, setActiveTab] = useState<"experiences" | "packages">(
     "experiences",
   );
-
-  const translation = TRANSLATIONS[language];
-  const copy = PAGE_COPY[language];
 
   const scrollToSection = (
     tab: "experiences" | "packages",
@@ -96,7 +74,7 @@ export default function ExperiencesPage() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="mb-5 font-serif text-[clamp(1.5rem,5vw,4.5rem)] leading-none font-normal tracking-tight text-white italic drop-shadow-md"
             >
-              {copy.title}
+              {t("experiencesPage.hero.title")}
             </motion.h1>
 
             <motion.h2
@@ -110,7 +88,7 @@ export default function ExperiencesPage() {
               }}
               className="mb-3 font-sans text-lg font-normal tracking-wide text-white sm:text-2xl"
             >
-              {copy.subtitle1}
+              {t("experiencesPage.hero.subtitle1")}
             </motion.h2>
 
             <motion.p
@@ -124,7 +102,7 @@ export default function ExperiencesPage() {
               }}
               className="mx-auto mb-10 max-w-2xl font-sans text-xs leading-relaxed font-light tracking-wide text-neutral-200 drop-shadow-sm sm:text-base md:text-lg"
             >
-              {copy.subtitle2}
+              {t("experiencesPage.hero.subtitle2")}
             </motion.p>
           </div>
 
@@ -139,7 +117,7 @@ export default function ExperiencesPage() {
               onClick={() => scrollToSection("experiences", "experiences")}
               className={heroButtonClass(activeTab === "experiences")}
             >
-              Skylife Experiences
+              {t("experiencesPage.hero.experiencesButton")}
             </button>
 
             <div className="hidden h-8 w-[1px] flex-shrink-0 bg-white/30 sm:block" />
@@ -148,7 +126,7 @@ export default function ExperiencesPage() {
               onClick={() => scrollToSection("packages", "packages")}
               className={heroButtonClass(activeTab === "packages")}
             >
-              Skylife Tailored Travel Plans
+              {t("experiencesPage.hero.packagesButton")}
             </button>
           </motion.div>
 
@@ -169,8 +147,6 @@ export default function ExperiencesPage() {
               setCheckOut={setCheckOut}
               guests={guests}
               setGuests={setGuests}
-              translation={translation}
-              language={language}
               onSearch={() => navigate(ROUTES.collections)}
             />
           </motion.div>
@@ -190,7 +166,7 @@ export default function ExperiencesPage() {
             transition={{ duration: 0.6 }}
             className="font-sans text-xl font-light tracking-wide text-neutral-700 sm:text-2xl"
           >
-            The Italy Most People Miss
+            {t("experiencesPage.italyMostPeopleMiss.eyebrow")}
           </motion.p>
 
           <motion.h3
@@ -200,7 +176,7 @@ export default function ExperiencesPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mx-auto max-w-3xl font-sans text-2xl leading-snug font-light tracking-tight text-neutral-900 sm:text-3xl md:text-4xl"
           >
-            We know the people, the places, and the moments worth staying for.
+            {t("experiencesPage.italyMostPeopleMiss.heading")}
           </motion.h3>
 
           <motion.div
@@ -210,12 +186,7 @@ export default function ExperiencesPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mx-auto max-w-3xl space-y-2 pt-2 font-sans text-base leading-relaxed font-light text-neutral-700 sm:text-xl"
           >
-            <p>
-              Private guides who bring history to life. Family-run vineyards far
-              from the crowds. Tables locals keep to themselves. Experiences
-              shaped around the people, places and stories that make each
-              destination unforgettable.
-            </p>
+            <p>{t("experiencesPage.italyMostPeopleMiss.body")}</p>
           </motion.div>
 
           <motion.p
@@ -225,8 +196,7 @@ export default function ExperiencesPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mx-auto max-w-3xl pt-4 font-sans text-base font-light tracking-wide text-neutral-900 sm:text-xl"
           >
-            600+ five-star reviews, and counting. Not because we try harder.
-            Because we know Italy differently.
+            {t("experiencesPage.italyMostPeopleMiss.reviewsLine")}
           </motion.p>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import { CheckCircle, Mail } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const BG_AERIAL_CITY = "/images/itlay.jpg";
 
@@ -9,6 +10,7 @@ interface OwnerCTA1Props {
 }
 
 export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -39,7 +41,7 @@ export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
           transition={{ duration: 0.8 }}
           className="mb-4 font-serif text-3xl leading-tight font-normal tracking-wide text-white sm:text-4xl md:text-5xl lg:text-[56px]"
         >
-          Want to see more success stories?
+          {t("ownerCta1.heading")}
         </motion.h2>
 
         <motion.p
@@ -49,8 +51,7 @@ export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="mx-auto mb-8 max-w-[520px] font-sans text-sm leading-relaxed font-light tracking-wide text-white/90 sm:text-base"
         >
-          Subscribe to receive case studies and see how other property owners
-          elevated their income — and their brand — with Skylife.
+          {t("ownerCta1.body")}
         </motion.p>
 
         {/* Capsule email form */}
@@ -69,8 +70,7 @@ export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
             >
               <CheckCircle className="h-5 w-5 shrink-0 text-emerald-400" />
               <span className="font-sans text-xs font-medium tracking-wide sm:text-sm">
-                Thank you! We've sent our latest property case studies to your
-                inbox.
+                {t("ownerCta1.successMessage")}
               </span>
             </motion.div>
           ) : (
@@ -79,7 +79,7 @@ export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
               className="relative flex w-full items-center rounded-full border border-white/40 bg-black/60 p-2 pl-6 shadow-2xl backdrop-blur-md transition-all focus-within:border-white focus-within:ring-1 focus-within:ring-white/50 sm:pl-8"
             >
               <label htmlFor="owner-subscribe-email" className="sr-only">
-                Email address
+                {t("ownerCta1.emailAddressLabel")}
               </label>
               <input
                 id="owner-subscribe-email"
@@ -87,13 +87,13 @@ export default function OwnerCTA1({ onSubscribe }: OwnerCTA1Props) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
+                placeholder={t("ownerCta1.emailPlaceholder")}
                 className="w-full bg-transparent pr-4 text-sm font-light text-white placeholder-neutral-300 focus:outline-none sm:text-base"
               />
 
               <button
                 type="submit"
-                aria-label="Subscribe with email"
+                aria-label={t("common.aria.subscribeWithEmail")}
                 className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/30 bg-black text-white shadow-lg transition-all hover:scale-105 hover:bg-neutral-800 active:scale-95 sm:h-12 sm:w-12"
               >
                 <Mail className="h-5 w-5 stroke-[1.5]" />

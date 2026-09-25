@@ -1,19 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ROUTES } from "../lib/constants";
 import type { ActiveTab } from "../lib/types";
 
 type NavAction = ActiveTab | "PACKAGES";
 
 interface NavLink {
-  label: string;
+  labelKey: string;
   action: NavAction;
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: "The Collection", action: "STAY" },
-  { label: "Skylife Experiences", action: "EXPERIENCE" },
-  { label: "Property Owners", action: "OWN" },
-  { label: "Packages", action: "PACKAGES" },
+  { labelKey: "nav.collection", action: "STAY" },
+  { labelKey: "nav.experiences", action: "EXPERIENCE" },
+  { labelKey: "nav.propertyOwners", action: "OWN" },
+  { labelKey: "nav.packages", action: "PACKAGES" },
 ];
 
 const NAV_ROUTES: Record<NavAction, string> = {
@@ -34,6 +35,7 @@ interface NavLinksProps {
  */
 export default function NavLinks({ variant, onNavigate }: NavLinksProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = (action: NavAction) => {
     onNavigate(action);
@@ -49,7 +51,7 @@ export default function NavLinks({ variant, onNavigate }: NavLinksProps) {
             onClick={() => handleClick(link.action)}
             className="cursor-pointer font-sans text-[13px] font-light tracking-[0.08em] text-neutral-800 uppercase transition-all hover:font-medium hover:text-black"
           >
-            {link.label}
+            {t(link.labelKey)}
           </button>
         ))}
       </nav>
@@ -64,7 +66,7 @@ export default function NavLinks({ variant, onNavigate }: NavLinksProps) {
           onClick={() => handleClick(link.action)}
           className="block w-full cursor-pointer py-1.5 text-left font-sans text-[15px] font-light tracking-wider text-neutral-800 uppercase transition-all hover:font-medium hover:text-black"
         >
-          {link.label}
+          {t(link.labelKey)}
         </button>
       ))}
     </div>

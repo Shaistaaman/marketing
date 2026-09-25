@@ -8,60 +8,26 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 interface SuccessFactor {
   id: number;
   icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
+  factorKey: string;
 }
 
 const FACTORS: SuccessFactor[] = [
-  {
-    id: 1,
-    icon: TrendingUp,
-    title: "Revenue Optimization",
-    description:
-      "We maximize your property's performance through dynamic pricing, global distribution, and high-value guest targeting.",
-  },
-  {
-    id: 2,
-    icon: ConciergeBell,
-    title: "End-to-End Management",
-    description:
-      "From guest communication to day-to-day coordination, we handle every operational detail.",
-  },
-  {
-    id: 3,
-    icon: Globe,
-    title: "International Exposure",
-    description:
-      "Your property is positioned across our curated network of global platforms, partners, and private clients.",
-  },
-  {
-    id: 4,
-    icon: ShieldCheck,
-    title: "Quality & Control",
-    description:
-      "We closely oversee each property, ensuring consistent standards, regular checks, and full alignment with the Skylife Collection.",
-  },
-  {
-    id: 5,
-    icon: BarChart3,
-    title: "Transparent Reporting",
-    description:
-      "Clear financial tracking, structured reporting, and full visibility on performance at all times.",
-  },
-  {
-    id: 6,
-    icon: HeartHandshake,
-    title: "Dedicated Support",
-    description:
-      "A single, responsive team managing your property and available whenever needed.",
-  },
+  { id: 1, icon: TrendingUp, factorKey: "revenue" },
+  { id: 2, icon: ConciergeBell, factorKey: "endToEnd" },
+  { id: 3, icon: Globe, factorKey: "exposure" },
+  { id: 4, icon: ShieldCheck, factorKey: "quality" },
+  { id: 5, icon: BarChart3, factorKey: "reporting" },
+  { id: 6, icon: HeartHandshake, factorKey: "support" },
 ];
 
 export default function ProvenSuccess() {
+  const { t } = useTranslation();
+
   return (
     <section
       id="proven-success-section"
@@ -86,7 +52,7 @@ export default function ProvenSuccess() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 text-center font-serif text-3xl font-normal tracking-wide text-white italic sm:text-4xl md:mb-20 md:text-[46px]"
         >
-          Proven Recipe for Success
+          {t("landing.provenSuccess.heading")}
         </motion.h2>
 
         {/* 3x2 grid on desktop */}
@@ -111,11 +77,13 @@ export default function ProvenSuccess() {
                 </div>
 
                 <h3 className="mb-3 font-serif text-xl font-normal tracking-wide text-white md:text-2xl">
-                  {factor.title}
+                  {t(`landing.provenSuccess.factors.${factor.factorKey}.title`)}
                 </h3>
 
                 <p className="font-sans text-sm leading-relaxed font-light tracking-wide text-white/80 md:text-[15px]">
-                  {factor.description}
+                  {t(
+                    `landing.provenSuccess.factors.${factor.factorKey}.description`,
+                  )}
                 </p>
               </motion.div>
             );

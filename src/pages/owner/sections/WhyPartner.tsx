@@ -1,15 +1,18 @@
 import { LampFloor, Luggage, UsersRound } from "lucide-react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 const PANEL_BG = "/images/somuch/final.png";
 
 const PANELS = [
-  { id: "interior", alt: "Interior restyling" },
-  { id: "hospitality", alt: "Full 360 management" },
-  { id: "terrace", alt: "Verified guests & 5-star standards" },
+  { id: "interior", pillarKey: "interiorRestyling" },
+  { id: "hospitality", pillarKey: "fullManagement" },
+  { id: "terrace", pillarKey: "verifiedGuests" },
 ];
 
 export default function WhyPartner() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative w-full overflow-hidden border-t border-b border-neutral-900 bg-neutral-950 py-20 font-sans text-white sm:py-28">
       {/* 3-panel atmospheric background */}
@@ -21,7 +24,7 @@ export default function WhyPartner() {
           >
             <img
               src={PANEL_BG}
-              alt={panel.alt}
+              alt={t(`whyPartner.pillars.${panel.pillarKey}.title`)}
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-black/20" />
@@ -42,7 +45,7 @@ export default function WhyPartner() {
             transition={{ duration: 0.8 }}
             className="font-serif text-3xl font-normal tracking-tight text-white italic sm:text-5xl lg:text-6xl"
           >
-            Why Partner With Skylife?
+            {t("whyPartner.heading")}
           </motion.h2>
         </div>
 
@@ -62,12 +65,11 @@ export default function WhyPartner() {
               </div>
 
               <h3 className="mb-3 font-serif text-xl font-normal text-white italic sm:text-2xl">
-                Interior Restyling
+                {t("whyPartner.pillars.interiorRestyling.title")}
               </h3>
 
               <p className="max-w-sm font-sans text-sm leading-relaxed font-light text-neutral-300 sm:text-base">
-                Increase the value of the property by working with Skylife
-                interior designers.
+                {t("whyPartner.pillars.interiorRestyling.description")}
               </p>
             </motion.div>
 
@@ -86,11 +88,11 @@ export default function WhyPartner() {
               </div>
 
               <h3 className="mb-3 font-serif text-xl font-normal text-white italic sm:text-2xl">
-                Full 360° Management
+                {t("whyPartner.pillars.fullManagement.title")}
               </h3>
 
               <p className="max-w-sm font-sans text-sm leading-relaxed font-light text-neutral-300 sm:text-base">
-                From cleaning and check-ins to maintenance and guest relations.
+                {t("whyPartner.pillars.fullManagement.description")}
               </p>
             </motion.div>
           </div>
@@ -111,12 +113,11 @@ export default function WhyPartner() {
             </div>
 
             <h3 className="mb-3 font-serif text-xl font-normal text-white italic sm:text-2xl">
-              Verified Guests &amp; 5-Star Standards / Maximized ROI
+              {t("whyPartner.pillars.verifiedGuests.title")}
             </h3>
 
             <p className="font-sans text-sm leading-relaxed font-light text-neutral-300 sm:text-base">
-              Only high-quality clients, ensuring peace of mind and consistent
-              excellence — proven track record.
+              {t("whyPartner.pillars.verifiedGuests.description")}
             </p>
           </motion.div>
         </div>

@@ -1,6 +1,7 @@
 // Shared types used across LandingPage, PropertySearch, and NavigationHeader.
-
-export type Language = "en" | "it";
+//
+// NOTE: the active UI language is `SupportedLanguage` from `src/i18n/config.ts`
+// (read via `useTranslation().i18n.language`), not a type defined here.
 
 export type Guests = {
   adults: number;
@@ -9,27 +10,3 @@ export type Guests = {
 };
 
 export type ActiveTab = "STAY" | "EXPERIENCE" | "OWN";
-
-// Mirrors the shape of TRANSLATIONS.en / TRANSLATIONS.it in lib/translations.ts.
-export type Translation = {
-  selectDates: string;
-  title: string;
-  subtitle: string;
-  stay: string;
-  experience: string;
-  own: string;
-  location: string;
-  whereGoing: string;
-  checkIn: string;
-  checkOut: string;
-  addDate: string;
-  guests: string;
-  addGuests: string;
-  bookYourStay: string;
-  lang: string;
-  selectLang: string;
-  close: string;
-  search: string;
-  bookingTitle: string;
-  searchTitle: string;
-};

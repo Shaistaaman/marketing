@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 interface InstagramPost {
   id: string;
@@ -49,6 +50,8 @@ const INSTAGRAM_POSTS: InstagramPost[] = [
 ];
 
 export default function InstagramSection() {
+  const { t } = useTranslation();
+
   return (
     <section
       id="instagram-follow-section"
@@ -70,7 +73,7 @@ export default function InstagramSection() {
             className="group inline-block"
           >
             <h2 className="font-serif text-3xl leading-tight font-normal tracking-wide text-neutral-900 italic transition-opacity group-hover:opacity-85 sm:text-4xl md:text-[44px]">
-              Follow Us on Instagram
+              {t("landing.instagram.heading")}
             </h2>
           </a>
         </motion.div>

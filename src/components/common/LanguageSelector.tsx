@@ -1,14 +1,12 @@
 import { Check, Globe } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import type { Language } from "../../lib/types";
+import { useTranslation } from "react-i18next";
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from "../../i18n/config";
 
 interface LanguageSelectorProps {
   theme: "dark" | "light";
-  language: Language;
-  setLanguage: (lang: Language) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  label: string;
   buttonId?: string;
 }
 
@@ -19,7 +17,7 @@ const THEME_STYLES: Record<
   dark: {
     button: "text-white hover:bg-white/5",
     panel: "bg-neutral-950 border-white/10 shadow-2xl",
-    option: "hover:bg-white/5",
+    option: "text-white hover:bg-white/5",
     check: "text-white",
   },
   light: {
@@ -30,25 +28,36 @@ const THEME_STYLES: Record<
   },
 };
 
-const OPTIONS: { code: Language; label: string }[] = [
-  { code: "en", label: "ENGLISH (ENG)" },
-  { code: "it", label: "ITALIANO (ITA)" },
-];
+const DISPLAY_LABEL: Record<SupportedLanguage, string> = {
+  en: "Eng",
+  it: "Ita",
+};
+
+const OPTION_LABEL: Record<SupportedLanguage, string> = {
+  en: "ENGLISH (ENG)",
+  it: "ITALIANO (ITA)",
+};
 
 /**
- * Globe icon + "ENG/ITA" trigger button with a language dropdown.
+ * Globe icon + "Eng/Ita" trigger button with a language dropdown.
  * Themed for both the dark (standard) and light (expanded) header.
+ *
+ * Reads and writes the active language directly through i18next — this is
+ * the single source of truth for language across the whole app. Do not
+ * reintroduce a local `useState<Language>` here or in any caller; that was
+ * the original bug (NavigationHeader and ExperiencesPage each held their
+ * own independent language state, so switching language in one place did
+ * nothing anywhere else).
  */
 export default function LanguageSelector({
   theme,
-  language,
-  setLanguage,
   isOpen,
   setIsOpen,
-  label,
   buttonId,
 }: LanguageSelectorProps) {
+  const { i18n } = useTranslation();
   const styles = THEME_STYLES[theme];
+  const activeLanguage = i18n.language as SupportedLanguage;
 
   return (
     <div className="relative flex h-full items-center">
@@ -58,7 +67,7 @@ export default function LanguageSelector({
         className={`flex h-20 cursor-pointer items-center gap-2 px-4 font-sans text-xs font-medium tracking-widest uppercase transition-colors sm:px-6 sm:text-sm ${styles.button}`}
       >
         <Globe className="h-3.5 w-3.5 stroke-[1.5]" />
-        <span>{label}</span>
+        <span>{DISPLAY_LABEL[activeLanguage] ?? DISPLAY_LABEL.en}</span>
       </button>
 
       <AnimatePresence>
@@ -75,17 +84,17 @@ export default function LanguageSelector({
               transition={{ duration: 0.15 }}
               className={`absolute top-[100%] right-0 z-50 w-40 rounded-b-lg border py-1 ${styles.panel}`}
             >
-              {OPTIONS.map((option) => (
+              {SUPPORTED_LANGUAGES.map((code) => (
                 <button
-                  key={option.code}
+                  key={code}
                   onClick={() => {
-                    setLanguage(option.code);
+                    void i18n.changeLanguage(code);
                     setIsOpen(false);
                   }}
                   className={`flex w-full items-center justify-between px-5 py-3 text-left font-sans text-xs tracking-wider transition-colors sm:text-sm ${styles.option}`}
                 >
-                  {option.label}
-                  {language === option.code && (
+                  {OPTION_LABEL[code]}
+                  {activeLanguage === code && (
                     <Check className={`h-3 w-3 ${styles.check}`} />
                   )}
                 </button>

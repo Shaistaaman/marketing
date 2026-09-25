@@ -1,38 +1,34 @@
 import { FileText, Map, Plane } from "lucide-react";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 interface StepItem {
   step: number;
   icon: React.ReactNode;
-  title: string;
-  description: string;
+  stepKey: string;
 }
 
 const STEPS: StepItem[] = [
   {
     step: 1,
     icon: <FileText className="h-6 w-6 text-neutral-900" strokeWidth={1.5} />,
-    title: "Share Your Vision",
-    description:
-      "Complete the Skylife form and tell us what inspires you — your travel style, dreams, and the moments you wish to live in Italy.",
+    stepKey: "share",
   },
   {
     step: 2,
     icon: <Plane className="h-6 w-6 text-neutral-900" strokeWidth={1.5} />,
-    title: "Discover Your Tailored Itinerary",
-    description:
-      "Our team crafts your personalized Skylife Travel Plan: a curated itinerary designed exclusively around your preferences, blending experiences, stays, and hidden gems.",
+    stepKey: "discover",
   },
   {
     step: 3,
     icon: <Map className="h-6 w-6 text-neutral-900" strokeWidth={1.5} />,
-    title: "Begin Your Skylife Journey",
-    description:
-      "Refine every detail until it feels perfect. We handle all arrangements — from bookings to logistics — so you can simply arrive and enjoy your unforgettable Italian escape.",
+    stepKey: "begin",
   },
 ];
 
 export default function HowItWorks() {
+  const { t } = useTranslation();
+
   const handleStartJourney = () => {
     const searchSection =
       document.getElementById("search-widget-container") ??
@@ -52,12 +48,12 @@ export default function HowItWorks() {
       <div className="mx-auto max-w-[1240px] text-center">
         {/* Title */}
         <h2 className="mb-4 font-serif text-3xl leading-tight font-normal tracking-tight text-white italic sm:text-4xl md:text-[52px] lg:text-[56px]">
-          Enter The Skylife World
+          {t("collectionsPage.howItWorks.heading")}
         </h2>
 
         {/* Subtitle */}
         <p className="mx-auto mb-16 max-w-2xl font-sans text-base font-normal tracking-wide text-neutral-200 sm:text-lg md:mb-20 md:text-[19px]">
-          Don't Know Where To Begin? Start Your Skylife Journey Here
+          {t("collectionsPage.howItWorks.subheading")}
         </p>
 
         {/* Steps + connecting arcs */}
@@ -125,17 +121,21 @@ export default function HowItWorks() {
 
                 {/* Step indicator */}
                 <span className="mb-3 font-sans text-sm font-semibold tracking-widest text-white uppercase sm:text-base">
-                  Step {item.step}
+                  {t("collectionsPage.howItWorks.stepLabel", {
+                    number: item.step,
+                  })}
                 </span>
 
                 {/* Title */}
                 <h3 className="mb-4 flex min-h-[52px] items-center justify-center font-sans text-lg leading-snug font-semibold text-white sm:text-xl md:text-[21px]">
-                  {item.title}
+                  {t(`collectionsPage.howItWorks.steps.${item.stepKey}.title`)}
                 </h3>
 
                 {/* Description */}
                 <p className="max-w-xs font-sans text-xs leading-relaxed font-light text-neutral-300 sm:max-w-sm sm:text-sm md:text-[14.5px]">
-                  {item.description}
+                  {t(
+                    `collectionsPage.howItWorks.steps.${item.stepKey}.description`,
+                  )}
                 </p>
               </div>
             ))}
@@ -148,7 +148,7 @@ export default function HowItWorks() {
             onClick={handleStartJourney}
             className="cursor-pointer rounded-none border border-white bg-white px-8 py-4 font-sans text-xs font-medium tracking-[0.18em] text-black uppercase shadow-md transition-all duration-300 hover:bg-neutral-100 hover:text-black hover:shadow-xl active:scale-95 sm:px-10 sm:text-sm"
           >
-            Start Your Skylife Journey
+            {t("collectionsPage.howItWorks.cta")}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CategoryFilterTabs from "../../../components/common/CategoryFilterTabs";
 import ElegantArrow from "../../../components/common/ElegantArrow";
@@ -18,6 +19,7 @@ function ExperienceCard({
   experience: ExperienceItem;
   onClick: () => void;
 }) {
+  const { t } = useTranslation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleNextImage = (e: React.MouseEvent) => {
@@ -93,7 +95,7 @@ function ExperienceCard({
               type="button"
               onClick={handlePrevImage}
               className="cursor-pointer p-0.5 transition-colors hover:text-amber-300 active:scale-90"
-              aria-label="Previous photo"
+              aria-label={t("common.aria.previousImage")}
             >
               <ChevronLeft
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4"
@@ -107,7 +109,7 @@ function ExperienceCard({
               type="button"
               onClick={handleNextImage}
               className="cursor-pointer p-0.5 transition-colors hover:text-amber-300 active:scale-90"
-              aria-label="Next photo"
+              aria-label={t("common.aria.nextImage")}
             >
               <ChevronRight
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4"
@@ -122,6 +124,7 @@ function ExperienceCard({
 }
 
 export default function AllExperiences() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [selectedDestination, setSelectedDestination] = useState<string>("ALL");
@@ -200,10 +203,10 @@ export default function AllExperiences() {
       <div className="mx-auto max-w-[1360px] px-4 sm:px-8 lg:px-12">
         <div className="mb-10 text-center sm:mb-14">
           <h2 className="font-serif text-4xl font-normal tracking-tight text-neutral-900 italic sm:text-6xl lg:text-7xl">
-            Skylife Exclusive Experiences
+            {t("experiencesPage.allExperiences.heading")}
           </h2>
           <p className="mt-4 font-sans text-lg font-light tracking-wide text-neutral-800 sm:text-xl">
-            Experiences! Live in Adventure.
+            {t("experiencesPage.allExperiences.subheading")}
           </p>
         </div>
 
@@ -214,7 +217,7 @@ export default function AllExperiences() {
             <select
               value={selectedDestination}
               onChange={(e) => setSelectedDestination(e.target.value)}
-              aria-label="Filter by destination"
+              aria-label={t("common.aria.filterByDestination")}
               className="w-full cursor-pointer appearance-none rounded-none border border-neutral-300 bg-white px-3.5 py-3 pr-9 font-sans text-xs font-medium tracking-[0.18em] text-neutral-900 uppercase focus:border-neutral-900 focus:outline-none"
             >
               {DESTINATIONS.map((dest) => (
@@ -266,7 +269,7 @@ export default function AllExperiences() {
           </div>
         ) : (
           <div className="py-20 text-center font-sans text-sm text-neutral-500">
-            No experiences found for this filter. Try selecting "ALL".
+            {t("experiencesPage.allExperiences.emptyState")}
           </div>
         )}
       </div>
@@ -277,7 +280,7 @@ export default function AllExperiences() {
           onClick={() => navigate(ROUTES.experienceCollection)}
           className="inline-block cursor-pointer border border-neutral-900 px-8 py-4 font-sans text-xs font-medium tracking-[0.22em] text-neutral-900 uppercase transition-all duration-300 hover:bg-neutral-50"
         >
-          ALL EXPERIENCES
+          {t("experiencesPage.allExperiences.allExperiencesButton")}
         </button>
       </div>
     </section>

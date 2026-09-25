@@ -1,40 +1,42 @@
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 import { ROUTES } from "../lib/constants";
 import FooterLinkGroup from "./FooterLinkGroup";
 
 const QUICK_LINKS = [
-  { label: "Explore Properties", href: ROUTES.collections },
-  { label: "Partner With Us", href: ROUTES.owner },
-  { label: "Experiences", href: ROUTES.experiences },
-  { label: "Packages", href: ROUTES.packages },
+  { labelKey: "footer.links.exploreProperties", href: ROUTES.collections },
+  { labelKey: "footer.links.partnerWithUs", href: ROUTES.owner },
+  { labelKey: "footer.links.experiences", href: ROUTES.experiences },
+  { labelKey: "footer.links.packages", href: ROUTES.packages },
 ];
 
 const ABOUT_LINKS = [
-  { label: "Company", href: "/company" },
-  { label: "Blog", href: "/blog" },
-  { label: "Terms of Service", href: "/terms" },
-  { label: "Privacy Policy", href: "/privacy" },
+  { labelKey: "footer.links.company", href: "/company" },
+  { labelKey: "footer.links.blog", href: "/blog" },
+  { labelKey: "footer.links.termsOfService", href: "/terms" },
+  { labelKey: "footer.links.privacyPolicy", href: "/privacy" },
 ];
 
 const SOCIAL_LINKS = [
   {
-    label: "Facebook",
+    labelKey: "footer.social.facebook",
     href: "https://facebook.com/skylifemanagement",
     Icon: FaFacebook,
   },
   {
-    label: "Instagram",
+    labelKey: "footer.social.instagram",
     href: "https://instagram.com/skylifemanagement",
     Icon: FaInstagram,
   },
   {
-    label: "LinkedIn",
+    labelKey: "footer.social.linkedin",
     href: "https://linkedin.com/company/skylife-management/",
     Icon: FaLinkedin,
   },
 ];
 
 export default function Footer() {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -55,18 +57,18 @@ export default function Footer() {
           {/* Company info + contact */}
           <div>
             <h4 className="mb-5 font-sans text-xs font-semibold tracking-widest text-white uppercase">
-              Contact
+              {t("footer.contact")}
             </h4>
 
             <div className="mb-6 space-y-1.5 text-sm text-white/70">
-              <p>SKYLIFE MANAGEMENT</p>
-              <p>Company number 15459982 - 607 Sloane Avenue,</p>
-              <p>SW3 3EL, London, United Kingdom.</p>
+              <p>{t("footer.companyName")}</p>
+              <p>{t("footer.companyAddressLine1")}</p>
+              <p>{t("footer.companyAddressLine2")}</p>
             </div>
 
             <div className="space-y-1.5 text-sm text-white/70">
               <p>
-                Pietro:{" "}
+                {t("footer.pietro")}:{" "}
                 <a
                   href="tel:+393317995308"
                   className="text-white transition-colors hover:text-white/80"
@@ -75,7 +77,7 @@ export default function Footer() {
                 </a>
               </p>
               <p>
-                Tancredi:{" "}
+                {t("footer.tancredi")}:{" "}
                 <a
                   href="tel:+393661707510"
                   className="text-white transition-colors hover:text-white/80"
@@ -91,18 +93,30 @@ export default function Footer() {
                   info@skylifemanagement.com
                 </a>
               </p>
-              <p>Insta: @skylifemanagement</p>
+              <p>{t("footer.instagramHandle")}</p>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-12">
-            <FooterLinkGroup title="Quick Links" links={QUICK_LINKS} />
+            <FooterLinkGroup
+              title={t("footer.quickLinks")}
+              links={QUICK_LINKS.map((link) => ({
+                label: t(link.labelKey),
+                href: link.href,
+              }))}
+            />
           </div>
 
           {/* About */}
           <div className="space-y-12">
-            <FooterLinkGroup title="About" links={ABOUT_LINKS} />
+            <FooterLinkGroup
+              title={t("footer.about")}
+              links={ABOUT_LINKS.map((link) => ({
+                label: t(link.labelKey),
+                href: link.href,
+              }))}
+            />
           </div>
         </div>
       </div>
@@ -111,17 +125,17 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row sm:px-10 lg:px-16">
           <p className="text-center font-sans text-sm text-white/60 sm:text-left">
-            ©{currentYear} Skylife Management. All rights reserved.
+            {t("footer.copyright", { year: currentYear })}
           </p>
 
           <div className="flex items-center gap-3">
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+            {SOCIAL_LINKS.map(({ labelKey, href, Icon }) => (
               <a
-                key={label}
+                key={labelKey}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={label}
+                aria-label={t(labelKey)}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-black"
               >
                 <Icon className="h-4 w-4" />

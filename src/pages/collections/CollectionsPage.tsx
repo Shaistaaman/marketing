@@ -9,8 +9,8 @@ export default function CollectionsPage() {
       <PageHero
         background={{ kind: "image", src: "/images/skyloft.jpg" }}
         initialTab="STAY"
-        title="The Skylife Collection"
-        subtitle="Privately managed. Personally selected. Designed for experience."
+        titleKey="collectionsPage.heroTitle"
+        subtitleKey="collectionsPage.heroSubtitle"
       />
 
       <div className="relative z-0 w-full bg-white text-black">

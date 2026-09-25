@@ -9,6 +9,7 @@ import {
   Users,
 } from "lucide-react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import FilterStepperDropdown from "../../../components/common/FilterStepperDropdown";
 import Pagination from "../../../components/common/Pagination";
@@ -173,6 +174,7 @@ const MAX_GUESTS = 12;
 const ITEMS_PER_PAGE = 6;
 
 export default function CollectionsSection() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   // Filters
@@ -260,7 +262,7 @@ export default function CollectionsSection() {
         {/* Title */}
         <div className="mb-10 text-center md:mb-14">
           <h2 className="font-serif text-4xl leading-tight font-normal text-neutral-900 italic sm:text-5xl md:text-[56px]">
-            Explore Properties
+            {t("collectionsPage.section.heading")}
           </h2>
         </div>
 
@@ -276,15 +278,15 @@ export default function CollectionsSection() {
                   setLocationSearch(e.target.value);
                   setCurrentPage(1);
                 }}
-                placeholder="Location"
+                placeholder={t("collectionsPage.section.locationPlaceholder")}
                 className="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 shadow-xs transition-colors placeholder-neutral-500 focus:border-neutral-900 focus:outline-none"
               />
             </div>
 
             <FilterStepperDropdown
-              label="Beds"
-              selectedPrefix="Beds"
-              popoverTitle={`Beds (Max ${MAX_BEDS})`}
+              label={t("filters.beds")}
+              selectedPrefix={t("filters.beds")}
+              popoverTitle={t("filters.bedsMax", { max: MAX_BEDS })}
               value={beds}
               onChange={(v) => {
                 setBeds(v);
@@ -299,9 +301,9 @@ export default function CollectionsSection() {
             />
 
             <FilterStepperDropdown
-              label="Bathrooms"
-              selectedPrefix="Baths"
-              popoverTitle={`Bathrooms (Max ${MAX_BATHS})`}
+              label={t("filters.bathrooms")}
+              selectedPrefix={t("common.specs.baths")}
+              popoverTitle={t("filters.bathroomsMax", { max: MAX_BATHS })}
               value={baths}
               onChange={(v) => {
                 setBaths(v);
@@ -316,9 +318,9 @@ export default function CollectionsSection() {
             />
 
             <FilterStepperDropdown
-              label="Guests"
-              selectedPrefix="Guests"
-              popoverTitle={`Guests (Max ${MAX_GUESTS})`}
+              label={t("common.specs.guests")}
+              selectedPrefix={t("common.specs.guests")}
+              popoverTitle={t("filters.guestsMax", { max: MAX_GUESTS })}
               value={guests}
               onChange={(v) => {
                 setGuests(v);
@@ -336,7 +338,7 @@ export default function CollectionsSection() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              title="Reset Filters"
+              title={t("filters.resetFiltersTitle")}
               className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 transition-colors hover:border-neutral-500 hover:text-neutral-900"
             >
               <RotateCcw className="h-4 w-4" />
@@ -377,7 +379,7 @@ export default function CollectionsSection() {
                             )
                           }
                           className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/90 text-neutral-900 opacity-80 shadow-sm transition-all group-hover:opacity-100 hover:bg-white"
-                          aria-label="Previous image"
+                          aria-label={t("common.aria.previousImage")}
                         >
                           <ChevronLeft className="h-4 w-4" />
                         </button>
@@ -390,7 +392,7 @@ export default function CollectionsSection() {
                             )
                           }
                           className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/90 text-neutral-900 opacity-80 shadow-sm transition-all group-hover:opacity-100 hover:bg-white"
-                          aria-label="Next image"
+                          aria-label={t("common.aria.nextImage")}
                         >
                           <ChevronRight className="h-4 w-4" />
                         </button>
@@ -401,7 +403,7 @@ export default function CollectionsSection() {
                     <button
                       onClick={(e) => toggleFavorite(property.id, e)}
                       className="absolute top-3 right-3 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black/5 bg-white/95 text-neutral-800 shadow-sm transition-transform hover:scale-105"
-                      aria-label="Save to wishlist"
+                      aria-label={t("common.aria.saveToWishlist")}
                       aria-pressed={isFav}
                     >
                       <Heart
@@ -431,14 +433,18 @@ export default function CollectionsSection() {
                         className="h-4 w-4 text-neutral-800"
                         strokeWidth={1.5}
                       />
-                      {property.beds} Beds
+                      {t("collectionsPage.section.specSuffixBeds", {
+                        count: property.beds,
+                      })}
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
                       <ShowerHead
                         className="h-4 w-4 text-neutral-800"
                         strokeWidth={1.5}
                       />
-                      {property.baths} Bathrooms
+                      {t("collectionsPage.section.specSuffixBathrooms", {
+                        count: property.baths,
+                      })}
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
                       <Users
@@ -463,13 +469,13 @@ export default function CollectionsSection() {
           /* Empty state */
           <div className="mx-auto mb-16 max-w-xl rounded-lg border border-dashed border-neutral-200 py-16 text-center">
             <p className="mb-4 font-serif text-base text-neutral-600 italic">
-              No properties matching your selected criteria.
+              {t("collectionsPage.section.emptyState")}
             </p>
             <button
               onClick={handleReset}
               className="cursor-pointer rounded bg-black px-6 py-2.5 text-xs font-semibold tracking-wider text-white uppercase transition-colors hover:bg-neutral-800"
             >
-              Reset Filters
+              {t("common.actions.resetFilters")}
             </button>
           </div>
         )}
