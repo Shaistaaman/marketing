@@ -21,6 +21,8 @@ Match the backend to these so both halves share one Node/TS baseline.
 | **TypeScript**           | **6.0.3**                                                  | `strict` **and** `noUncheckedIndexedAccess` are on — array/record access is `T                                                                                                                                                                            | undefined`. Keep both on in the backend. |
 | **Tailwind CSS**         | **4.3.3**                                                  | Config-less (`@tailwindcss/vite`); theme in `src/index.css`.                                                                                                                                                                                              |
 | **motion**               | **13.4.0**                                                 | Imported as `motion/react`.                                                                                                                                                                                                                               |
+| **i18next**              | **26.4.2**                                                 | Internationalization framework. See §13 for UI chrome translation setup.                                                                                                                                                                                  |
+| **react-i18next**        | **17.0.15**                                                | React bindings for i18next. All components use `useTranslation()` → `t("key")`. See §13.                                                                                                                                                                  |
 | **lucide-react**         | **1.47.0**                                                 | UI icons.                                                                                                                                                                                                                                                 |
 | **react-icons**          | **5.7.0**                                                  | Brand/social marks.                                                                                                                                                                                                                                       |
 | **@vitejs/plugin-react** | **6.1.1**                                                  |                                                                                                                                                                                                                                                           |
@@ -308,3 +310,104 @@ Same shape for `experience_translations` and `package_translations`, keyed by th
 - The booking-approval transaction is covered by a concurrency test proving two overlapping approvals cannot both succeed.
 - The SPA still builds (`npm run build` in `marketing/`) and works with the API URL unset (mock fallback) and set (live).
 - CloudWatch log retention is finite on every new log group.
+
+---
+
+## 13. Frontend internationalization implementation (completed)
+
+### 13.1 i18next setup
+
+- **Library:** `react-i18next` v17.0.15 (UI strings only, no backend).
+- **Locales:** English (`en`) and Italian (`it`), stored in `src/i18n/locales/en.json` and `src/i18n/locales/it.json`.
+- **Initialization:** `src/i18n/index.ts` configures i18next with browser language detection and localStorage persistence.
+- **HTML sync:** Active language is synced to `<html lang>` attribute in real time.
+
+### 13.2 Adding UI chrome translations
+
+**Pattern:** Every new UI string must:
+
+1. Be added to both `en.json` and `it.json` with the same key structure.
+2. Be read via `const { t } = useTranslation()` in the component.
+3. Be called as `t("namespace.key")` in JSX — never hardcode strings.
+
+**Example:** To add a new button:
+
+```tsx
+// ❌ Wrong
+<button>Click Me</button>;
+
+// ✅ Correct
+const { t } = useTranslation();
+<button>{t("common.clickMe")}</button>;
+
+// Then add to both JSON files:
+// en.json: "common": { "clickMe": "Click Me" }
+// it.json: "common": { "clickMe": "Clicca Su Di Me" }
+```
+
+### 13.3 Recent translation fixes (session update)
+
+The following components were missing translations and have been fixed:
+
+| Component                    | Files Updated                                        | Keys Added                                                              | Notes                                                                    |
+| ---------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **CTAGetPro**                | `src/components/sections/CTAGetPro.tsx`              | `collectionsPage.ctaGetPro`, `collectionsPage.addProperty`              | Editorial paragraph + "ADD PROPERTY" button now use i18next.             |
+| **ExperienceCollectionPage** | `src/pages/experiences/ExperienceCollectionPage.tsx` | `experiencesPage.collection.heading`, `experiencesPage.collection.body` | Hero section heading and body now use i18next.                           |
+| **PageHero**                 | (no changes)                                         | (no changes)                                                            | Already using i18next correctly with `titleKey` and `subtitleKey` props. |
+
+**Translations added to `en.json` and `it.json`:**
+
+- `collectionsPage.ctaGetPro`: Editorial text about property transformation (English and Italian).
+- `collectionsPage.addProperty`: "ADD PROPERTY" button (English) / "AGGIUNGI PROPRIETÀ" (Italian).
+- `experiencesPage.collection.heading`: "Craft Your Skylife Experience" / "Crea la Tua Esperienza Skylife".
+- `experiencesPage.collection.body`: Descriptive text about the platform.
+
+### 13.4 Important: Italian translations are AI-drafted
+
+All Italian translations were generated by AI and are **pending native Italian speaker review** before production launch. Do not assume `it.json` copy is final. Coordinate with the product team before shipping the Italian UI to production.
+
+---
+
+## 14. Favicon setup (session update)
+
+### 14.1 Problem solved
+
+Initially, the favicon (favicon.ico) was not appearing on the S3-hosted marketing site, though it worked on localhost. Root causes were:
+
+- Absolute path references (`/favicon.ico`) didn't work when deployed to S3.
+- Favicon wasn't guaranteed to be copied to `dist/` on every clean build.
+
+### 14.2 Solution implemented
+
+1. **Created `favicon.png`** from the Skylife logo (black variant).
+2. **Updated `index.html`:** Changed favicon link from absolute to relative path:
+
+   ```html
+   <!-- Before -->
+   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+   <!-- After -->
+   <link rel="icon" type="image/png" href="./favicon.png" />
+   ```
+
+3. **Enhanced `vite.config.ts`:** Added custom `copy-favicon` plugin that:
+   - Runs during the build process (`apply: "build"`).
+   - Explicitly copies `public/favicon.png` → `dist/favicon.png` after bundle generation.
+   - Ensures favicon is present even if `dist/` is deleted before build.
+
+### 14.3 Build verification
+
+To verify the favicon is included on every build:
+
+```bash
+rm -rf dist && npm run build
+ls dist/favicon.png  # Should exist
+grep 'href="./favicon.png"' dist/index.html  # Should find it
+```
+
+### 14.4 Deployment
+
+- The `dist/` folder now always contains `favicon.png`.
+- Upload entire `dist/` to S3 (including favicon).
+- Relative path ensures favicon loads on localhost and S3-hosted deployments alike.
+- Clear browser cache (Cmd+Shift+R on macOS) if favicon doesn't update immediately after deployment.

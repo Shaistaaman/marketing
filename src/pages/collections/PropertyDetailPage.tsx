@@ -18,7 +18,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import CTAGetPro from "../../components/sections/CTAGetPro";
-import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
+// import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
 import { DEFAULT_PROPERTY, findPropertyData } from "../../data/properties";
 import { isBetweenDays, isSameDay } from "../../lib/dateRangeUtils";
 import Testimonial from "../landing/sections/Testimonial";

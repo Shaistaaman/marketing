@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import CTAGetPro from "../../components/sections/CTAGetPro";
-import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
+// import ExperienceVideoSection from "../../components/sections/ExperienceVideoSection";
 import {
   DEFAULT_EXPERIENCE,
   findExperienceDetail,
@@ -408,9 +408,9 @@ export default function ExperienceDetailPage() {
         </AnimatePresence>
       </main>
 
-      <ExperienceVideoSection />
-      <Testimonial />
+      {/* <ExperienceVideoSection /> */}
       <CTAGetPro />
+      <Testimonial />
     </div>
   );
 }
