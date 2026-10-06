@@ -184,7 +184,8 @@ export default function Experience() {
                     <img
                       src={exp.image}
                       alt={exp.title}
-                      loading="lazy"
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                     />
                     <div className="pointer-events-none absolute inset-0 bg-neutral-900/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

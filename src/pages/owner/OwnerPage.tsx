@@ -78,7 +78,9 @@ export default function OwnerPage() {
           <img
             src={PROPERTY_HERO_BG}
             alt="Elevate your property with the Skylife Collection"
-            className="absolute inset-0 h-full w-full scale-105 object-cover object-center brightness-90 filter"
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-center brightness-75 will-change-transform"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
         </div>

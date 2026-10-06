@@ -99,7 +99,8 @@ export default function InstagramSection() {
               <img
                 src={post.image}
                 alt={post.alt}
-                loading="lazy"
+                loading="eager"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
 

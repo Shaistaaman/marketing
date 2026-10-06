@@ -73,7 +73,8 @@ export default function DedicatedTeam() {
                   <img
                     src={member.image}
                     alt={member.name}
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>

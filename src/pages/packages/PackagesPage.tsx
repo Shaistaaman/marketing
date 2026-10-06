@@ -6,7 +6,7 @@ import ExperienceVideoSection from "../../components/sections/ExperienceVideoSec
 import AllExperiences from "../experiences/sections/AllExperiences";
 import Package from "../landing/sections/Package";
 import Testimonial from "../landing/sections/Testimonial";
-import GalleryPkg from "./sections/GalleryPkg";
+// import GalleryPkg from "./sections/GalleryPkg";
 
 const HERO_IMAGE = "/images/packagebanner.jpg";
 
@@ -71,7 +71,9 @@ export default function PackagesPage() {
           <img
             src={HERO_IMAGE}
             alt="Skylife curated travel packages"
-            className="absolute inset-0 h-full w-full scale-105 object-cover object-center brightness-90 filter"
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-center brightness-75 will-change-transform"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
         </div>
@@ -111,7 +113,7 @@ export default function PackagesPage() {
         </div>
       </div>
 
-      <GalleryPkg />
+      {/* <GalleryPkg /> */}
       <Package />
       <AllExperiences />
       <Testimonial />

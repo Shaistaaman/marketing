@@ -75,10 +75,10 @@ export default function PropertyDetailPage() {
   }, [startDate, endDate]);
 
   // Pricing
-  const nightlyRate = property.pricePerNight;
+  const nightlyRate = property.nightlyRate;
   const cleaningFee = property.cleaningFee;
   const serviceFee = property.serviceFee;
-  const taxes = property.taxes;
+  const taxes = property.taxPct;
   const totalNightly = nightlyRate * numberOfNights;
   const totalPrice = totalNightly + cleaningFee + serviceFee + taxes;
 
@@ -250,14 +250,14 @@ export default function PropertyDetailPage() {
         <div className="mb-6 font-sans text-xs font-light tracking-wide text-neutral-500 sm:text-sm">
           <span>{property.region}</span>
           <span className="mx-2 text-neutral-300">/</span>
-          <span className="font-medium text-neutral-900">{property.title}</span>
+          <span className="font-medium text-neutral-900">{property.name}</span>
         </div>
 
         {/* HEADER */}
         <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-baseline">
           <div>
             <h1 className="mb-2 font-serif text-3xl leading-tight font-normal tracking-tight text-neutral-900 italic sm:text-5xl lg:text-6xl">
-              {property.title}
+              {property.name}
             </h1>
             <p className="font-sans text-xs font-light text-neutral-500 italic sm:text-sm">
               {t("propertyDetail.curatedBy", { region: property.region })}
@@ -290,7 +290,9 @@ export default function PropertyDetailPage() {
           >
             <img
               src={propertyImages[0]}
-              alt={property.title}
+              alt={property.name}
+              loading="eager"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
             />
           </div>
@@ -310,8 +312,9 @@ export default function PropertyDetailPage() {
                 >
                   <img
                     src={img}
-                    alt={`${property.title} preview ${idx + 1}`}
-                    loading="lazy"
+                    alt={`${property.name} preview ${idx + 1}`}
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   {isLast && (
@@ -342,12 +345,12 @@ export default function PropertyDetailPage() {
               {[
                 {
                   Icon: Bed,
-                  value: property.beds,
+                  value: property.bedrooms,
                   label: t("common.specs.bedrooms"),
                 },
                 {
                   Icon: ShowerHead,
-                  value: property.baths,
+                  value: property.bathrooms,
                   label: t("common.specs.bathrooms"),
                 },
                 {
@@ -357,7 +360,7 @@ export default function PropertyDetailPage() {
                 },
                 {
                   Icon: Maximize2,
-                  value: property.size,
+                  value: property.areaSqm,
                   label: t("common.specs.areaSize"),
                 },
               ].map(({ Icon, value, label }) => (
@@ -489,7 +492,7 @@ export default function PropertyDetailPage() {
                       <MapPin className="h-5 w-5 text-amber-300" />
                     </div>
                     <span className="mt-2 border border-neutral-200 bg-white px-3 py-1 text-[11px] font-semibold tracking-wider text-neutral-900 uppercase shadow-md">
-                      {property.title}
+                      {property.name}
                     </span>
                   </div>
                 </div>
@@ -597,7 +600,7 @@ export default function PropertyDetailPage() {
               <div className="flex items-center justify-between border-b border-neutral-800 pb-4 text-white">
                 <span className="font-serif text-xl italic">
                   {t("propertyDetail.lightbox.galleryTitle", {
-                    title: property.title,
+                    title: property.name,
                     current: activeImageIndex + 1,
                     total: propertyImages.length,
                   })}
@@ -711,7 +714,7 @@ export default function PropertyDetailPage() {
                       <p className="mx-auto mb-8 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
                         {t("propertyDetail.modal.successBody", {
                           firstName: guestName.split(" ")[0],
-                          propertyTitle: property.title,
+                          propertyTitle: property.name,
                         })}
                       </p>
                       <button
@@ -728,7 +731,7 @@ export default function PropertyDetailPage() {
                         {t("propertyDetail.modal.title")}
                       </h3>
                       <p className="mb-6 text-xs font-light text-neutral-500">
-                        {property.title} · {property.location}
+                        {property.name} · {property.location}
                       </p>
 
                       {/* Stay summary */}

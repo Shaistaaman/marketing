@@ -68,6 +68,8 @@ export default function GuestsPO() {
         <img
           src="/images/guestsPO.jpg"
           alt="Florence Sunset Skyline"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         {/* Overlays for premium depth */}

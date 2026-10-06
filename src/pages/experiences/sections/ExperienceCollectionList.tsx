@@ -51,7 +51,9 @@ export default function ExperienceCollectionList() {
       exp.location.toLowerCase() === selectedDestination.toLowerCase();
     const matchesCategory =
       selectedCategory === "All" ||
-      exp.category.toLowerCase() === selectedCategory.toLowerCase();
+      exp.categories.some(
+        (cat) => cat.toLowerCase() === selectedCategory.toLowerCase(),
+      );
     return matchesDestination && matchesCategory;
   });
 
@@ -133,8 +135,9 @@ export default function ExperienceCollectionList() {
                   <div className="relative mb-4 aspect-[1.3] w-full overflow-hidden rounded-none bg-neutral-100">
                     <img
                       src={exp.images[currentImgIdx]}
-                      alt={exp.title}
-                      loading="lazy"
+                      alt={exp.name}
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                     />
 
@@ -183,7 +186,7 @@ export default function ExperienceCollectionList() {
 
                   {/* Title */}
                   <h3 className="mb-2 font-sans text-xl leading-snug font-medium tracking-tight text-neutral-900 transition-colors group-hover:text-neutral-600 sm:text-[22px]">
-                    {exp.title}
+                    {exp.name}
                   </h3>
 
                   {/* Description */}

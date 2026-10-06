@@ -169,7 +169,8 @@ export default function Package() {
                     <img
                       src={pkg.image}
                       alt={pkg.title}
-                      loading="lazy"
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105"
                     />
                   </div>

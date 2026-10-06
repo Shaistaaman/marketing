@@ -25,6 +25,8 @@ export default function WhyPartner() {
             <img
               src={PANEL_BG}
               alt={t(`whyPartner.pillars.${panel.pillarKey}.title`)}
+              loading="eager"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-black/20" />

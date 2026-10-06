@@ -4,16 +4,16 @@ export type ExperienceCategory =
   | "History & Culture"
   | "Culinary Adventures"
   | "Outdoor Tours"
-  | "Closed to the Public"
+  | "Closed-to-the-Public"
   | "Family"
-  | "At Home"
-  | "One Day City Escape";
+  | "At-Home"
+  | "One-Day City Escapes";
 
 export interface ExperienceItem {
   id: string;
-  title: string;
+  name: string;
   location: string;
-  category: ExperienceCategory;
+  categories: ExperienceCategory[];
   images: [string, string, string];
   subtitle: string;
   description: string;
@@ -41,9 +41,9 @@ const IMG = {
 export const EXPERIENCES_DATA: ExperienceItem[] = [
   {
     id: "pompeii-naples",
-    title: "Pompeii & Naples: A Journey Through Time",
+    name: "Pompeii & Naples: A Journey Through Time",
     location: "Naples",
-    category: "History & Culture",
+    categories: ["History & Culture"],
     images: [IMG.go, IMG.great, IMG.rome],
     subtitle: "Exclusive ruins tour & Neapolitan gourmet tasting",
     description:
@@ -57,9 +57,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "colosseum-forum",
-    title: "Colosseum & Forum Private After-Hours",
+    name: "Colosseum & Forum Private After-Hours",
     location: "Rome",
-    category: "History & Culture",
+    categories: ["History & Culture"],
     images: [IMG.great, IMG.go, IMG.rome],
     subtitle: "Walk the gladiatorial floor in total evening tranquility",
     description:
@@ -73,9 +73,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "tuscan-harvest",
-    title: "Tuscan Estate Private Vineyard Harvest",
+    name: "Tuscan Estate Private Vineyard Harvest",
     location: "Tuscany",
-    category: "Culinary Adventures",
+    categories: ["Culinary Adventures"],
     images: [IMG.rome, IMG.go, IMG.great],
     subtitle: "Grape harvest, master cellar tasting & alfresco lunch",
     description:
@@ -89,9 +89,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "lake-como-boat",
-    title: "Lake Como Vintage Wooden Boat Voyage",
+    name: "Lake Como Vintage Wooden Boat Voyage",
     location: "Lake Como",
-    category: "Outdoor Tours",
+    categories: ["Outdoor Tours"],
     images: [IMG.go, IMG.great, IMG.rome],
     subtitle: "Private Riva yacht cruise & hidden villa gardens",
     description:
@@ -105,9 +105,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "florence-duomo-chef",
-    title: "Florentine Terrace Private Chef Experience",
+    name: "Florentine Terrace Private Chef Experience",
     location: "Florence",
-    category: "At Home",
+    categories: ["At-Home"],
     images: [IMG.great, IMG.go, IMG.rome],
     subtitle: "Michelin-starred culinary performance over the Duomo skyline",
     description:
@@ -121,9 +121,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "amalfi-chopper-yacht",
-    title: "Amalfi Coast Chopper & Capri Hideaways",
+    name: "Amalfi Coast Chopper & Capri Hideaways",
     location: "Amalfi Coast",
-    category: "One Day City Escape",
+    categories: ["One-Day City Escapes"],
     images: [IMG.rome, IMG.go, IMG.great],
     subtitle: "Helicopter transfer over Vesuvius & private Capri cove swims",
     description:
@@ -137,9 +137,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "secret-palazzo-milano",
-    title: "Secret Milanese Palazzo & Haute Couture Atelier",
+    name: "Secret Milanese Palazzo & Haute Couture Atelier",
     location: "Florence",
-    category: "Closed to the Public",
+    categories: ["Closed-to-the-Public"],
     images: [IMG.go, IMG.great, IMG.rome],
     subtitle: "Private museum archives & bespoke artisan atelier",
     description:
@@ -153,9 +153,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
   },
   {
     id: "venice-gondola-glass",
-    title: "Venetian Lagoon & Murano Master Glassblowing",
+    name: "Venetian Lagoon & Murano Master Glassblowing",
     location: "Venice",
-    category: "Family",
+    categories: ["Family"],
     images: [IMG.great, IMG.go, IMG.rome],
     subtitle:
       "Private island hopping & hands-on artisan masterclass for families",
@@ -186,9 +186,9 @@ export function findExperience(
 
 export interface ExperienceCollectionItem {
   id: string;
-  title: string;
+  name: string;
   location: string;
-  category: ExperienceCategory;
+  categories: ExperienceCategory[];
   images: string[];
   description: string;
   duration?: string;
@@ -198,9 +198,9 @@ export interface ExperienceCollectionItem {
 export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   {
     id: "vatican-vip-tour",
-    title: "Vatican VIP Tour",
+    name: "Vatican VIP Tour",
     location: "Rome",
-    category: "History & Culture",
+    categories: ["History & Culture"],
     images: [MAP.romePenthouse, MAP.romeRoof],
     description:
       "Enjoy exclusive, priority access to the Vatican Museums and Sistine Chapel, guided by an expert.",
@@ -213,9 +213,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "cooking-class-grandmothers",
-    title: "Cooking Class with Authentic Italian Grandmothers",
+    name: "Cooking Class with Authentic Italian Grandmothers",
     location: "Rome",
-    category: "Culinary Adventures",
+    categories: ["Culinary Adventures"],
     images: [MAP.curatedInterior, MAP.tuscanDining],
     description:
       "Taste And Create The Flavors Of The Bel Paese Yourself Along With Real Italian Grandmothers.",
@@ -228,9 +228,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "roman-golf-cart-tour",
-    title: "Roman Golf Cart Tour",
+    name: "Roman Golf Cart Tour",
     location: "Rome",
-    category: "Outdoor Tours",
+    categories: ["Outdoor Tours"],
     images: [MAP.romeRoof, MAP.coastalTown],
     description:
       "Discover Rome's top sights, from the Trevi Fountain to the Colosseum, in comfort and style.",
@@ -243,9 +243,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "day-castel-gandolfo",
-    title: "A Day in Castel Gandolfo",
+    name: "A Day in Castel Gandolfo",
     location: "Rome",
-    category: "One Day City Escape",
+    categories: ["One-Day City Escapes"],
     images: [MAP.florenceSkyline, MAP.tuscany],
     description:
       "Experience the charm, history, and flavors of Castel Gandolfo.",
@@ -258,9 +258,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "pizza-tiramisu-masterclass",
-    title: "Pizza & Tiramisù Masterclass",
+    name: "Pizza & Tiramisù Masterclass",
     location: "Rome",
-    category: "Culinary Adventures",
+    categories: ["Culinary Adventures"],
     images: [MAP.tuscanDining, MAP.curatedInterior],
     description: "Craft your own pizza and tiramisù in the heart of Rome!",
     duration: "3 Hours",
@@ -272,9 +272,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "campo-fiori-food-tour",
-    title: "Campo de Fiori Food Tour",
+    name: "Campo de Fiori Food Tour",
     location: "Rome",
-    category: "Culinary Adventures",
+    categories: ["Culinary Adventures"],
     images: [MAP.nightWaterfront, MAP.coastalTown],
     description:
       "Savor Rome's culinary delights as you explore the historic Campo de' Fiori and Piazza Navona.",
@@ -287,9 +287,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "colosseum-after-hours",
-    title: "Colosseum & Forum Private After-Hours",
+    name: "Colosseum & Forum Private After-Hours",
     location: "Rome",
-    category: "Closed to the Public",
+    categories: ["Closed-to-the-Public"],
     images: [MAP.romePenthouse, MAP.romeRoof, MAP.curatedInterior],
     description:
       "Walk the gladiatorial floor and underground chambers in total evening tranquility without crowd queues.",
@@ -302,9 +302,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "pompeii-naples-journey",
-    title: "Pompeii & Naples: A Journey Through Time",
+    name: "Pompeii & Naples: A Journey Through Time",
     location: "Naples",
-    category: "History & Culture",
+    categories: ["History & Culture"],
     images: [MAP.coastalTown, MAP.nightWaterfront, MAP.romePenthouse],
     description:
       "Step back in time at ancient Pompeii with a private archaeologist, then enjoy authentic Neapolitan pizza.",
@@ -317,9 +317,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "tuscan-vineyard-harvest",
-    title: "Tuscan Estate Private Vineyard Harvest",
+    name: "Tuscan Estate Private Vineyard Harvest",
     location: "Tuscany",
-    category: "Culinary Adventures",
+    categories: ["Culinary Adventures"],
     images: [MAP.tuscanDining, MAP.tuscany, MAP.florenceSuite],
     description:
       "Join a noble winemaking family in Val d'Orcia for an exclusive private harvest and cellar barrel tasting.",
@@ -332,9 +332,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "lake-como-riva-voyage",
-    title: "Lake Como Vintage Wooden Boat Voyage",
+    name: "Lake Como Vintage Wooden Boat Voyage",
     location: "Lake Como",
-    category: "Outdoor Tours",
+    categories: ["Outdoor Tours"],
     images: [MAP.lakeComo, MAP.palazzoBath, MAP.italyProperty],
     description:
       "Cruise the crystalline waters of Lake Como in a classic wooden Riva and visit hidden aristocratic gardens.",
@@ -347,9 +347,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "florence-duomo-private-chef",
-    title: "Florentine Terrace Private Chef Experience",
+    name: "Florentine Terrace Private Chef Experience",
     location: "Florence",
-    category: "At Home",
+    categories: ["At-Home"],
     images: [MAP.florenceSuite, MAP.florenceSkyline, MAP.curatedInterior],
     description:
       "A celebrated chef prepares a multi-course tasting menu inside your penthouse terrace overlooking Brunelleschi's Dome.",
@@ -362,9 +362,9 @@ export const COLLECTION_EXPERIENCES: ExperienceCollectionItem[] = [
   },
   {
     id: "venetian-glass-lagoon",
-    title: "Venetian Lagoon & Murano Master Glassblowing",
+    name: "Venetian Lagoon & Murano Master Glassblowing",
     location: "Venice",
-    category: "Family",
+    categories: ["Family"],
     images: [MAP.nightWaterfront, MAP.coastalTown, MAP.aboutSky],
     description:
       "Private water taxi across the Venetian lagoon to Murano, where a master artisan guides your family in glassblowing.",
@@ -391,9 +391,9 @@ export function findExperienceDetail(
   if (fromCarousel) {
     return {
       id: fromCarousel.id,
-      title: fromCarousel.title,
+      name: fromCarousel.name,
       location: fromCarousel.location,
-      category: fromCarousel.category,
+      categories: fromCarousel.categories,
       images: [...fromCarousel.images],
       description: fromCarousel.description,
       duration: fromCarousel.duration,
@@ -406,9 +406,9 @@ export function findExperienceDetail(
 
 export const DEFAULT_EXPERIENCE: ExperienceCollectionItem = {
   id: "cooking-class-grandmothers",
-  title: "Cooking Class with Authentic Italian Grandmothers",
+  name: "Cooking Class with Authentic Italian Grandmothers",
   location: "Rome",
-  category: "Culinary Adventures",
+  categories: ["Culinary Adventures"],
   images: [
     MAP.tuscanDining,
     MAP.curatedInterior,

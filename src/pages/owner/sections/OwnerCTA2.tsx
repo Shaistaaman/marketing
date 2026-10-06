@@ -17,6 +17,8 @@ export default function OwnerCTA2({ onJoinToday }: OwnerCTA2Props) {
         <img
           src={BG_NIGHT_WATERFRONT}
           alt="Illuminated Italian waterfront at night"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full scale-105 object-cover object-center brightness-70 contrast-110 filter"
         />
         {/* Warm golden night gradient */}

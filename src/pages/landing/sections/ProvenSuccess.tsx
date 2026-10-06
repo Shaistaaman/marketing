@@ -38,6 +38,8 @@ export default function ProvenSuccess() {
         <img
           src="/images/scenic-view.jpg"
           alt="Proven Recipe for Success Background"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-neutral-950/65" />

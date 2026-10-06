@@ -35,9 +35,17 @@ export default function PackageDetailPage() {
       label: t("packageDetail.stats.duration"),
       value: pkg.duration,
     },
-    { Icon: Tag, label: t("packageDetail.stats.price"), value: pkg.price },
-    { Icon: Users, label: t("packageDetail.stats.guests"), value: pkg.guests },
-    { Icon: Sun, label: t("packageDetail.stats.season"), value: pkg.season },
+    { Icon: Tag, label: t("packageDetail.stats.price"), value: pkg.basePrice },
+    {
+      Icon: Users,
+      label: t("packageDetail.stats.guests"),
+      value: pkg.guestCapacity,
+    },
+    {
+      Icon: Sun,
+      label: t("packageDetail.stats.season"),
+      value: pkg.bestSeason,
+    },
   ];
 
   return (
@@ -47,7 +55,9 @@ export default function PackageDetailPage() {
         <div className="absolute inset-0 z-0">
           <img
             src={pkg.image}
-            alt={pkg.title}
+            alt={pkg.name}
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full scale-105 object-cover object-center brightness-70 contrast-110 filter"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/90" />
@@ -70,7 +80,7 @@ export default function PackageDetailPage() {
             transition={{ duration: 0.8 }}
             className="mb-8 font-serif text-4xl leading-tight font-normal tracking-tight text-white italic drop-shadow-lg sm:text-6xl lg:text-7xl"
           >
-            {pkg.title}
+            {pkg.name}
           </motion.h1>
 
           <motion.div
@@ -152,8 +162,9 @@ export default function PackageDetailPage() {
                 >
                   <img
                     src={imgUrl}
-                    alt={`${pkg.title} highlight ${idx + 1}`}
-                    loading="lazy"
+                    alt={`${pkg.name} highlight ${idx + 1}`}
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
@@ -174,11 +185,11 @@ export default function PackageDetailPage() {
           </div>
 
           <div className="space-y-12 sm:space-y-16">
-            {pkg.packageFeatures.map((feature, index) => {
+            {pkg.inclusions.map((feature, index) => {
               const isEven = index % 2 === 0;
               return (
                 <div
-                  key={feature.title}
+                  key={feature.heading}
                   className="grid grid-cols-1 overflow-hidden border border-neutral-200/70 bg-white shadow-sm md:grid-cols-2"
                 >
                   {/* Image — left on even, right on odd */}
@@ -189,8 +200,9 @@ export default function PackageDetailPage() {
                   >
                     <img
                       src={feature.image}
-                      alt={feature.title}
-                      loading="lazy"
+                      alt={feature.heading}
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                   </div>
@@ -205,7 +217,7 @@ export default function PackageDetailPage() {
                       {feature.category}
                     </span>
                     <h3 className="mb-5 font-serif text-2xl leading-tight font-normal text-neutral-900 italic sm:text-3xl lg:text-4xl">
-                      {feature.title}
+                      {feature.heading}
                     </h3>
                     <p className="text-xs leading-relaxed font-light text-neutral-600 sm:text-sm">
                       {feature.description}

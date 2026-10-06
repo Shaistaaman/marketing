@@ -129,7 +129,8 @@ export default function GalleryPkg() {
                   <img
                     src={item.url}
                     alt={item.title}
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                     className="pointer-events-none h-full w-full object-cover object-center"
                   />
                 </div>

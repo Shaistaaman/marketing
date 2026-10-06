@@ -15,12 +15,12 @@ import { ROUTES } from "../../../lib/constants";
 
 interface PropertyItem {
   id: string;
-  title: string;
+  name: string;
   region: string;
-  beds: number;
-  baths: number;
+  bedrooms: number;
+  bathrooms: number;
   guests: number;
-  size: string;
+  areaSqm: number;
   images: string[];
 }
 
@@ -46,12 +46,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // ROME
   {
     id: "rome-penthouse1",
-    title: "Art Gallery Penthouse",
+    name: "Art Gallery Penthouse",
     region: "ROME",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -60,12 +60,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   },
   {
     id: "rome-penthouse",
-    title: "Art Gallery Penthouse",
+    name: "Art Gallery Penthouse",
     region: "ROME",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -74,12 +74,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   },
   {
     id: "rome-atelier",
-    title: "Trastevere Historic Atelier",
+    name: "Trastevere Historic Atelier",
     region: "ROME",
-    beds: 2,
-    baths: 2,
+    bedrooms: 2,
+    bathrooms: 2,
     guests: 4,
-    size: "180sqm",
+    areaSqm: 180,
     images: [
       "/images/somuch/rome.png",
       "/images/somuch/great.png",
@@ -89,12 +89,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // AMALFI COAST
   {
     id: "amalfi-bella-vista",
-    title: "Villa Bella Vista",
+    name: "Villa Bella Vista",
     region: "AMALFI COAST",
-    beds: 5,
-    baths: 4,
+    bedrooms: 5,
+    bathrooms: 4,
     guests: 8,
-    size: "450sqm",
+    areaSqm: 450,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -103,12 +103,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   },
   {
     id: "amalfi-cliffside",
-    title: "Positano Dream Palazzo",
+    name: "Positano Dream Palazzo",
     region: "AMALFI COAST",
-    beds: 4,
-    baths: 3,
+    bedrooms: 4,
+    bathrooms: 3,
     guests: 6,
-    size: "340sqm",
+    areaSqm: 340,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -118,12 +118,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // VENICE
   {
     id: "venice-san-marco",
-    title: "Palazzo San Marco",
+    name: "Palazzo San Marco",
     region: "VENICE",
-    beds: 3,
-    baths: 3,
+    bedrooms: 3,
+    bathrooms: 3,
     guests: 6,
-    size: "320sqm",
+    areaSqm: 320,
     images: [
       "/images/somuch/rome.png",
       "/images/somuch/great.png",
@@ -133,12 +133,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // ISCHIA
   {
     id: "ischia-pietra",
-    title: "Santuario di Pietra",
+    name: "Santuario di Pietra",
     region: "ISCHIA",
-    beds: 3,
-    baths: 2,
+    bedrooms: 3,
+    bathrooms: 2,
     guests: 4,
-    size: "280sqm",
+    areaSqm: 280,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -148,12 +148,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // SABAUDIA
   {
     id: "sabaudia-dune",
-    title: "Dune Horizon Villa",
+    name: "Dune Horizon Villa",
     region: "SABAUDIA",
-    beds: 4,
-    baths: 3,
+    bedrooms: 4,
+    bathrooms: 3,
     guests: 6,
-    size: "310sqm",
+    areaSqm: 310,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -163,12 +163,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // ARGENTARIO
   {
     id: "argentario-fortezza",
-    title: "Fortezza di Cala Galera",
+    name: "Fortezza di Cala Galera",
     region: "ARGENTARIO",
-    beds: 6,
-    baths: 5,
+    bedrooms: 6,
+    bathrooms: 5,
     guests: 10,
-    size: "580sqm",
+    areaSqm: 580,
     images: [
       "/images/somuch/rome.png",
       "/images/somuch/great.png",
@@ -178,12 +178,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // PUGLIA
   {
     id: "puglia-masseria",
-    title: "Masseria dei Trulli",
+    name: "Masseria dei Trulli",
     region: "PUGLIA",
-    beds: 4,
-    baths: 4,
+    bedrooms: 4,
+    bathrooms: 4,
     guests: 8,
-    size: "390sqm",
+    areaSqm: 390,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -193,12 +193,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // PONTINE ISLAND
   {
     id: "pontine-retreat",
-    title: "Isola Ventotene Retreat",
+    name: "Isola Ventotene Retreat",
     region: "PONTINE ISLAND",
-    beds: 2,
-    baths: 2,
+    bedrooms: 2,
+    bathrooms: 2,
     guests: 4,
-    size: "190sqm",
+    areaSqm: 190,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -208,12 +208,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // MILAN
   {
     id: "milan-duplex",
-    title: "Quadrilatero Luxury Duplex",
+    name: "Quadrilatero Luxury Duplex",
     region: "MILAN",
-    beds: 3,
-    baths: 3,
+    bedrooms: 3,
+    bathrooms: 3,
     guests: 5,
-    size: "260sqm",
+    areaSqm: 260,
     images: [
       "/images/somuch/rome.png",
       "/images/somuch/great.png",
@@ -223,12 +223,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // SARDINIA
   {
     id: "sardinia-sanctuary",
-    title: "Costa Smeralda Sanctuary",
+    name: "Costa Smeralda Sanctuary",
     region: "SARDINIA",
-    beds: 5,
-    baths: 6,
+    bedrooms: 5,
+    bathrooms: 6,
     guests: 10,
-    size: "620sqm",
+    areaSqm: 620,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -238,12 +238,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // TUSCANY
   {
     id: "tuscany-san-gimignano",
-    title: "Tenuta di San Gimignano",
+    name: "Tenuta di San Gimignano",
     region: "TUSCANY",
-    beds: 6,
-    baths: 6,
+    bedrooms: 6,
+    bathrooms: 6,
     guests: 12,
-    size: "720sqm",
+    areaSqm: 720,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -252,12 +252,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   },
   {
     id: "tuscany-orcia",
-    title: "Val d'Orcia Country Estate",
+    name: "Val d'Orcia Country Estate",
     region: "TUSCANY",
-    beds: 4,
-    baths: 3,
+    bedrooms: 4,
+    bathrooms: 3,
     guests: 8,
-    size: "350sqm",
+    areaSqm: 350,
     images: [
       "/images/somuch/rome.png",
       "/images/somuch/great.png",
@@ -267,12 +267,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   // LAKE COMO
   {
     id: "como-sola",
-    title: "Villa Sola Cabiati Vista",
+    name: "Villa Sola Cabiati Vista",
     region: "LAKE COMO",
-    beds: 5,
-    baths: 5,
+    bedrooms: 5,
+    bathrooms: 5,
     guests: 9,
-    size: "650sqm",
+    areaSqm: 650,
     images: [
       "/images/somuch/great.png",
       "/images/somuch/go.png",
@@ -281,12 +281,12 @@ const PROPERTIES_DATA: PropertyItem[] = [
   },
   {
     id: "como-bellagio",
-    title: "Bellagio Waterfront Villa",
+    name: "Bellagio Waterfront Villa",
     region: "LAKE COMO",
-    beds: 3,
-    baths: 2,
+    bedrooms: 3,
+    bathrooms: 2,
     guests: 6,
-    size: "240sqm",
+    areaSqm: 240,
     images: [
       "/images/somuch/go.png",
       "/images/somuch/great.png",
@@ -330,7 +330,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
           <motion.img
             key={currentImgIndex}
             src={property.images[currentImgIndex]}
-            alt={`${property.title} - View ${currentImgIndex + 1}`}
+            alt={`${property.name} - View ${currentImgIndex + 1}`}
             referrerPolicy="no-referrer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -347,7 +347,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
         <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between bg-black/55 px-4 py-3 backdrop-blur-[2px] select-text sm:p-5 md:p-6 lg:p-8">
           <div className="min-w-0 flex-1 pr-3 text-white sm:pr-4">
             <h4 className="mb-1 line-clamp-1 font-serif text-base font-normal tracking-wide text-white drop-shadow-sm sm:mb-2 sm:text-lg md:mb-3 md:text-xl lg:text-2xl">
-              {property.title}
+              {property.name}
             </h4>
 
             {/* Micro amenities row */}
@@ -358,7 +358,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
                   strokeWidth={1.5}
                 />
                 {t("collectionsPage.section.specSuffixBeds", {
-                  count: property.beds,
+                  count: property.bedrooms,
                 })}
               </span>
               <span className="flex shrink-0 items-center gap-1 sm:gap-1.5">
@@ -366,7 +366,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
                   className="h-3 w-3 text-white/80 sm:h-[13px] sm:w-[13px]"
                   strokeWidth={1.5}
                 />
-                {property.baths} {t("common.specs.baths")}
+                {property.bathrooms} {t("common.specs.baths")}
               </span>
               <span className="flex shrink-0 items-center gap-1 sm:gap-1.5">
                 <Users
@@ -380,7 +380,7 @@ function PropertyCard({ property }: { property: PropertyItem }) {
                   className="h-3 w-3 text-white/80 sm:h-[13px] sm:w-[13px]"
                   strokeWidth={1.5}
                 />
-                {property.size}
+                {property.areaSqm} m²
               </span>
             </div>
           </div>

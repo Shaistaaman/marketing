@@ -22,7 +22,8 @@ export default function CTAImage({
         <img
           src={leftImageUrl}
           alt="Roman Colosseum Street View"
-          loading="lazy"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
       </div>
@@ -67,7 +68,8 @@ export default function CTAImage({
         <img
           src={rightImageUrl}
           alt="Arch of Constantine Monument"
-          loading="lazy"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
       </div>

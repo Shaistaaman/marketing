@@ -85,6 +85,8 @@ export default function OwnerBenefits({
         <img
           src={BG_PALAZZO}
           alt="Italian palazzo property valuation"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center brightness-50 contrast-110 filter"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/40" />
@@ -236,7 +238,8 @@ export default function OwnerBenefits({
                   <img
                     src={TERRACE_IMAGE}
                     alt="Art Gallery Penthouse"
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>

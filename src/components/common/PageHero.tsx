@@ -14,7 +14,8 @@ const TAB_ROUTES: Record<ActiveTab, string> = {
 };
 
 type HeroBackground =
-  { kind: "video"; src: string } | { kind: "image"; src: string; alt?: string };
+  | { kind: "video"; src: string }
+  | { kind: "image"; src: string; alt?: string };
 
 interface PageHeroProps {
   background: HeroBackground;
@@ -81,6 +82,8 @@ export default function PageHero({
           <img
             src={background.src}
             alt={background.alt ?? ""}
+            loading="eager"
+            decoding="async"
             className="h-full w-full object-cover object-center"
           />
         )}

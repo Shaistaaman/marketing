@@ -17,13 +17,13 @@ import { ROUTES } from "../../../lib/constants";
 
 interface CollectionProperty {
   id: string;
-  title: string;
+  name: string;
   location: string;
   region: string;
-  beds: number;
-  baths: number;
+  bedrooms: number;
+  bathrooms: number;
   guests: number;
-  size: string;
+  areaSqm: number;
   images: string[];
 }
 
@@ -36,134 +36,134 @@ const IMG = {
 const COLLECTION_PROPERTIES: CollectionProperty[] = [
   {
     id: "tiber-luxury",
-    title: "Tiber Luxury Penthouse",
+    name: "Tiber Luxury Penthouse",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.go, IMG.great, IMG.rome],
   },
   {
     id: "art-gallery-penthouse",
-    title: "Art Gallery Penthouse",
+    name: "Art Gallery Penthouse",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.great, IMG.go, IMG.rome],
   },
   {
     id: "skylife-monti-1",
-    title: "Skylife Monti's Wonder",
+    name: "Skylife Monti's Wonder",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.rome, IMG.go, IMG.great],
   },
   {
     id: "rooftop-360",
-    title: "360° Rooftop Penthouse",
+    name: "360° Rooftop Penthouse",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.go, IMG.great, IMG.rome],
   },
   {
     id: "skylife-modern-4",
-    title: "Skylife Modern 4-Bedroom",
+    name: "Skylife Modern 4-Bedroom",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.great, IMG.go, IMG.rome],
   },
   {
     id: "skylife-monti-2",
-    title: "Skylife Monti's Wonder",
+    name: "Skylife Monti's Wonder",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.rome, IMG.go, IMG.great],
   },
   {
     id: "villa-bella-vista",
-    title: "Villa Bella Vista",
+    name: "Villa Bella Vista",
     location: "Amalfi Coast, Italy",
     region: "Amalfi Coast",
-    beds: 5,
-    baths: 4,
+    bedrooms: 5,
+    bathrooms: 4,
     guests: 8,
-    size: "450sqm",
+    areaSqm: 450,
     images: [IMG.go, IMG.great, IMG.rome],
   },
   {
     id: "palazzo-san-marco",
-    title: "Palazzo San Marco",
+    name: "Palazzo San Marco",
     location: "Venice, Italy",
     region: "Venice",
-    beds: 3,
-    baths: 3,
+    bedrooms: 3,
+    bathrooms: 3,
     guests: 6,
-    size: "320sqm",
+    areaSqm: 320,
     images: [IMG.great, IMG.go, IMG.rome],
   },
   {
     id: "lake-como-sola",
-    title: "Villa Sola Cabiati Vista",
+    name: "Villa Sola Cabiati Vista",
     location: "Lake Como, Italy",
     region: "Lake Como",
-    beds: 6,
-    baths: 5,
+    bedrooms: 6,
+    bathrooms: 5,
     guests: 10,
-    size: "650sqm",
+    areaSqm: 650,
     images: [IMG.rome, IMG.go, IMG.great],
   },
   {
     id: "tiber-luxury1",
-    title: "Tiber Luxury Penthouse",
+    name: "Tiber Luxury Penthouse",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.go, IMG.great, IMG.rome],
   },
   {
     id: "art-gallery-penthouse1",
-    title: "Art Gallery Penthouse",
+    name: "Art Gallery Penthouse",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.great, IMG.go, IMG.rome],
   },
   {
     id: "skylife-monti-11",
-    title: "Skylife Monti's Wonder",
+    name: "Skylife Monti's Wonder",
     location: "Rome, Italy",
     region: "Rome",
-    beds: 4,
-    baths: 2,
+    bedrooms: 4,
+    bathrooms: 2,
     guests: 5,
-    size: "400sqm",
+    areaSqm: 400,
     images: [IMG.rome, IMG.go, IMG.great],
   },
 ];
@@ -227,12 +227,12 @@ export default function CollectionsSection() {
       const query = locationSearch.toLowerCase();
       const matchLoc =
         prop.location.toLowerCase().includes(query) ||
-        prop.title.toLowerCase().includes(query) ||
+        prop.name.toLowerCase().includes(query) ||
         prop.region.toLowerCase().includes(query);
       if (!matchLoc) return false;
     }
-    if (beds !== null && prop.beds < beds) return false;
-    if (baths !== null && prop.baths < baths) return false;
+    if (beds !== null && prop.bedrooms < beds) return false;
+    if (baths !== null && prop.bathrooms < baths) return false;
     if (guests !== null && prop.guests < guests) return false;
     return true;
   });
@@ -363,8 +363,9 @@ export default function CollectionsSection() {
                   <div className="relative mb-3 aspect-[1.15] w-full overflow-hidden rounded-none bg-neutral-100">
                     <img
                       src={property.images[currentImgIdx]}
-                      alt={property.title}
-                      loading="lazy"
+                      alt={property.name}
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                     />
 
@@ -423,7 +424,7 @@ export default function CollectionsSection() {
 
                   {/* Title */}
                   <h3 className="mb-3 line-clamp-1 font-serif text-xl font-normal tracking-tight text-neutral-900 md:text-[22px]">
-                    {property.title}
+                    {property.name}
                   </h3>
 
                   {/* Specs */}
@@ -434,7 +435,7 @@ export default function CollectionsSection() {
                         strokeWidth={1.5}
                       />
                       {t("collectionsPage.section.specSuffixBeds", {
-                        count: property.beds,
+                        count: property.bedrooms,
                       })}
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
@@ -443,7 +444,7 @@ export default function CollectionsSection() {
                         strokeWidth={1.5}
                       />
                       {t("collectionsPage.section.specSuffixBathrooms", {
-                        count: property.baths,
+                        count: property.bathrooms,
                       })}
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
@@ -458,7 +459,7 @@ export default function CollectionsSection() {
                         className="h-4 w-4 text-neutral-800"
                         strokeWidth={1.5}
                       />
-                      {property.size}
+                      {property.areaSqm} m²
                     </span>
                   </div>
                 </div>

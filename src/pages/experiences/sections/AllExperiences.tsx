@@ -52,7 +52,7 @@ function ExperienceCard({
           <motion.img
             key={currentImageIndex}
             src={experience.images[currentImageIndex]}
-            alt={`${experience.title} - View ${currentImageIndex + 1}`}
+            alt={`${experience.name} - View ${currentImageIndex + 1}`}
             referrerPolicy="no-referrer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -71,7 +71,7 @@ function ExperienceCard({
             {experience.location}
           </span>
           <span className="hidden rounded-none border border-white/20 bg-black/60 px-3 py-1 font-sans text-[10px] tracking-widest text-amber-300 uppercase backdrop-blur-md sm:inline-block sm:px-4 sm:py-1.5 sm:text-xs">
-            {experience.category}
+            {experience.categories?.[0]}
           </span>
         </div>
 
@@ -79,7 +79,7 @@ function ExperienceCard({
         <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between bg-black/55 px-4 py-3 backdrop-blur-[2px] select-text sm:p-5 md:p-6 lg:p-8">
           <div className="min-w-0 flex-1 pr-3 text-white sm:pr-4">
             <h3 className="line-clamp-2 font-serif text-base leading-snug font-normal tracking-wide text-white italic drop-shadow-sm sm:text-lg md:text-xl lg:text-3xl">
-              {experience.title}
+              {experience.name}
             </h3>
             <p className="mt-1 line-clamp-1 font-sans text-[10px] font-light tracking-wider text-neutral-300 sm:mt-1.5 sm:text-xs">
               {experience.subtitle}
@@ -193,7 +193,8 @@ export default function AllExperiences() {
       selectedDestination === "ALL" ||
       exp.location.toLowerCase() === selectedDestination.toLowerCase();
     const matchesCategory =
-      selectedCategory === "All" || exp.category === selectedCategory;
+      selectedCategory === "All" ||
+      exp.categories.some((cat) => cat === selectedCategory);
     return matchesDestination && matchesCategory;
   });
 

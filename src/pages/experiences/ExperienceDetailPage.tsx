@@ -1,4 +1,12 @@
-import { Check, Heart, Send, Star, Upload, X } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Grid,
+  Heart,
+  Send,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +39,10 @@ export default function ExperienceDetailPage() {
   );
 
   const [isSaved, setIsSaved] = useState(false);
-  const [isShared, setIsShared] = useState(false);
+
+  // Gallery lightbox
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Request modal
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
@@ -46,14 +57,6 @@ export default function ExperienceDetailPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [experienceId]);
-
-  const handleShare = () => {
-    if (!navigator.clipboard) return;
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      setIsShared(true);
-      setTimeout(() => setIsShared(false), 2000);
-    });
-  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,26 +93,10 @@ export default function ExperienceDetailPage() {
           <div className="mb-4 font-sans text-xs tracking-tight text-neutral-800 sm:text-sm">
             <span>{experience.location}</span>
             <span className="mx-2 text-neutral-400">/</span>
-            <span>{experience.category}</span>
+            <span>{experience.categories?.[0]}</span>
           </div>
 
           <div className="flex items-center gap-6 pt-2">
-            <button
-              type="button"
-              onClick={handleShare}
-              className="group flex cursor-pointer items-center gap-2 text-xs font-normal tracking-tight text-neutral-900 transition-colors hover:text-neutral-600 sm:text-sm"
-            >
-              <Upload className="h-4 w-4 stroke-[1.75] transition-transform group-hover:-translate-y-0.5" />
-              <span className="underline underline-offset-4">
-                {t("experienceDetail.share")}
-              </span>
-              {isShared && (
-                <span className="rounded bg-neutral-900 px-2 py-0.5 font-mono text-[10px] text-white">
-                  {t("experienceDetail.copied")}
-                </span>
-              )}
-            </button>
-
             <button
               type="button"
               onClick={() => setIsSaved(!isSaved)}
@@ -132,7 +119,7 @@ export default function ExperienceDetailPage() {
         <div className="mb-8 flex flex-col justify-between gap-4 pt-6 sm:mb-12 sm:flex-row sm:items-start sm:pt-1">
           <div>
             <h1 className="mb-3 font-serif text-3xl leading-[1.12] font-normal tracking-tight text-neutral-900 italic sm:text-5xl lg:text-6xl">
-              {experience.title}
+              {experience.name}
             </h1>
 
             <p className="font-sans text-xs font-normal tracking-wide text-neutral-500 italic sm:text-sm">
@@ -141,18 +128,11 @@ export default function ExperienceDetailPage() {
               })}
             </p>
 
-            {/* Rating */}
-            <div className="flex shrink-0 items-center gap-1.5 self-start pt-1 sm:self-auto">
-              <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-              <span className="font-sans text-base font-medium tracking-tight text-neutral-900">
-                4.90
+            {experience.duration && (
+              <span className="mt-3 block font-sans text-sm font-light text-neutral-500">
+                {experience.duration}
               </span>
-              {experience.duration && (
-                <span className="ml-3 font-sans text-sm font-light text-neutral-500">
-                  {experience.duration}
-                </span>
-              )}
-            </div>
+            )}
           </div>
 
           {/* REQUEST NOW */}
@@ -194,7 +174,9 @@ export default function ExperienceDetailPage() {
             <div className="relative aspect-[2.2/1] w-full overflow-hidden rounded-none bg-neutral-100">
               <img
                 src={galleryImages[0]}
-                alt={experience.title}
+                alt={experience.name}
+                loading="eager"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
             </div>
@@ -209,8 +191,9 @@ export default function ExperienceDetailPage() {
                   >
                     <img
                       src={img}
-                      alt={`${experience.title} detail ${idx + 1}`}
-                      loading="lazy"
+                      alt={`${experience.name} detail ${idx + 1}`}
+                      loading="eager"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover object-center"
                     />
                   </div>
@@ -220,14 +203,117 @@ export default function ExperienceDetailPage() {
               <div className="relative h-full min-h-[220px] w-full overflow-hidden bg-neutral-100">
                 <img
                   src={galleryImages[3]}
-                  alt={`${experience.title} detail 3`}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  alt={`${experience.name} detail 3`}
+                  loading="eager"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover object-center cursor-pointer"
+                  onClick={() => {
+                    setActiveImageIndex(3);
+                    setIsLightboxOpen(true);
+                  }}
                 />
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLightboxOpen(true);
+                  }}
+                  className="absolute right-3 bottom-3 flex cursor-pointer items-center gap-2 rounded-xs border border-neutral-200/80 bg-white/95 px-3.5 py-1.5 font-sans text-xs font-medium text-neutral-900 shadow-sm backdrop-blur-md transition-all hover:bg-black hover:text-white sm:py-2"
+                >
+                  <Grid className="h-3.5 w-3.5" />
+                  <span>{t("propertyDetail.seeAllPhotos")}</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* LIGHTBOX */}
+        <AnimatePresence>
+          {isLightboxOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex flex-col justify-between bg-black/95 p-6 backdrop-blur-md sm:p-10"
+            >
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-4 text-white">
+                <span className="font-serif text-xl italic">
+                  {t("propertyDetail.lightbox.galleryTitle", {
+                    title: experience.name,
+                    current: activeImageIndex + 1,
+                    total: galleryImages.length,
+                  })}
+                </span>
+                <button
+                  onClick={() => setIsLightboxOpen(false)}
+                  className="cursor-pointer p-2 text-neutral-400 transition-colors hover:text-white"
+                  aria-label={t("common.aria.close")}
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="relative my-6 flex flex-1 items-center justify-center">
+                <img
+                  src={galleryImages[activeImageIndex]}
+                  alt={t("propertyDetail.lightbox.propertyGalleryEnlarged")}
+                  className="max-h-[75vh] max-w-full object-contain shadow-2xl"
+                />
+
+                {galleryImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setActiveImageIndex((prev) =>
+                          prev === 0 ? galleryImages.length - 1 : prev - 1,
+                        )
+                      }
+                      className="absolute left-4 cursor-pointer rounded-full border border-neutral-700 bg-black/60 p-3 text-white transition-colors hover:bg-black"
+                      aria-label={t("common.aria.previousPhoto")}
+                    >
+                      <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        setActiveImageIndex((prev) =>
+                          prev === galleryImages.length - 1 ? 0 : prev + 1,
+                        )
+                      }
+                      className="absolute right-4 cursor-pointer rounded-full border border-neutral-700 bg-black/60 p-3 text-white transition-colors hover:bg-black"
+                      aria-label={t("common.aria.nextPhoto")}
+                    >
+                      <ChevronRight className="h-6 w-6" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Thumbnails */}
+              <div className="flex items-center justify-center gap-3 overflow-x-auto py-2">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={`${img}-${idx}`}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`h-12 w-16 shrink-0 cursor-pointer overflow-hidden border-2 transition-all ${
+                      activeImageIndex === idx
+                        ? "scale-105 border-amber-300"
+                        : "border-transparent opacity-50"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={t("propertyDetail.lightbox.thumbnail", {
+                        index: idx + 1,
+                      })}
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* REQUEST MODAL */}
         <AnimatePresence>
@@ -267,7 +353,7 @@ export default function ExperienceDetailPage() {
                       <p className="mx-auto mb-4 max-w-sm text-sm leading-relaxed font-light text-neutral-600">
                         {t("experienceDetail.modal.successBody", {
                           firstName: name.split(" ")[0],
-                          experienceTitle: experience.title,
+                          experienceTitle: experience.name,
                         })}
                       </p>
                       <p className="mb-8 font-mono text-xs text-neutral-500">
@@ -286,7 +372,7 @@ export default function ExperienceDetailPage() {
                         {t("experienceDetail.modal.title")}
                       </h3>
                       <p className="mb-6 text-xs font-light text-neutral-500">
-                        {experience.title} · {experience.location}
+                        {experience.name} · {experience.location}
                         {experience.duration ? ` · ${experience.duration}` : ""}
                       </p>
 

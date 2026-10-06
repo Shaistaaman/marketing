@@ -169,7 +169,8 @@ export default function ExperienceCategories({
                   <img
                     src={category.image}
                     alt={category.title}
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-108"
                   />
 
